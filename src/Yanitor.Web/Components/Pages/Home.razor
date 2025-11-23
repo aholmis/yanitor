@@ -1,0 +1,16 @@
+﻿@page "/"
+@page "/{culture}"
+@using System.Globalization;
+@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<Home> L
+
+<PageTitle>@L["PageTitle"]</PageTitle>
+
+<section class="home">
+    <h1>@L["WelcomeMessage"]</h1>
+</section>
+
+@code {
+    [Parameter]
+    public string? Culture { get; set; }
+}

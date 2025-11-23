@@ -1,0 +1,32 @@
+.culture-selector {
+    display: flex; /* updated for layout consistency */
+    align-items: center;
+    gap: 0.5rem;
+    position: relative;
+}
+
+.culture-selector__label {
+    font-size: 0.875rem;
+}
+
+.culture-selector__select {
+    appearance: none;
+    background-color: var(--mud-palette-surface);
+    border: 1px solid var(--mud-palette-lines-default);
+    border-radius: 4px;
+    padding: 0.5rem 2rem 0.5rem 1rem;
+    font-size: 1rem;
+    cursor: pointer;
+    color: var(--mud-palette-text-primary);
+}
+
+.culture-selector::after {
+    content: '\25BC'; /* down triangle indicator */
+    font-size: 0.7rem;
+    position: absolute;
+    right: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    color: var(--mud-palette-text-secondary);
+}

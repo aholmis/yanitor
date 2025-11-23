@@ -1,0 +1,1 @@
+.home {\n    display: flex;\n    flex-direction: column;\n    gap: 1.25rem;\n    padding: 2rem 1rem;\n}\n\n.home h1 {\n    font-size: 2rem;\n    line-height: 1.2;\n    margin: 0;\n}\n

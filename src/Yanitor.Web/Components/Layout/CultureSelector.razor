@@ -1,0 +1,47 @@
+@rendermode InteractiveServer
+@using System.Globalization
+@inject NavigationManager NavigationManager
+
+<section class="culture-selector">
+    <label for="culture-select" class="culture-selector__label">Culture</label>
+    <select id="culture-select" @onchange="OnCultureChanged" class="culture-selector__select" aria-label="Select culture">
+        @foreach (var culture in _supportedCultures)
+        {
+            <option value="@culture.Name" selected="@(culture.Name == CultureInfo.CurrentUICulture.Name)">@culture.NativeName</option>
+        }
+    </select>
+</section>
+
+@code {
+    private readonly CultureInfo[] _supportedCultures = [ new("en"), new("nb-NO") ];
+
+    private void OnCultureChanged(ChangeEventArgs e)
+    {
+        var newCulture = e.Value as string;
+        if (string.IsNullOrWhiteSpace(newCulture)) return;
+
+        // Get current path and replace or add culture
+        var currentUri = new Uri(NavigationManager.Uri);
+        var currentPath = currentUri.AbsolutePath;
+        
+        // Determine the new path with culture
+        string newPath;
+        var pathSegments = currentPath.Split('/', StringSplitOptions.RemoveEmptyEntries);
+        
+        if (pathSegments.Length > 0 && _supportedCultures.Any(c => c.Name.Equals(pathSegments[0], StringComparison.OrdinalIgnoreCase)))
+        {
+            // Replace existing culture in URL
+            pathSegments[0] = newCulture;
+            newPath = "/" + string.Join("/", pathSegments);
+        }
+        else
+        {
+            // Add culture to URL
+            newPath = currentPath == "/" ? $"/{newCulture}" : $"/{newCulture}{currentPath}";
+        }
+
+        // Set culture via cookie and navigate to new path
+        var setCultureUrl = $"/set-culture?culture={Uri.EscapeDataString(newCulture)}&returnUrl={Uri.EscapeDataString(newPath)}";
+        NavigationManager.NavigateTo(setCultureUrl, forceLoad: true);
+    }
+}
