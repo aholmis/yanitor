@@ -26,6 +26,7 @@
     cursor: pointer;
     transition: all 0.2s ease;
     flex-shrink: 0;
+    text-decoration: none;
 }
 
 .components__back-button:hover {
@@ -54,6 +55,45 @@
     font-size: 1.125rem;
     color: var(--text-secondary, #666);
     margin: 0;
+}
+
+.components__room {
+    margin-bottom: 3rem;
+}
+
+.components__room:last-child {
+    margin-bottom: 0;
+}
+
+.components__room-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.components__room-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 1rem;
+    background: var(--primary, #1976d2);
+    color: var(--surface, #ffffff);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.components__room-icon svg {
+    width: 32px;
+    height: 32px;
+}
+
+.components__room-name {
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin: 0;
+    color: var(--text-primary, #1a1a1a);
 }
 
 .components__list {
@@ -123,7 +163,6 @@
 }
 
 .components__empty {
-    grid-column: 1 / -1;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -160,6 +199,28 @@
 
     .components__subtitle {
         font-size: 1rem;
+    }
+
+    .components__room {
+        margin-bottom: 2rem;
+    }
+
+    .components__room-header {
+        margin-bottom: 1rem;
+    }
+
+    .components__room-icon {
+        width: 48px;
+        height: 48px;
+    }
+
+    .components__room-icon svg {
+        width: 28px;
+        height: 28px;
+    }
+
+    .components__room-name {
+        font-size: 1.5rem;
     }
 
     .components__list {

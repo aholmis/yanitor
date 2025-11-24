@@ -9,44 +9,56 @@
 
 <section class="components">
     <header class="components__header">
-        <button class="components__back-button" @onclick="NavigateBack" aria-label="@L["BackToMyHouse"]">
+        <a href="@GetMyHouseUrl()" class="components__back-button" aria-label="@L["BackToMyHouse"]">
             <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                 <path d="M19 12H5M12 19l-7-7 7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
-        </button>
+        </a>
         <div class="components__header-content">
             <h1 class="components__title">@L["PageTitle"]</h1>
             <p class="components__subtitle">@L["Subtitle"]</p>
         </div>
     </header>
 
-    <div class="components__list">
-        @if (_components.Count == 0)
+    @if (_componentsByRoom.Count == 0)
+    {
+        <div class="components__empty">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M9 22V12h6v10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <p>@L["NoComponents"]</p>
+        </div>
+    }
+    else
+    {
+        @foreach (var room in _componentsByRoom.OrderBy(r => r.Key))
         {
-            <div class="components__empty">
-                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                    <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M9 22V12h6v10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-                <p>@L["NoComponents"]</p>
-            </div>
-        }
-        else
-        {
-            @foreach (var component in _components)
-            {
-                <article class="components__item">
-                    <div class="components__item-icon">
-                        @GetComponentIcon(component.Type)
+            <section class="components__room">
+                <header class="components__room-header">
+                    <div class="components__room-icon">
+                        @GetRoomIcon(room.Value.First().RoomType)
                     </div>
-                    <div class="components__item-content">
-                        <h2 class="components__item-name">@component.Name</h2>
-                        <p class="components__item-type">@component.Type</p>
-                    </div>
-                </article>
-            }
+                    <h2 class="components__room-name">@room.Key</h2>
+                </header>
+                
+                <div class="components__list">
+                    @foreach (var component in room.Value)
+                    {
+                        <article class="components__item">
+                            <div class="components__item-icon">
+                                @GetComponentIcon(component.Type)
+                            </div>
+                            <div class="components__item-content">
+                                <h3 class="components__item-name">@component.Name</h3>
+                                <p class="components__item-type">@component.Type</p>
+                            </div>
+                        </article>
+                    }
+                </div>
+            </section>
         }
-    </div>
+    }
 </section>
 
 @code {
@@ -56,31 +68,70 @@
     // Mock data - replace with actual data service later
     private List<HouseComponent> _components = new()
     {
-        new HouseComponent { Name = "Main HVAC System", Type = "HVAC" },
-        new HouseComponent { Name = "Water Heater", Type = "Plumbing" },
-        new HouseComponent { Name = "Front Door", Type = "Door" },
-        new HouseComponent { Name = "Living Room Window", Type = "Window" },
-        new HouseComponent { Name = "Kitchen Sink", Type = "Plumbing" },
-        new HouseComponent { Name = "Garage Door Opener", Type = "Garage" },
-        new HouseComponent { Name = "Smoke Detector - Hallway", Type = "Safety" },
-        new HouseComponent { Name = "Roof Shingles", Type = "Roof" },
-        new HouseComponent { Name = "Gutter System", Type = "Exterior" },
-        new HouseComponent { Name = "Air Filter", Type = "HVAC" },
-        new HouseComponent { Name = "Sump Pump", Type = "Plumbing" },
-        new HouseComponent { Name = "Attic Insulation", Type = "Insulation" }
+        new HouseComponent { Name = "Main HVAC System", Type = "HVAC", Room = "Garage", RoomType = "Garage" },
+        new HouseComponent { Name = "Water Heater", Type = "Plumbing", Room = "Garage", RoomType = "Garage" },
+        new HouseComponent { Name = "Front Door", Type = "Door", Room = "Hall", RoomType = "Hall" },
+        new HouseComponent { Name = "Living Room Window", Type = "Window", Room = "Living Room", RoomType = "Living Room" },
+        new HouseComponent { Name = "Kitchen Sink", Type = "Plumbing", Room = "Kitchen", RoomType = "Kitchen" },
+        new HouseComponent { Name = "Garage Door Opener", Type = "Garage", Room = "Garage", RoomType = "Garage" },
+        new HouseComponent { Name = "Smoke Detector - Hallway", Type = "Safety", Room = "Hall", RoomType = "Hall" },
+        new HouseComponent { Name = "Roof Shingles", Type = "Roof", Room = "Outdoor", RoomType = "Outdoor" },
+        new HouseComponent { Name = "Gutter System", Type = "Exterior", Room = "Outdoor", RoomType = "Outdoor" },
+        new HouseComponent { Name = "Air Filter", Type = "HVAC", Room = "Garage", RoomType = "Garage" },
+        new HouseComponent { Name = "Sump Pump", Type = "Plumbing", Room = "Basement", RoomType = "Basement" },
+        new HouseComponent { Name = "Attic Insulation", Type = "Insulation", Room = "Attic", RoomType = "Attic" },
+        new HouseComponent { Name = "Master Bathroom Shower", Type = "Plumbing", Room = "Master Bathroom", RoomType = "Bathroom" },
+        new HouseComponent { Name = "Guest Bathroom Toilet", Type = "Plumbing", Room = "Guest Bathroom", RoomType = "Bathroom" },
+        new HouseComponent { Name = "Bedroom Window", Type = "Window", Room = "Master Bedroom", RoomType = "Bedroom" }
     };
 
-    private void NavigateBack()
+    private Dictionary<string, List<HouseComponent>> _componentsByRoom = new();
+
+    protected override void OnInitialized()
     {
-        if (!string.IsNullOrEmpty(Culture))
-        {
-            Navigation.NavigateTo($"/{Culture}/my-house");
-        }
-        else
-        {
-            Navigation.NavigateTo("/my-house");
-        }
+        _componentsByRoom = _components
+            .GroupBy(c => c.Room)
+            .ToDictionary(g => g.Key, g => g.ToList());
     }
+
+    private string GetMyHouseUrl()
+    {
+        return string.IsNullOrWhiteSpace(Culture) 
+            ? "/my-house" 
+            : $"/{Culture}/my-house";
+    }
+
+    private RenderFragment GetRoomIcon(string roomType) => roomType switch
+    {
+        "Bedroom" => @<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M2 20v-8a2 2 0 012-2h16a2 2 0 012 2v8M4 12V6h4v6M16 12V6h4v6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M2 16h20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>,
+        "Kitchen" => @<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M4 2v8c0 2 1 3 2 3s2-1 2-3V2M4 2h4M5 2v8M6 2v8M7 2v8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            <path d="M4 13v9M18 2l-2 9h2v11" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>,
+        "Bathroom" => @<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M9 6l11-3v2.99S12 7 9 6zM3.2 14.222V4a1 1 0 011-1h1a1 1 0 011 1v10.222" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <path d="M18 12H2v3.333c0 2.025 1.79 4.667 8 4.667s8-2.642 8-4.667V12z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <path d="M6 20v2M14 20v2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>,
+        "Hall" => @<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M13 3h8v18h-8M3 21V3h8v18H3z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <path d="M7 8v2M7 14v2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>,
+        "Garage" => @<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M4 22V6l8-4 8 4v16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <path d="M8 22V12h8v10M8 15h8M8 18h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>,
+        "Outdoor" => @<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M17 8c0 1.5-2 4-2 4s-2-2.5-2-4a2 2 0 114 0z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <path d="M16 12v9M9 8c0 1.5-2 4-2 4s-2-2.5-2-4a2 2 0 114 0zM8 12v9M2 21h20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>,
+        _ => @<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <rect x="5" y="5" width="14" height="14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+    };
 
     private RenderFragment GetComponentIcon(string type) => type switch
     {
@@ -128,5 +179,7 @@
     {
         public required string Name { get; init; }
         public required string Type { get; init; }
+        public required string Room { get; init; }
+        public required string RoomType { get; init; }
     }
 }
