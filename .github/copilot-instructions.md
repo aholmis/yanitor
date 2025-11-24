@@ -18,6 +18,7 @@ They apply to all Copilot suggestions, completions, and Copilot Chat responses.
 5. Favor **readability and maintainability** over brevity.
 6. Avoid unnecessary `<div>` nesting. Keep markup shallow.
 7. Use **meaningful component names**: `UserCard`, `OrderList`, `ConfirmationDialog`.
+8. User-visible text must be localized in resource files. Use english as default, and nb-NO for Norwegian Bokmål as secondary option.
 
 ---
 

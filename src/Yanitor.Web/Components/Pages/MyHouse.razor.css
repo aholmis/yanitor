@@ -1,0 +1,161 @@
+.my-house {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #f0f9ff 0%, #fef3c7 50%, #fce7f3 100%);
+}
+
+.my-house__header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.my-house__title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin: 0 0 0.5rem 0;
+    color: var(--text-primary, #1a1a1a);
+}
+
+.my-house__subtitle {
+    font-size: 1.125rem;
+    color: var(--text-secondary, #666);
+    margin: 0;
+}
+
+.my-house__cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 350px), 1fr));
+    gap: 2rem;
+}
+
+.my-house__card {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    padding: 2rem;
+    border-radius: 1rem;
+    background: var(--surface, #ffffff);
+    border: 1px solid var(--border, #e5e5e5);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.my-house__card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+.my-house__card-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.my-house__card-icon svg {
+    width: 28px;
+    height: 28px;
+}
+
+.my-house__card--components .my-house__card-icon {
+    background: var(--primary-light, #e3f2fd);
+    color: var(--primary, #1976d2);
+}
+
+.my-house__card--tasks .my-house__card-icon {
+    background: var(--success-light, #e8f5e9);
+    color: var(--success, #2e7d32);
+}
+
+.my-house__card-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.my-house__card-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin: 0;
+    color: var(--text-primary, #1a1a1a);
+}
+
+.my-house__card-count {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin: 0;
+    color: var(--primary, #1976d2);
+}
+
+.my-house__card-description {
+    font-size: 1rem;
+    color: var(--text-secondary, #666);
+    margin: 0;
+}
+
+.my-house__next-task {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding: 1rem;
+    background: var(--background, #f5f5f5);
+    border-radius: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.my-house__next-task-label {
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-tertiary, #999);
+    margin: 0;
+}
+
+.my-house__next-task-name {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--text-primary, #1a1a1a);
+    margin: 0;
+}
+
+.my-house__next-task-due {
+    font-size: 0.875rem;
+    color: var(--text-secondary, #666);
+    margin: 0;
+}
+
+@media (max-width: 768px) {
+    .my-house {
+        padding: 1.5rem 1rem;
+    }
+
+    .my-house__header {
+        margin-bottom: 2rem;
+    }
+
+    .my-house__title {
+        font-size: 2rem;
+    }
+
+    .my-house__subtitle {
+        font-size: 1rem;
+    }
+
+    .my-house__cards {
+        gap: 1.5rem;
+    }
+
+    .my-house__card {
+        padding: 1.5rem;
+    }
+
+    .my-house__card-count {
+        font-size: 2rem;
+    }
+}

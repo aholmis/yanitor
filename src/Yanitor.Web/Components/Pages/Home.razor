@@ -11,7 +11,7 @@
         <div class="home__hero-content">
             <h1 class="home__title">@L["WelcomeMessage"]</h1>
             <p class="home__subtitle">@L["Subtitle"]</p>
-            <button class="home__cta">@L["GetStartedButton"]</button>
+            <a href="@GetMyHouseUrl()" class="home__cta">@L["GetStartedButton"]</a>
         </div>
         <div class="home__hero-graphic">
             <svg class="home__house-icon" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
@@ -74,4 +74,11 @@
 @code {
     [Parameter]
     public string? Culture { get; set; }
+
+    private string GetMyHouseUrl()
+    {
+        return string.IsNullOrWhiteSpace(Culture) 
+            ? "/my-house" 
+            : $"/{Culture}/my-house";
+    }
 }
