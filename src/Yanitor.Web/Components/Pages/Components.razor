@@ -2,8 +2,11 @@
 @page "/{culture}/components"
 @using System.Globalization
 @using Microsoft.Extensions.Localization
+@using Yanitor.Web.Domain
+@using Yanitor.Web.Domain.Components
 @inject IStringLocalizer<Components> L
 @inject NavigationManager Navigation
+@inject IItemProvider ItemProvider
 
 <PageTitle>@L["PageTitle"]</PageTitle>
 
@@ -65,33 +68,11 @@
     [Parameter]
     public string? Culture { get; set; }
 
-    // Mock data - replace with actual data service later
-    private List<HouseComponent> _components = new()
-    {
-        new HouseComponent { Name = "Main HVAC System", Type = "HVAC", Room = "Garage", RoomType = "Garage" },
-        new HouseComponent { Name = "Water Heater", Type = "Plumbing", Room = "Garage", RoomType = "Garage" },
-        new HouseComponent { Name = "Front Door", Type = "Door", Room = "Hall", RoomType = "Hall" },
-        new HouseComponent { Name = "Living Room Window", Type = "Window", Room = "Living Room", RoomType = "Living Room" },
-        new HouseComponent { Name = "Kitchen Sink", Type = "Plumbing", Room = "Kitchen", RoomType = "Kitchen" },
-        new HouseComponent { Name = "Garage Door Opener", Type = "Garage", Room = "Garage", RoomType = "Garage" },
-        new HouseComponent { Name = "Smoke Detector - Hallway", Type = "Safety", Room = "Hall", RoomType = "Hall" },
-        new HouseComponent { Name = "Roof Shingles", Type = "Roof", Room = "Outdoor", RoomType = "Outdoor" },
-        new HouseComponent { Name = "Gutter System", Type = "Exterior", Room = "Outdoor", RoomType = "Outdoor" },
-        new HouseComponent { Name = "Air Filter", Type = "HVAC", Room = "Garage", RoomType = "Garage" },
-        new HouseComponent { Name = "Sump Pump", Type = "Plumbing", Room = "Basement", RoomType = "Basement" },
-        new HouseComponent { Name = "Attic Insulation", Type = "Insulation", Room = "Attic", RoomType = "Attic" },
-        new HouseComponent { Name = "Master Bathroom Shower", Type = "Plumbing", Room = "Master Bathroom", RoomType = "Bathroom" },
-        new HouseComponent { Name = "Guest Bathroom Toilet", Type = "Plumbing", Room = "Guest Bathroom", RoomType = "Bathroom" },
-        new HouseComponent { Name = "Bedroom Window", Type = "Window", Room = "Master Bedroom", RoomType = "Bedroom" }
-    };
-
-    private Dictionary<string, List<HouseComponent>> _componentsByRoom = new();
+    private Dictionary<string, List<HouseItem>> _componentsByRoom = new();
 
     protected override void OnInitialized()
     {
-        _componentsByRoom = _components
-            .GroupBy(c => c.Room)
-            .ToDictionary(g => g.Key, g => g.ToList());
+        _componentsByRoom = ItemProvider.GetItemsByRoom();
     }
 
     private string GetMyHouseUrl()
@@ -174,12 +155,4 @@
             <path d="M12 6v6l4 2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
         </svg>
     };
-
-    private record HouseComponent
-    {
-        public required string Name { get; init; }
-        public required string Type { get; init; }
-        public required string Room { get; init; }
-        public required string RoomType { get; init; }
-    }
 }
