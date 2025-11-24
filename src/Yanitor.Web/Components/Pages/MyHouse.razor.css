@@ -30,6 +30,11 @@
     gap: 2rem;
 }
 
+.my-house__card-link {
+    text-decoration: none;
+    color: inherit;
+}
+
 .my-house__card {
     display: flex;
     flex-direction: column;
@@ -45,6 +50,10 @@
 .my-house__card:hover {
     transform: translateY(-2px);
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+.my-house__card-link:hover .my-house__card {
+    cursor: pointer;
 }
 
 .my-house__card-icon {
