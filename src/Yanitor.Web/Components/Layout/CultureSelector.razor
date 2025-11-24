@@ -1,10 +1,13 @@
 @rendermode InteractiveServer
 @using System.Globalization
+@using Microsoft.Extensions.Localization
+@using Yanitor.Web.Resources
 @inject NavigationManager NavigationManager
+@inject IStringLocalizer<SharedResources> LCS
 
 <section class="culture-selector">
-    <label for="culture-select" class="culture-selector__label">Culture</label>
-    <select id="culture-select" @onchange="OnCultureChanged" class="culture-selector__select" aria-label="Select culture">
+    <label for="culture-select" class="culture-selector__label">@LCS["Language"]:</label>
+    <select id="culture-select" @onchange="OnCultureChanged" class="culture-selector__select" aria-label="@LCS["SelectLanguage"]">
         @foreach (var culture in _supportedCultures)
         {
             <option value="@culture.Name" selected="@(culture.Name == CultureInfo.CurrentUICulture.Name)">@culture.NativeName</option>

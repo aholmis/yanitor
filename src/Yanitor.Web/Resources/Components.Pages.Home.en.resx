@@ -58,10 +58,34 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="PageTitle" xml:space="preserve">
+    <value>Home</value>
+  </data>
   <data name="WelcomeMessage" xml:space="preserve">
     <value>Welcome to Yanitor</value>
   </data>
-  <data name="PageTitle" xml:space="preserve">
-    <value>Home</value>
+  <data name="Subtitle" xml:space="preserve">
+    <value>Keep your home in perfect condition with smart maintenance tracking</value>
+  </data>
+  <data name="GetStartedButton" xml:space="preserve">
+    <value>Get Started</value>
+  </data>
+  <data name="ScheduleTasksTitle" xml:space="preserve">
+    <value>Schedule Tasks</value>
+  </data>
+  <data name="ScheduleTasksDescription" xml:space="preserve">
+    <value>Plan and track regular maintenance activities for your home</value>
+  </data>
+  <data name="StayOrganizedTitle" xml:space="preserve">
+    <value>Stay Organized</value>
+  </data>
+  <data name="StayOrganizedDescription" xml:space="preserve">
+    <value>Keep all your maintenance records and reminders in one place</value>
+  </data>
+  <data name="ExpertTipsTitle" xml:space="preserve">
+    <value>Expert Tips</value>
+  </data>
+  <data name="ExpertTipsDescription" xml:space="preserve">
+    <value>Get guidance on maintaining every part of your home</value>
   </data>
 </root>
