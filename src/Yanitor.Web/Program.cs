@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Localization;
 using System.Globalization;
 using Yanitor.Web.Components;
 using Yanitor.Web.Domain.Components;
+using Yanitor.Web.Domain.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +13,7 @@ builder.Services.AddLogging();
 
 // Register domain services
 builder.Services.AddSingleton<IItemProvider, ItemProvider>();
+builder.Services.AddSingleton<IHouseConfigurationService, HouseConfigurationService>();
 
 var supportedCultures = new[] { new CultureInfo("en"), new CultureInfo("nb-NO") };
 var localizationOptions = new RequestLocalizationOptions

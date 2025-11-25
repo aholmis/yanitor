@@ -1,0 +1,213 @@
+@page "/house-builder"
+@page "/{culture}/house-builder"
+@using Microsoft.Extensions.Localization
+@using Yanitor.Web.Domain
+@using Yanitor.Web.Domain.Services
+@inject IStringLocalizer<HouseBuilder> L
+@inject IHouseConfigurationService HouseConfigService
+@inject NavigationManager Navigation
+@rendermode InteractiveServer
+
+<PageTitle>@L["PageTitle"]</PageTitle>
+
+<section class="house-builder">
+    <header class="house-builder__header">
+        <h1 class="house-builder__title">@L["PageTitle"]</h1>
+        <p class="house-builder__subtitle">@L["Subtitle"]</p>
+    </header>
+
+    <div class="house-builder__content">
+        @if (_rooms.Count == 0)
+        {
+            <div class="house-builder__empty">
+                <div class="house-builder__empty-icon">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M9 22V12h6v10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+                <p class="house-builder__empty-text">@L["NoRoomsMessage"]</p>
+            </div>
+        }
+        else
+        {
+            <div class="house-builder__rooms">
+                @foreach (var room in _rooms)
+                {
+                    <article class="room-card">
+                        <div class="room-card__header">
+                            <h3 class="room-card__name">@room.Name</h3>
+                            <button class="room-card__remove" 
+                                    @onclick="() => RemoveRoom(room.Id)"
+                                    aria-label="@L["RemoveRoom", room.Name]">
+                                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                    <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="room-card__type">
+                            <span class="room-card__type-icon">@GetRoomTypeIcon(room.Type)</span>
+                            <span class="room-card__type-name">@GetRoomTypeName(room.Type)</span>
+                        </div>
+                    </article>
+                }
+            </div>
+        }
+
+        <div class="house-builder__add-room">
+            <h2 class="house-builder__add-title">@L["AddRoomTitle"]</h2>
+            
+            <div class="house-builder__form">
+                <div class="form-field">
+                    <label for="room-type" class="form-field__label">@L["RoomTypeLabel"]</label>
+                    <select id="room-type" class="form-field__select" @bind="_newRoomType" @bind:after="OnRoomTypeChanged">
+                        @foreach (RoomType roomType in Enum.GetValues(typeof(RoomType)))
+                        {
+                            <option value="@roomType">@GetRoomTypeName(roomType)</option>
+                        }
+                    </select>
+                </div>
+
+                <div class="form-field">
+                    <label for="room-name" class="form-field__label">@L["RoomNameLabel"]</label>
+                    <input type="text" 
+                           id="room-name" 
+                           class="form-field__input" 
+                           @bind="_newRoomName" 
+                           @onkeydown="HandleRoomNameKeyDown"
+                           placeholder="@L["RoomNamePlaceholder"]"
+                           maxlength="50" />
+                </div>
+
+                <button class="btn btn--primary" 
+                        @onclick="AddRoom" 
+                        disabled="@string.IsNullOrWhiteSpace(_newRoomName)">
+                    @L["AddRoomButton"]
+                </button>
+            </div>
+        </div>
+
+        <div class="house-builder__actions">
+            <button class="btn btn--secondary" @onclick="Cancel">
+                @L["CancelButton"]
+            </button>
+            <button class="btn btn--primary btn--large" 
+                    @onclick="SaveConfiguration"
+                    disabled="@(_rooms.Count == 0)">
+                @L["SaveButton"]
+            </button>
+        </div>
+    </div>
+</section>
+
+@code {
+    [Parameter]
+    public string? Culture { get; set; }
+
+    private List<Room> _rooms = new();
+    private string _newRoomName = string.Empty;
+    private RoomType _newRoomType = RoomType.Bedroom;
+    private bool _isFirstLoad = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var config = await HouseConfigService.GetConfigurationAsync();
+        if (config != null)
+        {
+            _rooms = new List<Room>(config.Rooms);
+        }
+
+        // Prefill the room name on first load
+        _newRoomName = GetDefaultRoomName(_newRoomType);
+        _isFirstLoad = false;
+    }
+
+    private void AddRoom()
+    {
+        if (string.IsNullOrWhiteSpace(_newRoomName))
+        {
+            return;
+        }
+
+        var room = new Room
+        {
+            Name = _newRoomName.Trim(),
+            Type = _newRoomType
+        };
+
+        _rooms.Add(room);
+        _newRoomName = GetDefaultRoomName(_newRoomType);
+    }
+
+    private void RemoveRoom(Guid roomId)
+    {
+        _rooms = _rooms.Where(r => r.Id != roomId).ToList();
+    }
+
+    private async Task SaveConfiguration()
+    {
+        var config = new HouseConfiguration
+        {
+            Rooms = _rooms
+        };
+
+        await HouseConfigService.SaveConfigurationAsync(config);
+        
+        // Navigate back to My House
+        var url = !string.IsNullOrEmpty(Culture) ? $"/{Culture}/my-house" : "/my-house";
+        Navigation.NavigateTo(url);
+    }
+
+    private void Cancel()
+    {
+        var url = !string.IsNullOrEmpty(Culture) ? $"/{Culture}/my-house" : "/my-house";
+        Navigation.NavigateTo(url);
+    }
+
+    private string GetRoomTypeName(RoomType roomType)
+    {
+        return L[$"RoomType_{roomType}"];
+    }
+
+    private string GetRoomTypeIcon(RoomType roomType)
+    {
+        return roomType switch
+        {
+            RoomType.Bedroom => "???",
+            RoomType.Bathroom => "??",
+            RoomType.Kitchen => "??",
+            RoomType.LivingRoom => "???",
+            RoomType.DiningRoom => "???",
+            RoomType.Hall => "??",
+            RoomType.Garage => "??",
+            RoomType.Basement => "??",
+            RoomType.Attic => "???",
+            RoomType.Office => "??",
+            RoomType.LaundryRoom => "??",
+            RoomType.Outdoor => "??",
+            _ => "??"
+        };
+    }
+
+    private void OnRoomTypeChanged()
+    {
+        // Only auto-update the name if it matches the previous default or is empty
+        if (!_isFirstLoad)
+        {
+            _newRoomName = GetDefaultRoomName(_newRoomType);
+        }
+    }
+
+    private void HandleRoomNameKeyDown(KeyboardEventArgs e)
+    {
+        if (e.Key == "Enter" && !string.IsNullOrWhiteSpace(_newRoomName))
+        {
+            AddRoom();
+        }
+    }
+
+    private string GetDefaultRoomName(RoomType roomType)
+    {
+        return GetRoomTypeName(roomType);
+    }
+}

@@ -59,45 +59,75 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="PageTitle" xml:space="preserve">
-    <value>My House</value>
+    <value>House Builder</value>
   </data>
   <data name="Subtitle" xml:space="preserve">
-    <value>Overview of your home maintenance</value>
+    <value>Add and organize rooms in your house</value>
   </data>
-  <data name="ComponentsTitle" xml:space="preserve">
-    <value>Components</value>
+  <data name="NoRoomsMessage" xml:space="preserve">
+    <value>No rooms added yet. Start by adding your first room below.</value>
   </data>
-  <data name="ComponentsDescription" xml:space="preserve">
-    <value>Home components tracked</value>
+  <data name="AddRoomTitle" xml:space="preserve">
+    <value>Add New Room</value>
   </data>
-  <data name="TasksTitle" xml:space="preserve">
-    <value>Tasks</value>
+  <data name="RoomNameLabel" xml:space="preserve">
+    <value>Room Name</value>
   </data>
-  <data name="NoTasksDescription" xml:space="preserve">
-    <value>No tasks scheduled</value>
+  <data name="RoomNamePlaceholder" xml:space="preserve">
+    <value>e.g., Master Bedroom</value>
   </data>
-  <data name="NextTask" xml:space="preserve">
-    <value>Next Task</value>
+  <data name="RoomTypeLabel" xml:space="preserve">
+    <value>Room Type</value>
   </data>
-  <data name="DueToday" xml:space="preserve">
-    <value>Due today</value>
+  <data name="AddRoomButton" xml:space="preserve">
+    <value>Add Room</value>
   </data>
-  <data name="DueTomorrow" xml:space="preserve">
-    <value>Due tomorrow</value>
+  <data name="RemoveRoom" xml:space="preserve">
+    <value>Remove {0}</value>
   </data>
-  <data name="DueInDays" xml:space="preserve">
-    <value>Due in {0} days</value>
+  <data name="CancelButton" xml:space="preserve">
+    <value>Cancel</value>
   </data>
-  <data name="Overdue" xml:space="preserve">
-    <value>Overdue by {0} days</value>
+  <data name="SaveButton" xml:space="preserve">
+    <value>Save Configuration</value>
   </data>
-  <data name="BuildYourHouseTitle" xml:space="preserve">
-    <value>Build Your House</value>
+  <data name="RoomType_Bedroom" xml:space="preserve">
+    <value>Bedroom</value>
   </data>
-  <data name="BuildYourHouseMessage" xml:space="preserve">
-    <value>Start by adding rooms to your house to track maintenance and components</value>
+  <data name="RoomType_Bathroom" xml:space="preserve">
+    <value>Bathroom</value>
   </data>
-  <data name="BuildYourHouseButton" xml:space="preserve">
-    <value>Add rooms to your house</value>
+  <data name="RoomType_Kitchen" xml:space="preserve">
+    <value>Kitchen</value>
+  </data>
+  <data name="RoomType_LivingRoom" xml:space="preserve">
+    <value>Living Room</value>
+  </data>
+  <data name="RoomType_DiningRoom" xml:space="preserve">
+    <value>Dining Room</value>
+  </data>
+  <data name="RoomType_Hall" xml:space="preserve">
+    <value>Hall</value>
+  </data>
+  <data name="RoomType_Garage" xml:space="preserve">
+    <value>Garage</value>
+  </data>
+  <data name="RoomType_Basement" xml:space="preserve">
+    <value>Basement</value>
+  </data>
+  <data name="RoomType_Attic" xml:space="preserve">
+    <value>Attic</value>
+  </data>
+  <data name="RoomType_Office" xml:space="preserve">
+    <value>Office</value>
+  </data>
+  <data name="RoomType_LaundryRoom" xml:space="preserve">
+    <value>Laundry Room</value>
+  </data>
+  <data name="RoomType_Outdoor" xml:space="preserve">
+    <value>Outdoor</value>
+  </data>
+  <data name="RoomType_Other" xml:space="preserve">
+    <value>Other</value>
   </data>
 </root>

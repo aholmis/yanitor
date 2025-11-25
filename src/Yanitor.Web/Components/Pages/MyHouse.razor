@@ -2,8 +2,11 @@
 @page "/{culture}/my-house"
 @using System.Globalization
 @using Microsoft.Extensions.Localization
+@using Yanitor.Web.Domain.Services
 @inject IStringLocalizer<MyHouse> L
 @inject NavigationManager Navigation
+@inject IHouseConfigurationService HouseConfigService
+@rendermode InteractiveServer
 
 <PageTitle>@L["PageTitle"]</PageTitle>
 
@@ -13,49 +16,71 @@
         <p class="my-house__subtitle">@L["Subtitle"]</p>
     </header>
 
-    <div class="my-house__cards">
-        <article class="my-house__card my-house__card--tasks">
-            <div class="my-house__card-icon">
-                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                    <path d="M9 11l3 3L22 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                    <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
-                </svg>
-            </div>
-            <div class="my-house__card-content">
-                <h2 class="my-house__card-title">@L["TasksTitle"]</h2>
-                <p class="my-house__card-count">@_tasksCount</p>
-                @if (_nextTask != null)
-                {
-                    <div class="my-house__next-task">
-                        <p class="my-house__next-task-label">@L["NextTask"]:</p>
-                        <p class="my-house__next-task-name">@_nextTask.Name</p>
-                        <p class="my-house__next-task-due">@GetDaysUntilDueText(_nextTask.DaysUntilDue)</p>
-                    </div>
-                }
-                else
-                {
-                    <p class="my-house__card-description">@L["NoTasksDescription"]</p>
-                }
-            </div>
-        </article>
-
-        <a href="@GetComponentsUrl()" class="my-house__card-link">
-            <article class="my-house__card my-house__card--components">
-                <div class="my-house__card-icon">
+    @if (!_hasConfiguration)
+    {
+        <div class="my-house__empty">
+            <div class="my-house__empty-content">
+                <div class="my-house__empty-icon">
                     <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                         <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                         <path d="M9 22V12h6v10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
                 </div>
+                <h2 class="my-house__empty-title">@L["BuildYourHouseTitle"]</h2>
+                <p class="my-house__empty-text">@L["BuildYourHouseMessage"]</p>
+            </div>
+            <button class="my-house__add-button" @onclick="NavigateToBuilder" aria-label="@L["BuildYourHouseButton"]">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+                </svg>
+            </button>
+        </div>
+    }
+    else
+    {
+        <div class="my-house__cards">
+            <article class="my-house__card my-house__card--tasks">
+                <div class="my-house__card-icon">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <path d="M9 11l3 3L22 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                        <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                    </svg>
+                </div>
                 <div class="my-house__card-content">
-                    <h2 class="my-house__card-title">@L["ComponentsTitle"]</h2>
-                    <p class="my-house__card-count">@_componentsCount</p>
-                    <p class="my-house__card-description">@L["ComponentsDescription"]</p>
+                    <h2 class="my-house__card-title">@L["TasksTitle"]</h2>
+                    <p class="my-house__card-count">@_tasksCount</p>
+                    @if (_nextTask != null)
+                    {
+                        <div class="my-house__next-task">
+                            <p class="my-house__next-task-label">@L["NextTask"]:</p>
+                            <p class="my-house__next-task-name">@_nextTask.Name</p>
+                            <p class="my-house__next-task-due">@GetDaysUntilDueText(_nextTask.DaysUntilDue)</p>
+                        </div>
+                    }
+                    else
+                    {
+                        <p class="my-house__card-description">@L["NoTasksDescription"]</p>
+                    }
                 </div>
             </article>
-        </a>
 
-    </div>
+            <a href="@GetComponentsUrl()" class="my-house__card-link">
+                <article class="my-house__card my-house__card--components">
+                    <div class="my-house__card-icon">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                            <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M9 22V12h6v10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <div class="my-house__card-content">
+                        <h2 class="my-house__card-title">@L["ComponentsTitle"]</h2>
+                        <p class="my-house__card-count">@_componentsCount</p>
+                        <p class="my-house__card-description">@L["ComponentsDescription"]</p>
+                    </div>
+                </article>
+            </a>
+        </div>
+    }
 </section>
 
 @code {
@@ -66,6 +91,18 @@
     private int _componentsCount = 12;
     private int _tasksCount = 5;
     private NextTask? _nextTask = new NextTask { Name = "Clean gutters", DaysUntilDue = 3 };
+    private bool _hasConfiguration = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _hasConfiguration = await HouseConfigService.HasConfigurationAsync();
+    }
+
+    private void NavigateToBuilder()
+    {
+        var url = !string.IsNullOrEmpty(Culture) ? $"/{Culture}/house-builder" : "/house-builder";
+        Navigation.NavigateTo(url);
+    }
 
     private string GetComponentsUrl()
     {
