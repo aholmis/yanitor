@@ -21,30 +21,134 @@ public interface IItemProvider
 /// <summary>
 /// Default implementation of IItemProvider that provides sample house items.
 /// </summary>
-public class ItemProvider : IItemProvider
+public class ItemProvider(ITaskProvider taskProvider) : IItemProvider
 {
-    private readonly List<HouseItem> _items;
+    private readonly List<HouseItem> _items = InitializeItems(taskProvider);
 
-    public ItemProvider()
+    private static List<HouseItem> InitializeItems(ITaskProvider taskProvider)
     {
-        // Initialize with sample data
-        _items = new List<HouseItem>
+        return new List<HouseItem>
         {
-            new HouseItem { Name = "Main HVAC System", Type = "HVAC", Room = "Garage", RoomType = "Garage" },
-            new HouseItem { Name = "Water Heater", Type = "Plumbing", Room = "Garage", RoomType = "Garage" },
-            new HouseItem { Name = "Front Door", Type = "Door", Room = "Hall", RoomType = "Hall" },
-            new HouseItem { Name = "Living Room Window", Type = "Window", Room = "Living Room", RoomType = "Living Room" },
-            new HouseItem { Name = "Kitchen Sink", Type = "Plumbing", Room = "Kitchen", RoomType = "Kitchen" },
-            new HouseItem { Name = "Garage Door Opener", Type = "Garage", Room = "Garage", RoomType = "Garage" },
-            new HouseItem { Name = "Smoke Detector - Hallway", Type = "Safety", Room = "Hall", RoomType = "Hall" },
-            new HouseItem { Name = "Roof Shingles", Type = "Roof", Room = "Outdoor", RoomType = "Outdoor" },
-            new HouseItem { Name = "Gutter System", Type = "Exterior", Room = "Outdoor", RoomType = "Outdoor" },
-            new HouseItem { Name = "Air Filter", Type = "HVAC", Room = "Garage", RoomType = "Garage" },
-            new HouseItem { Name = "Sump Pump", Type = "Plumbing", Room = "Basement", RoomType = "Basement" },
-            new HouseItem { Name = "Attic Insulation", Type = "Insulation", Room = "Attic", RoomType = "Attic" },
-            new HouseItem { Name = "Master Bathroom Shower", Type = "Plumbing", Room = "Master Bathroom", RoomType = "Bathroom" },
-            new HouseItem { Name = "Guest Bathroom Toilet", Type = "Plumbing", Room = "Guest Bathroom", RoomType = "Bathroom" },
-            new HouseItem { Name = "Bedroom Window", Type = "Window", Room = "Master Bedroom", RoomType = "Bedroom" }
+            new HouseItem
+            {
+                Name = "Main HVAC System",
+                Type = "HVAC",
+                Room = "Garage",
+                RoomType = "Garage",
+                Tasks = taskProvider.GetTasksForItemType("HVAC").ToList()
+            },
+            new HouseItem
+            {
+                Name = "Water Heater",
+                Type = "Plumbing",
+                Room = "Garage",
+                RoomType = "Garage",
+                Tasks = taskProvider.GetTasksForItemType("Plumbing").ToList()
+            },
+            new HouseItem
+            {
+                Name = "Front Door",
+                Type = "Door",
+                Room = "Hall",
+                RoomType = "Hall",
+                Tasks = taskProvider.GetTasksForItemType("Door").ToList()
+            },
+            new HouseItem
+            {
+                Name = "Living Room Window",
+                Type = "Window",
+                Room = "Living Room",
+                RoomType = "Living Room",
+                Tasks = taskProvider.GetTasksForItemType("Window").ToList()
+            },
+            new HouseItem
+            {
+                Name = "Kitchen Sink",
+                Type = "Plumbing",
+                Room = "Kitchen",
+                RoomType = "Kitchen",
+                Tasks = taskProvider.GetTasksForItemType("Plumbing").ToList()
+            },
+            new HouseItem
+            {
+                Name = "Garage Door Opener",
+                Type = "Garage",
+                Room = "Garage",
+                RoomType = "Garage",
+                Tasks = taskProvider.GetTasksForItemType("Garage").ToList()
+            },
+            new HouseItem
+            {
+                Name = "Smoke Detector - Hallway",
+                Type = "Safety",
+                Room = "Hall",
+                RoomType = "Hall",
+                Tasks = taskProvider.GetTasksForItemType("Safety").ToList()
+            },
+            new HouseItem
+            {
+                Name = "Roof Shingles",
+                Type = "Roof",
+                Room = "Outdoor",
+                RoomType = "Outdoor",
+                Tasks = taskProvider.GetTasksForItemType("Roof").ToList()
+            },
+            new HouseItem
+            {
+                Name = "Gutter System",
+                Type = "Exterior",
+                Room = "Outdoor",
+                RoomType = "Outdoor",
+                Tasks = taskProvider.GetTasksForItemType("Exterior").ToList()
+            },
+            new HouseItem
+            {
+                Name = "Air Filter",
+                Type = "HVAC",
+                Room = "Garage",
+                RoomType = "Garage",
+                Tasks = taskProvider.GetTasksForItemType("HVAC").ToList()
+            },
+            new HouseItem
+            {
+                Name = "Sump Pump",
+                Type = "Plumbing",
+                Room = "Basement",
+                RoomType = "Basement",
+                Tasks = taskProvider.GetTasksForItemType("Plumbing").ToList()
+            },
+            new HouseItem
+            {
+                Name = "Attic Insulation",
+                Type = "Insulation",
+                Room = "Attic",
+                RoomType = "Attic",
+                Tasks = taskProvider.GetTasksForItemType("Insulation").ToList()
+            },
+            new HouseItem
+            {
+                Name = "Master Bathroom Shower",
+                Type = "Plumbing",
+                Room = "Master Bathroom",
+                RoomType = "Bathroom",
+                Tasks = taskProvider.GetTasksForItemType("Plumbing").ToList()
+            },
+            new HouseItem
+            {
+                Name = "Guest Bathroom Toilet",
+                Type = "Plumbing",
+                Room = "Guest Bathroom",
+                RoomType = "Bathroom",
+                Tasks = taskProvider.GetTasksForItemType("Plumbing").ToList()
+            },
+            new HouseItem
+            {
+                Name = "Bedroom Window",
+                Type = "Window",
+                Room = "Master Bedroom",
+                RoomType = "Bedroom",
+                Tasks = taskProvider.GetTasksForItemType("Window").ToList()
+            }
         };
     }
 

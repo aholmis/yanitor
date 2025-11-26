@@ -12,6 +12,7 @@ builder.Services.AddLocalization(options => options.ResourcesPath = "Resources")
 builder.Services.AddLogging();
 
 // Register domain services
+builder.Services.AddSingleton<ITaskProvider, TaskProvider>();
 builder.Services.AddSingleton<IItemProvider, ItemProvider>();
 builder.Services.AddSingleton<IHouseConfigurationService, HouseConfigurationService>();
 

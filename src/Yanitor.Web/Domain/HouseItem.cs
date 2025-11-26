@@ -24,4 +24,9 @@ public record HouseItem
     /// Gets the general type of room (e.g., Bedroom, Kitchen, Bathroom).
     /// </summary>
     public required string RoomType { get; init; }
+
+    /// <summary>
+    /// Gets the predefined maintenance tasks for this house item.
+    /// </summary>
+    public IReadOnlyList<MaintenanceTask> Tasks { get; init; } = Array.Empty<MaintenanceTask>();
 }
