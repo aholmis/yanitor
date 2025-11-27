@@ -1,0 +1,276 @@
+.house-builder {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #f0f9ff 0%, #fef3c7 50%, #fce7f3 100%);
+}
+
+.house-builder__header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.house-builder__title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin: 0 0 0.5rem 0;
+    color: var(--text-primary, #1a1a1a);
+}
+
+.house-builder__subtitle {
+    font-size: 1.125rem;
+    color: var(--text-secondary, #666);
+    margin: 0;
+}
+
+.house-builder__content {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.house-builder__empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    padding: 3rem 2rem;
+    background: var(--surface, #ffffff);
+    border: 2px dashed var(--border, #e5e5e5);
+    border-radius: 1rem;
+}
+
+.house-builder__empty-icon {
+    width: 64px;
+    height: 64px;
+    color: var(--text-tertiary, #999);
+}
+
+.house-builder__empty-icon svg {
+    width: 100%;
+    height: 100%;
+}
+
+.house-builder__empty-text {
+    font-size: 1.125rem;
+    color: var(--text-secondary, #666);
+    margin: 0;
+}
+
+.house-builder__rooms {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr));
+    gap: 1rem;
+}
+
+.room-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 1.5rem;
+    background: var(--surface, #ffffff);
+    border: 1px solid var(--border, #e5e5e5);
+    border-radius: 0.75rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.room-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.room-card__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.room-card__name {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin: 0;
+    color: var(--text-primary, #1a1a1a);
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.room-card__remove {
+    flex-shrink: 0;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    background: var(--error-light, #ffebee);
+    color: var(--error, #d32f2f);
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.room-card__remove:hover {
+    background: var(--error, #d32f2f);
+    color: #ffffff;
+}
+
+.room-card__remove svg {
+    width: 16px;
+    height: 16px;
+}
+
+.room-card__type {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    background: var(--background, #f5f5f5);
+    border-radius: 0.5rem;
+}
+
+.room-card__type-icon {
+    font-size: 1.25rem;
+}
+
+.room-card__type-name {
+    font-size: 0.875rem;
+    color: var(--text-secondary, #666);
+}
+
+.house-builder__add-room {
+    padding: 2rem;
+    background: var(--surface, #ffffff);
+    border: 1px solid var(--border, #e5e5e5);
+    border-radius: 1rem;
+}
+
+.house-builder__add-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin: 0 0 1.5rem 0;
+    color: var(--text-primary, #1a1a1a);
+}
+
+.house-builder__form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.form-field__label {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--text-primary, #1a1a1a);
+}
+
+.form-field__input,
+.form-field__select {
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    border: 1px solid var(--border, #e5e5e5);
+    border-radius: 0.5rem;
+    background: #ffffff;
+    color: var(--text-primary, #1a1a1a);
+    transition: border-color 0.2s ease;
+}
+
+.form-field__input:focus,
+.form-field__select:focus {
+    outline: none;
+    border-color: var(--primary, #1976d2);
+}
+
+.btn {
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.1s ease;
+}
+
+.btn:hover:not(:disabled) {
+    transform: translateY(-1px);
+}
+
+.btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.btn--primary {
+    background: var(--primary, #1976d2);
+    color: #ffffff;
+}
+
+.btn--primary:hover:not(:disabled) {
+    background: var(--primary-dark, #1565c0);
+}
+
+.btn--secondary {
+    background: var(--background, #f5f5f5);
+    color: var(--text-primary, #1a1a1a);
+}
+
+.btn--secondary:hover:not(:disabled) {
+    background: var(--border, #e5e5e5);
+}
+
+.btn--large {
+    padding: 1rem 2rem;
+    font-size: 1.125rem;
+}
+
+.house-builder__actions {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border, #e5e5e5);
+}
+
+@media (max-width: 768px) {
+    .house-builder {
+        padding: 1.5rem 1rem;
+    }
+
+    .house-builder__header {
+        margin-bottom: 2rem;
+    }
+
+    .house-builder__title {
+        font-size: 2rem;
+    }
+
+    .house-builder__subtitle {
+        font-size: 1rem;
+    }
+
+    .house-builder__rooms {
+        grid-template-columns: 1fr;
+    }
+
+    .house-builder__add-room {
+        padding: 1.5rem;
+    }
+
+    .house-builder__actions {
+        flex-direction: column-reverse;
+    }
+
+    .btn {
+        width: 100%;
+    }
+}

@@ -1,0 +1,84 @@
+@page "/"
+@page "/{culture}"
+@using System.Globalization;
+@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<Home> L
+
+<PageTitle>@L["PageTitle"]</PageTitle>
+
+<section class="home">
+    <div class="home__hero">
+        <div class="home__hero-content">
+            <h1 class="home__title">@L["WelcomeMessage"]</h1>
+            <p class="home__subtitle">@L["Subtitle"]</p>
+            <a href="@GetMyHouseUrl()" class="home__cta">@L["GetStartedButton"]</a>
+        </div>
+        <div class="home__hero-graphic">
+            <svg class="home__house-icon" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                <!-- House roof -->
+                <path d="M100 20 L180 80 L170 80 L170 90 L30 90 L30 80 L20 80 Z" fill="currentColor" class="home__house-roof"/>
+                <!-- House body -->
+                <rect x="40" y="85" width="120" height="95" rx="2" fill="currentColor" class="home__house-body"/>
+                <!-- Door -->
+                <rect x="85" y="125" width="30" height="55" rx="2" fill="currentColor" class="home__house-door"/>
+                <!-- Door knob -->
+                <circle cx="108" cy="155" r="2" fill="currentColor" class="home__house-knob"/>
+                <!-- Windows -->
+                <rect x="55" y="105" width="25" height="25" rx="2" fill="currentColor" class="home__house-window"/>
+                <rect x="120" y="105" width="25" height="25" rx="2" fill="currentColor" class="home__house-window"/>
+                <!-- Window frames -->
+                <line x1="67.5" y1="105" x2="67.5" y2="130" stroke="currentColor" stroke-width="1.5" class="home__window-frame"/>
+                <line x1="55" y1="117.5" x2="80" y2="117.5" stroke="currentColor" stroke-width="1.5" class="home__window-frame"/>
+                <line x1="132.5" y1="105" x2="132.5" y2="130" stroke="currentColor" stroke-width="1.5" class="home__window-frame"/>
+                <line x1="120" y1="117.5" x2="145" y2="117.5" stroke="currentColor" stroke-width="1.5" class="home__window-frame"/>
+            </svg>
+        </div>
+    </div>
+
+    <div class="home__features">
+        <article class="home__feature-card">
+            <div class="home__feature-icon home__feature-icon--calendar">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="3" y="6" width="18" height="15" rx="2" stroke="currentColor" stroke-width="2"/>
+                    <path d="M3 10h18" stroke="currentColor" stroke-width="2"/>
+                    <path d="M8 3v4M16 3v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+            </div>
+            <h2 class="home__feature-title">@L["ScheduleTasksTitle"]</h2>
+            <p class="home__feature-description">@L["ScheduleTasksDescription"]</p>
+        </article>
+
+        <article class="home__feature-card">
+            <div class="home__feature-icon home__feature-icon--checklist">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M9 11l3 3L22 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+            </div>
+            <h2 class="home__feature-title">@L["StayOrganizedTitle"]</h2>
+            <p class="home__feature-description">@L["StayOrganizedDescription"]</p>
+        </article>
+
+        <article class="home__feature-card">
+            <div class="home__feature-icon home__feature-icon--tools">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+            <h2 class="home__feature-title">@L["ExpertTipsTitle"]</h2>
+            <p class="home__feature-description">@L["ExpertTipsDescription"]</p>
+        </article>
+    </div>
+</section>
+
+@code {
+    [Parameter]
+    public string? Culture { get; set; }
+
+    private string GetMyHouseUrl()
+    {
+        return string.IsNullOrWhiteSpace(Culture) 
+            ? "/my-house" 
+            : $"/{Culture}/my-house";
+    }
+}
