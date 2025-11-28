@@ -213,6 +213,32 @@ public class TaskProvider : ITaskProvider
                     Description = "Inspect and seal any air leaks around insulation areas.",
                     IntervalDays = 365
                 }
+            },
+            ["WashingMachine"] = new List<MaintenanceTask>
+            {
+                 new MaintenanceTask
+                {
+                    Name = "Rinse Drum Compartment",
+                    Description = "Clean the main drum compartment to prevent buildup and odors.",
+                    IntervalDays = 30
+                },new MaintenanceTask
+                {
+                    Name = "Rinse Soap Compartment",
+                    Description = "Clean the main detergent and softener compartment to prevent buildup and odors.",
+                    IntervalDays = 30
+                },
+                new MaintenanceTask
+                {
+                    Name = "Rinse Drain Filter",
+                    Description = "Remove and clean the drain filter to prevent clogs and ensure proper drainage.",
+                    IntervalDays = 90
+                },
+                new MaintenanceTask
+                {
+                    Name = "Rinse Drain Outlet",
+                    Description = "Clean the drain where water is pumped out to prevent blockages and maintain efficiency.",
+                    IntervalDays = 180
+                }
             }
         };
     }

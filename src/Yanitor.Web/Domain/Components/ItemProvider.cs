@@ -143,6 +143,14 @@ public class ItemProvider(ITaskProvider taskProvider) : IItemProvider
             },
             new HouseItem
             {
+                Name = "Washing Machine",
+                Type = "WashingMachine",
+                Room = "Master Bathroom",
+                RoomType = "Bathroom",
+                Tasks = taskProvider.GetTasksForItemType("WashingMachine").ToList()
+            },
+            new HouseItem
+            {
                 Name = "Bedroom Window",
                 Type = "Window",
                 Room = "Master Bedroom",
