@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  
+  <!-- HVAC Tasks -->
+  <data name="HVAC_ChangeAirFilter_Name" xml:space="preserve">
+    <value>Change Air Filter</value>
+  </data>
+  <data name="HVAC_ChangeAirFilter_Description" xml:space="preserve">
+    <value>Replace HVAC air filter to maintain air quality and system efficiency.</value>
+  </data>
+  <data name="HVAC_ProfessionalInspection_Name" xml:space="preserve">
+    <value>Professional Inspection</value>
+  </data>
+  <data name="HVAC_ProfessionalInspection_Description" xml:space="preserve">
+    <value>Schedule professional HVAC system inspection and maintenance.</value>
+  </data>
+  <data name="HVAC_CleanVentsAndDucts_Name" xml:space="preserve">
+    <value>Clean Vents and Ducts</value>
+  </data>
+  <data name="HVAC_CleanVentsAndDucts_Description" xml:space="preserve">
+    <value>Clean air vents and inspect ductwork for debris or blockages.</value>
+  </data>
+
+  <!-- Plumbing Tasks -->
+  <data name="Plumbing_CheckForLeaks_Name" xml:space="preserve">
+    <value>Check for Leaks</value>
+  </data>
+  <data name="Plumbing_CheckForLeaks_Description" xml:space="preserve">
+    <value>Inspect pipes, faucets, and connections for any signs of leaks or water damage.</value>
+  </data>
+  <data name="Plumbing_CleanDrains_Name" xml:space="preserve">
+    <value>Clean Drains</value>
+  </data>
+  <data name="Plumbing_CleanDrains_Description" xml:space="preserve">
+    <value>Clean and flush drains to prevent clogs and buildup.</value>
+  </data>
+  <data name="Plumbing_TestWaterPressure_Name" xml:space="preserve">
+    <value>Test Water Pressure</value>
+  </data>
+  <data name="Plumbing_TestWaterPressure_Description" xml:space="preserve">
+    <value>Check water pressure and adjust if necessary to prevent pipe damage.</value>
+  </data>
+
+  <!-- Door Tasks -->
+  <data name="Door_LubricateHinges_Name" xml:space="preserve">
+    <value>Lubricate Hinges</value>
+  </data>
+  <data name="Door_LubricateHinges_Description" xml:space="preserve">
+    <value>Apply lubricant to door hinges to prevent squeaking and ensure smooth operation.</value>
+  </data>
+  <data name="Door_CheckWeatherstripping_Name" xml:space="preserve">
+    <value>Check Weatherstripping</value>
+  </data>
+  <data name="Door_CheckWeatherstripping_Description" xml:space="preserve">
+    <value>Inspect and replace weatherstripping to maintain energy efficiency.</value>
+  </data>
+  <data name="Door_TightenHardware_Name" xml:space="preserve">
+    <value>Tighten Hardware</value>
+  </data>
+  <data name="Door_TightenHardware_Description" xml:space="preserve">
+    <value>Check and tighten all door hardware including handles, locks, and hinges.</value>
+  </data>
+
+  <!-- Window Tasks -->
+  <data name="Window_CleanWindows_Name" xml:space="preserve">
+    <value>Clean Windows</value>
+  </data>
+  <data name="Window_CleanWindows_Description" xml:space="preserve">
+    <value>Clean glass, frames, and tracks for optimal view and operation.</value>
+  </data>
+  <data name="Window_CheckSeals_Name" xml:space="preserve">
+    <value>Check Seals</value>
+  </data>
+  <data name="Window_CheckSeals_Description" xml:space="preserve">
+    <value>Inspect window seals and caulking for air leaks and water intrusion.</value>
+  </data>
+  <data name="Window_LubricateTracks_Name" xml:space="preserve">
+    <value>Lubricate Tracks</value>
+  </data>
+  <data name="Window_LubricateTracks_Description" xml:space="preserve">
+    <value>Clean and lubricate window tracks for smooth opening and closing.</value>
+  </data>
+
+  <!-- Garage Tasks -->
+  <data name="Garage_LubricateMovingParts_Name" xml:space="preserve">
+    <value>Lubricate Moving Parts</value>
+  </data>
+  <data name="Garage_LubricateMovingParts_Description" xml:space="preserve">
+    <value>Lubricate garage door opener chain, rollers, and hinges.</value>
+  </data>
+  <data name="Garage_TestSafetyFeatures_Name" xml:space="preserve">
+    <value>Test Safety Features</value>
+  </data>
+  <data name="Garage_TestSafetyFeatures_Description" xml:space="preserve">
+    <value>Test auto-reverse and sensor features for safety compliance.</value>
+  </data>
+  <data name="Garage_ProfessionalInspection_Name" xml:space="preserve">
+    <value>Professional Inspection</value>
+  </data>
+  <data name="Garage_ProfessionalInspection_Description" xml:space="preserve">
+    <value>Schedule professional inspection of garage door system and springs.</value>
+  </data>
+
+  <!-- Safety Tasks -->
+  <data name="Safety_TestAlarm_Name" xml:space="preserve">
+    <value>Test Alarm</value>
+  </data>
+  <data name="Safety_TestAlarm_Description" xml:space="preserve">
+    <value>Press test button to ensure alarm is functioning properly.</value>
+  </data>
+  <data name="Safety_ReplaceBatteries_Name" xml:space="preserve">
+    <value>Replace Batteries</value>
+  </data>
+  <data name="Safety_ReplaceBatteries_Description" xml:space="preserve">
+    <value>Replace batteries in smoke detector or carbon monoxide detector.</value>
+  </data>
+  <data name="Safety_CleanSensor_Name" xml:space="preserve">
+    <value>Clean Sensor</value>
+  </data>
+  <data name="Safety_CleanSensor_Description" xml:space="preserve">
+    <value>Gently vacuum or wipe sensor to ensure accurate detection.</value>
+  </data>
+
+  <!-- Roof Tasks -->
+  <data name="Roof_InspectShingles_Name" xml:space="preserve">
+    <value>Inspect Shingles</value>
+  </data>
+  <data name="Roof_InspectShingles_Description" xml:space="preserve">
+    <value>Check for missing, damaged, or curling shingles and repair as needed.</value>
+  </data>
+  <data name="Roof_CheckForMoss_Name" xml:space="preserve">
+    <value>Check for Moss</value>
+  </data>
+  <data name="Roof_CheckForMoss_Description" xml:space="preserve">
+    <value>Inspect and remove any moss or algae growth on roof surface.</value>
+  </data>
+  <data name="Roof_ProfessionalInspection_Name" xml:space="preserve">
+    <value>Professional Inspection</value>
+  </data>
+  <data name="Roof_ProfessionalInspection_Description" xml:space="preserve">
+    <value>Schedule professional roof inspection for overall condition assessment.</value>
+  </data>
+
+  <!-- Exterior Tasks -->
+  <data name="Exterior_CleanGutters_Name" xml:space="preserve">
+    <value>Clean Gutters</value>
+  </data>
+  <data name="Exterior_CleanGutters_Description" xml:space="preserve">
+    <value>Remove leaves and debris from gutters and downspouts.</value>
+  </data>
+  <data name="Exterior_InspectForDamage_Name" xml:space="preserve">
+    <value>Inspect for Damage</value>
+  </data>
+  <data name="Exterior_InspectForDamage_Description" xml:space="preserve">
+    <value>Check exterior for cracks, loose sections, or signs of wear.</value>
+  </data>
+  <data name="Exterior_PaintTouchUp_Name" xml:space="preserve">
+    <value>Paint Touch-Up</value>
+  </data>
+  <data name="Exterior_PaintTouchUp_Description" xml:space="preserve">
+    <value>Inspect paint and apply touch-ups where needed to prevent deterioration.</value>
+  </data>
+
+  <!-- Insulation Tasks -->
+  <data name="Insulation_InspectForDamage_Name" xml:space="preserve">
+    <value>Inspect for Damage</value>
+  </data>
+  <data name="Insulation_InspectForDamage_Description" xml:space="preserve">
+    <value>Check insulation for moisture damage, settling, or pest infestation.</value>
+  </data>
+  <data name="Insulation_CheckRValue_Name" xml:space="preserve">
+    <value>Check R-Value</value>
+  </data>
+  <data name="Insulation_CheckRValue_Description" xml:space="preserve">
+    <value>Verify insulation levels meet recommended R-value for your climate zone.</value>
+  </data>
+  <data name="Insulation_SealAirLeaks_Name" xml:space="preserve">
+    <value>Seal Air Leaks</value>
+  </data>
+  <data name="Insulation_SealAirLeaks_Description" xml:space="preserve">
+    <value>Inspect and seal any air leaks around insulation areas.</value>
+  </data>
+
+  <!-- WashingMachine Tasks -->
+  <data name="WashingMachine_RinseDrumCompartment_Name" xml:space="preserve">
+    <value>Rinse Drum Compartment</value>
+  </data>
+  <data name="WashingMachine_RinseDrumCompartment_Description" xml:space="preserve">
+    <value>Clean the main drum compartment to prevent buildup and odors.</value>
+  </data>
+  <data name="WashingMachine_RinseSoapCompartment_Name" xml:space="preserve">
+    <value>Rinse Soap Compartment</value>
+  </data>
+  <data name="WashingMachine_RinseSoapCompartment_Description" xml:space="preserve">
+    <value>Clean the main detergent and softener compartment to prevent buildup and odors.</value>
+  </data>
+  <data name="WashingMachine_RinseDrainFilter_Name" xml:space="preserve">
+    <value>Rinse Drain Filter</value>
+  </data>
+  <data name="WashingMachine_RinseDrainFilter_Description" xml:space="preserve">
+    <value>Remove and clean the drain filter to prevent clogs and ensure proper drainage.</value>
+  </data>
+  <data name="WashingMachine_RinseDrainOutlet_Name" xml:space="preserve">
+    <value>Rinse Drain Outlet</value>
+  </data>
+  <data name="WashingMachine_RinseDrainOutlet_Description" xml:space="preserve">
+    <value>Clean the drain where water is pumped out to prevent blockages and maintain efficiency.</value>
+  </data>
+
+  <!-- Generic Tasks -->
+  <data name="Generic_RegularInspection_Name" xml:space="preserve">
+    <value>Regular Inspection</value>
+  </data>
+  <data name="Generic_RegularInspection_Description" xml:space="preserve">
+    <value>Perform a visual inspection to check for any issues or needed maintenance.</value>
+  </data>
+  <data name="Generic_CleanAndMaintain_Name" xml:space="preserve">
+    <value>Clean and Maintain</value>
+  </data>
+  <data name="Generic_CleanAndMaintain_Description" xml:space="preserve">
+    <value>Clean and perform basic maintenance to keep item in good condition.</value>
+  </data>
+</root>

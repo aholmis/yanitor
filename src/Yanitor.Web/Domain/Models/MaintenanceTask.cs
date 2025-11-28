@@ -1,4 +1,4 @@
-namespace Yanitor.Web.Domain;
+namespace Yanitor.Web.Domain.Models;
 
 /// <summary>
 /// Represents a maintenance task for a house item.

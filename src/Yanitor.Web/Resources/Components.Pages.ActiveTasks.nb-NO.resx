@@ -98,9 +98,39 @@
     <value>Merk som fullfort</value>
   </data>
   <data name="LastCompleted" xml:space="preserve">
-    <value>Last completed: {0}</value>
+    <value>Sist fullført: {0}</value>
   </data>
   <data name="NeverCompleted" xml:space="preserve">
-    <value>Never completed</value>
+    <value>Aldri fullført</value>
+  </data>
+  <data name="SetCompletionDate" xml:space="preserve">
+    <value>Angi fullføringsdato</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Lagre</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Avbryt</value>
+  </data>
+  <data name="ClickToEditDate" xml:space="preserve">
+    <value>Klikk for å endre fullføringsdato</value>
+  </data>
+  <data name="ClickToSetDate" xml:space="preserve">
+    <value>Klikk for å angi fullføringsdato</value>
+  </data>
+  <data name="Day" xml:space="preserve">
+    <value>dag</value>
+  </data>
+  <data name="Days" xml:space="preserve">
+    <value>dager</value>
+  </data>
+  <data name="Today" xml:space="preserve">
+    <value>i dag</value>
+  </data>
+  <data name="Tomorrow" xml:space="preserve">
+    <value>i morgen</value>
+  </data>
+  <data name="Overdue" xml:space="preserve">
+    <value>forsinket</value>
   </data>
 </root>

@@ -1,4 +1,4 @@
-namespace Yanitor.Web.Domain;
+namespace Yanitor.Web.Domain.Models;
 
 /// <summary>
 /// Represents a component or item of a house that requires maintenance or tracking.

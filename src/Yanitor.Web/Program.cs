@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Localization;
 using System.Globalization;
 using Yanitor.Web.Components;
-using Yanitor.Web.Domain.Components;
 using Yanitor.Web.Domain.Services;
 
 var builder = WebApplication.CreateBuilder(args);

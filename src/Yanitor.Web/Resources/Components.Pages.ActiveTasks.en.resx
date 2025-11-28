@@ -103,4 +103,34 @@
   <data name="NeverCompleted" xml:space="preserve">
     <value>Never completed</value>
   </data>
+  <data name="SetCompletionDate" xml:space="preserve">
+    <value>Set completion date</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="ClickToEditDate" xml:space="preserve">
+    <value>Click to edit completion date</value>
+  </data>
+  <data name="ClickToSetDate" xml:space="preserve">
+    <value>Click to set completion date</value>
+  </data>
+  <data name="Day" xml:space="preserve">
+    <value>day</value>
+  </data>
+  <data name="Days" xml:space="preserve">
+    <value>days</value>
+  </data>
+  <data name="Today" xml:space="preserve">
+    <value>today</value>
+  </data>
+  <data name="Tomorrow" xml:space="preserve">
+    <value>tomorrow</value>
+  </data>
+  <data name="Overdue" xml:space="preserve">
+    <value>overdue</value>
+  </data>
 </root>

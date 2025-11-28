@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  
+  <!-- HVAC Tasks -->
+  <data name="HVAC_ChangeAirFilter_Name" xml:space="preserve">
+    <value>Bytt luftfilter</value>
+  </data>
+  <data name="HVAC_ChangeAirFilter_Description" xml:space="preserve">
+    <value>Skift luftfilter i ventilasjonsanlegget for å opprettholde luftkvalitet og systemeffektivitet.</value>
+  </data>
+  <data name="HVAC_ProfessionalInspection_Name" xml:space="preserve">
+    <value>Profesjonell inspeksjon</value>
+  </data>
+  <data name="HVAC_ProfessionalInspection_Description" xml:space="preserve">
+    <value>Bestill profesjonell inspeksjon og vedlikehold av ventilasjonsanlegget.</value>
+  </data>
+  <data name="HVAC_CleanVentsAndDucts_Name" xml:space="preserve">
+    <value>Rengjør ventiler og kanaler</value>
+  </data>
+  <data name="HVAC_CleanVentsAndDucts_Description" xml:space="preserve">
+    <value>Rengjør lufteventiler og inspiser kanalsystemet for rusk eller blokkeringer.</value>
+  </data>
+
+  <!-- Plumbing Tasks -->
+  <data name="Plumbing_CheckForLeaks_Name" xml:space="preserve">
+    <value>Sjekk for lekkasjer</value>
+  </data>
+  <data name="Plumbing_CheckForLeaks_Description" xml:space="preserve">
+    <value>Inspiser rør, kraner og koblinger for tegn på lekkasjer eller vannskader.</value>
+  </data>
+  <data name="Plumbing_CleanDrains_Name" xml:space="preserve">
+    <value>Rengjør sluk</value>
+  </data>
+  <data name="Plumbing_CleanDrains_Description" xml:space="preserve">
+    <value>Rengjør og spyl sluk for å forhindre tetting og opphopning.</value>
+  </data>
+  <data name="Plumbing_TestWaterPressure_Name" xml:space="preserve">
+    <value>Test vanntrykk</value>
+  </data>
+  <data name="Plumbing_TestWaterPressure_Description" xml:space="preserve">
+    <value>Kontroller vanntrykk og juster om nødvendig for å forhindre rørskader.</value>
+  </data>
+
+  <!-- Door Tasks -->
+  <data name="Door_LubricateHinges_Name" xml:space="preserve">
+    <value>Smør hengsler</value>
+  </data>
+  <data name="Door_LubricateHinges_Description" xml:space="preserve">
+    <value>Påfør smøremiddel på dørhengslene for å forhindre knerking og sikre jevn drift.</value>
+  </data>
+  <data name="Door_CheckWeatherstripping_Name" xml:space="preserve">
+    <value>Sjekk tetningslister</value>
+  </data>
+  <data name="Door_CheckWeatherstripping_Description" xml:space="preserve">
+    <value>Inspiser og bytt ut tetningslister for å opprettholde energieffektivitet.</value>
+  </data>
+  <data name="Door_TightenHardware_Name" xml:space="preserve">
+    <value>Stram beslag</value>
+  </data>
+  <data name="Door_TightenHardware_Description" xml:space="preserve">
+    <value>Kontroller og stram alle dørbeslag inkludert håndtak, låser og hengsler.</value>
+  </data>
+
+  <!-- Window Tasks -->
+  <data name="Window_CleanWindows_Name" xml:space="preserve">
+    <value>Vask vinduer</value>
+  </data>
+  <data name="Window_CleanWindows_Description" xml:space="preserve">
+    <value>Rengjør glass, karmer og spor for optimal utsikt og funksjon.</value>
+  </data>
+  <data name="Window_CheckSeals_Name" xml:space="preserve">
+    <value>Sjekk tetninger</value>
+  </data>
+  <data name="Window_CheckSeals_Description" xml:space="preserve">
+    <value>Inspiser vindustetninger og fuger for luftlekkasjer og vanninntregning.</value>
+  </data>
+  <data name="Window_LubricateTracks_Name" xml:space="preserve">
+    <value>Smør spor</value>
+  </data>
+  <data name="Window_LubricateTracks_Description" xml:space="preserve">
+    <value>Rengjør og smør vindusspor for jevn åpning og lukking.</value>
+  </data>
+
+  <!-- Garage Tasks -->
+  <data name="Garage_LubricateMovingParts_Name" xml:space="preserve">
+    <value>Smør bevegelige deler</value>
+  </data>
+  <data name="Garage_LubricateMovingParts_Description" xml:space="preserve">
+    <value>Smør garasjeportåpnerkjede, rullehjul og hengsler.</value>
+  </data>
+  <data name="Garage_TestSafetyFeatures_Name" xml:space="preserve">
+    <value>Test sikkerhetsfunksjoner</value>
+  </data>
+  <data name="Garage_TestSafetyFeatures_Description" xml:space="preserve">
+    <value>Test automatisk reverseringsfunksjon og sensorer for sikkerhetsoverholdelse.</value>
+  </data>
+  <data name="Garage_ProfessionalInspection_Name" xml:space="preserve">
+    <value>Profesjonell inspeksjon</value>
+  </data>
+  <data name="Garage_ProfessionalInspection_Description" xml:space="preserve">
+    <value>Bestill profesjonell inspeksjon av garasjeportsystem og fjærer.</value>
+  </data>
+
+  <!-- Safety Tasks -->
+  <data name="Safety_TestAlarm_Name" xml:space="preserve">
+    <value>Test alarm</value>
+  </data>
+  <data name="Safety_TestAlarm_Description" xml:space="preserve">
+    <value>Trykk på testknappen for å sikre at alarmen fungerer korrekt.</value>
+  </data>
+  <data name="Safety_ReplaceBatteries_Name" xml:space="preserve">
+    <value>Bytt batterier</value>
+  </data>
+  <data name="Safety_ReplaceBatteries_Description" xml:space="preserve">
+    <value>Bytt batterier i røykvarsler eller karbonmonoksiddetektor.</value>
+  </data>
+  <data name="Safety_CleanSensor_Name" xml:space="preserve">
+    <value>Rengjør sensor</value>
+  </data>
+  <data name="Safety_CleanSensor_Description" xml:space="preserve">
+    <value>Støvsug eller tørk forsiktig av sensoren for å sikre nøyaktig deteksjon.</value>
+  </data>
+
+  <!-- Roof Tasks -->
+  <data name="Roof_InspectShingles_Name" xml:space="preserve">
+    <value>Inspiser takstein</value>
+  </data>
+  <data name="Roof_InspectShingles_Description" xml:space="preserve">
+    <value>Sjekk for manglende, skadede eller krøllete takstein og reparer etter behov.</value>
+  </data>
+  <data name="Roof_CheckForMoss_Name" xml:space="preserve">
+    <value>Sjekk for mose</value>
+  </data>
+  <data name="Roof_CheckForMoss_Description" xml:space="preserve">
+    <value>Inspiser og fjern eventuell mose- eller algevekst på takflaten.</value>
+  </data>
+  <data name="Roof_ProfessionalInspection_Name" xml:space="preserve">
+    <value>Profesjonell inspeksjon</value>
+  </data>
+  <data name="Roof_ProfessionalInspection_Description" xml:space="preserve">
+    <value>Bestill profesjonell takinspeksjon for helhetlig tilstandsvurdering.</value>
+  </data>
+
+  <!-- Exterior Tasks -->
+  <data name="Exterior_CleanGutters_Name" xml:space="preserve">
+    <value>Rengjør takrenner</value>
+  </data>
+  <data name="Exterior_CleanGutters_Description" xml:space="preserve">
+    <value>Fjern løv og rusk fra takrenner og nedløpsrør.</value>
+  </data>
+  <data name="Exterior_InspectForDamage_Name" xml:space="preserve">
+    <value>Inspiser for skader</value>
+  </data>
+  <data name="Exterior_InspectForDamage_Description" xml:space="preserve">
+    <value>Sjekk eksteriør for sprekker, løse seksjoner eller tegn på slitasje.</value>
+  </data>
+  <data name="Exterior_PaintTouchUp_Name" xml:space="preserve">
+    <value>Maling etterarbeid</value>
+  </data>
+  <data name="Exterior_PaintTouchUp_Description" xml:space="preserve">
+    <value>Inspiser maling og påfør etterarbeid der det trengs for å forhindre forringelse.</value>
+  </data>
+
+  <!-- Insulation Tasks -->
+  <data name="Insulation_InspectForDamage_Name" xml:space="preserve">
+    <value>Inspiser for skader</value>
+  </data>
+  <data name="Insulation_InspectForDamage_Description" xml:space="preserve">
+    <value>Sjekk isolasjon for fuktskader, setning eller skadedyrangrep.</value>
+  </data>
+  <data name="Insulation_CheckRValue_Name" xml:space="preserve">
+    <value>Sjekk R-verdi</value>
+  </data>
+  <data name="Insulation_CheckRValue_Description" xml:space="preserve">
+    <value>Verifiser at isolasjonsnivåer oppfyller anbefalt R-verdi for din klimasone.</value>
+  </data>
+  <data name="Insulation_SealAirLeaks_Name" xml:space="preserve">
+    <value>Tett luftlekkasjer</value>
+  </data>
+  <data name="Insulation_SealAirLeaks_Description" xml:space="preserve">
+    <value>Inspiser og tett eventuelle luftlekkasjer rundt isoleringsområder.</value>
+  </data>
+
+  <!-- WashingMachine Tasks -->
+  <data name="WashingMachine_RinseDrumCompartment_Name" xml:space="preserve">
+    <value>Skyll trommelrom</value>
+  </data>
+  <data name="WashingMachine_RinseDrumCompartment_Description" xml:space="preserve">
+    <value>Rengjør hovedtrommelrommet for å forhindre opphopning og lukt.</value>
+  </data>
+  <data name="WashingMachine_RinseSoapCompartment_Name" xml:space="preserve">
+    <value>Skyll såperom</value>
+  </data>
+  <data name="WashingMachine_RinseSoapCompartment_Description" xml:space="preserve">
+    <value>Rengjør hovedrommet for vaskemiddel og skyllemiddel for å forhindre opphopning og lukt.</value>
+  </data>
+  <data name="WashingMachine_RinseDrainFilter_Name" xml:space="preserve">
+    <value>Skyll avløpsfilter</value>
+  </data>
+  <data name="WashingMachine_RinseDrainFilter_Description" xml:space="preserve">
+    <value>Fjern og rengjør avløpsfilteret for å forhindre tetting og sikre riktig drenering.</value>
+  </data>
+  <data name="WashingMachine_RinseDrainOutlet_Name" xml:space="preserve">
+    <value>Skyll avløpsutløp</value>
+  </data>
+  <data name="WashingMachine_RinseDrainOutlet_Description" xml:space="preserve">
+    <value>Rengjør avløpet der vannet pumpes ut for å forhindre blokkeringer og opprettholde effektivitet.</value>
+  </data>
+
+  <!-- Generic Tasks -->
+  <data name="Generic_RegularInspection_Name" xml:space="preserve">
+    <value>Regelmessig inspeksjon</value>
+  </data>
+  <data name="Generic_RegularInspection_Description" xml:space="preserve">
+    <value>Utfør en visuell inspeksjon for å sjekke for eventuelle problemer eller nødvendig vedlikehold.</value>
+  </data>
+  <data name="Generic_CleanAndMaintain_Name" xml:space="preserve">
+    <value>Rengjør og vedlikehold</value>
+  </data>
+  <data name="Generic_CleanAndMaintain_Description" xml:space="preserve">
+    <value>Rengjør og utfør grunnleggende vedlikehold for å holde gjenstand i god stand.</value>
+  </data>
+</root>

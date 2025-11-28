@@ -1,7 +1,6 @@
+using Yanitor.Web.Domain.Models;
+
 namespace Yanitor.Web.Domain.Services;
-
-using Yanitor.Web.Domain.Components;
-
 /// <summary>
 /// Service for managing active maintenance tasks based on house configuration.
 /// </summary>
@@ -43,8 +42,9 @@ public interface IActiveTaskService
     /// Marks a task as completed.
     /// </summary>
     /// <param name="taskId">The ID of the task to complete.</param>
+    /// <param name="completedAt">The date when the task was completed. If null, uses current UTC time.</param>
     /// <returns>The updated active task.</returns>
-    Task<ActiveTask?> CompleteTaskAsync(Guid taskId);
+    Task<ActiveTask?> CompleteTaskAsync(Guid taskId, DateTime? completedAt = null);
 
     /// <summary>
     /// Gets the total count of active tasks.
@@ -61,7 +61,8 @@ public class ActiveTaskService(
     IHouseConfigurationService houseConfigService,
     IItemProvider itemProvider) : IActiveTaskService
 {
-    private readonly Dictionary<Guid, ActiveTask> _completedTasks = new();
+    // Store completion data by a composite key (item name + task id)
+    private readonly Dictionary<string, (DateTime completedAt, DateTime nextDueDate)> _completionHistory = new();
 
     public async Task<IEnumerable<ActiveTask>> GetActiveTasksAsync()
     {
@@ -119,16 +120,27 @@ public class ActiveTaskService(
             .OrderBy(t => t.NextDueDate);
     }
 
-    public Task<ActiveTask?> CompleteTaskAsync(Guid taskId)
+    public async Task<ActiveTask?> CompleteTaskAsync(Guid taskId, DateTime? completedAt = null)
     {
-        if (_completedTasks.TryGetValue(taskId, out var task))
+        // Find the task by ID
+        var allTasks = await GetActiveTasksAsync();
+        var task = allTasks.FirstOrDefault(t => t.Id == taskId);
+        
+        if (task != null)
         {
-            var completedTask = task.MarkAsCompleted(DateTime.UtcNow);
-            _completedTasks[taskId] = completedTask;
-            return Task.FromResult<ActiveTask?>(completedTask);
+            var completionDate = completedAt ?? DateTime.UtcNow;
+            
+            // Store the completion history using a composite key
+            var key = GetTaskKey(task.ItemName, task.Task.Id);
+            var nextDue = completionDate.AddDays(task.Task.IntervalDays);
+            _completionHistory[key] = (completionDate, nextDue);
+            
+            // Return the updated task
+            var completedTask = task.MarkAsCompleted(completionDate);
+            return completedTask;
         }
 
-        return Task.FromResult<ActiveTask?>(null);
+        return null;
     }
 
     public async Task<int> GetTaskCountAsync()
@@ -139,14 +151,35 @@ public class ActiveTaskService(
 
     private ActiveTask CreateActiveTask(MaintenanceTask task, HouseItem item, Room room)
     {
+        var key = GetTaskKey(item.Name, task.Id);
+        
+        // Check if we have completion history for this task
+        if (_completionHistory.TryGetValue(key, out var history))
+        {
+            // Use the stored completion history
+            var taskId = GenerateTaskId(item.Name, task.Id, room.Name);
+            return new ActiveTask
+            {
+                Id = taskId,
+                Task = task,
+                ItemName = item.Name,
+                RoomName = room.Name,
+                RoomType = room.Type,
+                LastCompletedAt = history.completedAt,
+                NextDueDate = history.nextDueDate
+            };
+        }
+        
         // For demo purposes, create tasks with staggered due dates
         // In production, this would be based on actual completion history
         var baseDate = DateTime.UtcNow;
         var taskHash = task.Id.GetHashCode();
         var daysOffset = Math.Abs(taskHash % task.IntervalDays);
+        var taskId2 = GenerateTaskId(item.Name, task.Id, room.Name);
 
         return new ActiveTask
         {
+            Id = taskId2,
             Task = task,
             ItemName = item.Name,
             RoomName = room.Name,
@@ -154,5 +187,22 @@ public class ActiveTaskService(
             LastCompletedAt = null,
             NextDueDate = baseDate.AddDays(daysOffset)
         };
+    }
+
+    private static string GetTaskKey(string itemName, Guid taskId)
+    {
+        return $"{itemName}_{taskId}";
+    }
+
+    private static Guid GenerateTaskId(string itemName, Guid taskId, string roomName)
+    {
+        // Generate a deterministic GUID based on item name, task ID, and room name
+        // This ensures the same task always gets the same ID
+        var combined = $"{itemName}_{taskId}_{roomName}";
+        using var sha256 = System.Security.Cryptography.SHA256.Create();
+        var hash = sha256.ComputeHash(System.Text.Encoding.UTF8.GetBytes(combined));
+        var bytes = new byte[16];
+        Array.Copy(hash, bytes, 16);
+        return new Guid(bytes);
     }
 }

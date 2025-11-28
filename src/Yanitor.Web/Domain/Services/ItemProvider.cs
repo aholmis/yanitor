@@ -1,4 +1,6 @@
-﻿namespace Yanitor.Web.Domain.Components;
+﻿using Yanitor.Web.Domain.Models;
+
+namespace Yanitor.Web.Domain.Services;
 
 /// <summary>
 /// Provides access to house items/components for the application.

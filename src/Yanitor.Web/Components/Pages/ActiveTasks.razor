@@ -3,6 +3,7 @@
 @using System.Globalization
 @using Microsoft.Extensions.Localization
 @using Yanitor.Web.Domain
+@using Yanitor.Web.Domain.Models
 @using Yanitor.Web.Domain.Services
 @inject IStringLocalizer<ActiveTasks> L
 @inject NavigationManager Navigation
@@ -49,35 +50,7 @@
                 <div class="active-tasks__list">
                     @foreach (var task in _overdueTasks)
                     {
-                        <article class="active-tasks__card active-tasks__card--overdue">
-                            <div class="active-tasks__card-header">
-                                <div class="active-tasks__card-icon">
-                                    @GetRoomIcon(task.RoomType)
-                                </div>
-                                <div class="active-tasks__card-info">
-                                    <h3 class="active-tasks__card-title">@task.Task.Name</h3>
-                                    <p class="active-tasks__card-item">@task.ItemName</p>
-                                    <p class="active-tasks__card-location">@task.RoomName</p>
-                                </div>
-                            </div>
-                            <p class="active-tasks__card-description">@task.Task.Description</p>
-                            @if (task.LastCompletedAt.HasValue)
-                            {
-                                <p class="active-tasks__card-last-completed">@L["LastCompleted", task.LastCompletedAt.Value.ToLocalTime().ToString("d")]</p>
-                            }
-                            else
-                            {
-                                <p class="active-tasks__card-last-completed active-tasks__card-last-completed--never">@L["NeverCompleted"]</p>
-                            }
-                            <div class="active-tasks__card-footer">
-                                <span class="active-tasks__card-badge active-tasks__card-badge--overdue">
-                                    @L["OverdueByDays", Math.Abs(task.DaysUntilDue)]
-                                </span>
-                                <button class="active-tasks__card-button" @onclick="() => CompleteTask(task.Id)">
-                                    @L["MarkComplete"]
-                                </button>
-                            </div>
-                        </article>
+                        @RenderTaskCard(task, "overdue")
                     }
                 </div>
             </section>
@@ -90,35 +63,7 @@
                 <div class="active-tasks__list">
                     @foreach (var task in _dueSoonTasks)
                     {
-                        <article class="active-tasks__card active-tasks__card--due-soon">
-                            <div class="active-tasks__card-header">
-                                <div class="active-tasks__card-icon">
-                                    @GetRoomIcon(task.RoomType)
-                                </div>
-                                <div class="active-tasks__card-info">
-                                    <h3 class="active-tasks__card-title">@task.Task.Name</h3>
-                                    <p class="active-tasks__card-item">@task.ItemName</p>
-                                    <p class="active-tasks__card-location">@task.RoomName</p>
-                                </div>
-                            </div>
-                            <p class="active-tasks__card-description">@task.Task.Description</p>
-                            @if (task.LastCompletedAt.HasValue)
-                            {
-                                <p class="active-tasks__card-last-completed">@L["LastCompleted", task.LastCompletedAt.Value.ToLocalTime().ToString("d")]</p>
-                            }
-                            else
-                            {
-                                <p class="active-tasks__card-last-completed active-tasks__card-last-completed--never">@L["NeverCompleted"]</p>
-                            }
-                            <div class="active-tasks__card-footer">
-                                <span class="active-tasks__card-badge active-tasks__card-badge--due-soon">
-                                    @GetDaysUntilDueText(task.DaysUntilDue)
-                                </span>
-                                <button class="active-tasks__card-button" @onclick="() => CompleteTask(task.Id)">
-                                    @L["MarkComplete"]
-                                </button>
-                            </div>
-                        </article>
+                        @RenderTaskCard(task, "due-soon")
                     }
                 </div>
             </section>
@@ -131,35 +76,7 @@
                 <div class="active-tasks__list">
                     @foreach (var task in _upcomingTasks)
                     {
-                        <article class="active-tasks__card">
-                            <div class="active-tasks__card-header">
-                                <div class="active-tasks__card-icon">
-                                    @GetRoomIcon(task.RoomType)
-                                </div>
-                                <div class="active-tasks__card-info">
-                                    <h3 class="active-tasks__card-title">@task.Task.Name</h3>
-                                    <p class="active-tasks__card-item">@task.ItemName</p>
-                                    <p class="active-tasks__card-location">@task.RoomName</p>
-                                </div>
-                            </div>
-                            <p class="active-tasks__card-description">@task.Task.Description</p>
-                            @if (task.LastCompletedAt.HasValue)
-                            {
-                                <p class="active-tasks__card-last-completed">@L["LastCompleted", task.LastCompletedAt.Value.ToLocalTime().ToString("d")]</p>
-                            }
-                            else
-                            {
-                                <p class="active-tasks__card-last-completed active-tasks__card-last-completed--never">@L["NeverCompleted"]</p>
-                            }
-                            <div class="active-tasks__card-footer">
-                                <span class="active-tasks__card-badge">
-                                    @GetDaysUntilDueText(task.DaysUntilDue)
-                                </span>
-                                <button class="active-tasks__card-button" @onclick="() => CompleteTask(task.Id)">
-                                    @L["MarkComplete"]
-                                </button>
-                            </div>
-                        </article>
+                        @RenderTaskCard(task, "")
                     }
                 </div>
             </section>
@@ -176,6 +93,8 @@
     private IEnumerable<ActiveTask> _overdueTasks = Enumerable.Empty<ActiveTask>();
     private IEnumerable<ActiveTask> _dueSoonTasks = Enumerable.Empty<ActiveTask>();
     private IEnumerable<ActiveTask> _upcomingTasks = Enumerable.Empty<ActiveTask>();
+    private Guid? _editingTaskId = null;
+    private string _editingDateValue = "";
 
     protected override async Task OnInitializedAsync()
     {
@@ -255,4 +174,120 @@
             <rect x="5" y="5" width="14" height="14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
     };
+
+    private RenderFragment RenderTaskCard(ActiveTask task, string modifierClass) => __builder =>
+    {
+        var cardClass = string.IsNullOrWhiteSpace(modifierClass) 
+            ? "active-tasks__card" 
+            : $"active-tasks__card active-tasks__card--{modifierClass}";
+        var badgeClass = string.IsNullOrWhiteSpace(modifierClass)
+            ? "active-tasks__card-badge"
+            : $"active-tasks__card-badge active-tasks__card-badge--{modifierClass}";
+        
+        var daysNumber = Math.Abs(task.DaysUntilDue);
+        var daysText = task.IsOverdue 
+            ? (daysNumber == 1 ? L["Day"] : L["Days"])
+            : (task.DaysUntilDue == 0 ? L["Today"] : task.DaysUntilDue == 1 ? L["Tomorrow"] : L["Days"]);
+        
+        <article class="@cardClass">
+            <div class="@badgeClass">
+                <span class="active-tasks__card-badge-number">@daysNumber</span>
+                <span class="active-tasks__card-badge-text">@daysText</span>
+                @if (task.IsOverdue)
+                {
+                    <span class="active-tasks__card-badge-label">@L["Overdue"]</span>
+                }
+            </div>
+            
+            <div class="active-tasks__card-header">
+                <div class="active-tasks__card-icon">
+                    @GetRoomIcon(task.RoomType)
+                </div>
+                <div class="active-tasks__card-info">
+                    <h3 class="active-tasks__card-title">@task.Task.Name</h3>
+                    <p class="active-tasks__card-item">@task.ItemName</p>
+                    <p class="active-tasks__card-location">@task.RoomName</p>
+                </div>
+            </div>
+            <p class="active-tasks__card-description">@task.Task.Description</p>
+            
+            @if (_editingTaskId == task.Id)
+            {
+                <div class="active-tasks__date-picker">
+                    <label for="date-@task.Id" class="active-tasks__date-picker-label">@L["SetCompletionDate"]</label>
+                    <div class="active-tasks__date-picker-controls">
+                        <input 
+                            type="date" 
+                            id="date-@task.Id"
+                            class="active-tasks__date-picker-input" 
+                            value="@_editingDateValue"
+                            @oninput="@(e => _editingDateValue = e.Value?.ToString() ?? "")"
+                            max="@DateTime.Now.ToString("yyyy-MM-dd")" />
+                        <button class="active-tasks__date-picker-button active-tasks__date-picker-button--save" @onclick="() => SaveCompletionDate(task.Id)">
+                            @L["Save"]
+                        </button>
+                        <button class="active-tasks__date-picker-button active-tasks__date-picker-button--cancel" @onclick="CancelEditDate">
+                            @L["Cancel"]
+                        </button>
+                    </div>
+                </div>
+            }
+            else if (task.LastCompletedAt.HasValue)
+            {
+                <button class="active-tasks__card-last-completed active-tasks__card-last-completed--clickable" 
+                        @onclick="() => StartEditingDate(task.Id, task.LastCompletedAt.Value)"
+                        title="@L["ClickToEditDate"]">
+                    @L["LastCompleted", task.LastCompletedAt.Value.ToLocalTime().ToString("d")]
+                    <svg class="active-tasks__edit-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+            }
+            else
+            {
+                <button class="active-tasks__card-last-completed active-tasks__card-last-completed--never active-tasks__card-last-completed--clickable" 
+                        @onclick="() => StartEditingDate(task.Id, null)"
+                        title="@L["ClickToSetDate"]">
+                    @L["NeverCompleted"]
+                    <svg class="active-tasks__edit-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+            }
+            
+            <div class="active-tasks__card-footer">
+                <button class="active-tasks__card-button" @onclick="() => CompleteTask(task.Id)">
+                    @L["MarkComplete"]
+                </button>
+            </div>
+        </article>
+    };
+
+    private void StartEditingDate(Guid taskId, DateTime? currentDate)
+    {
+        _editingTaskId = taskId;
+        _editingDateValue = currentDate?.ToLocalTime().ToString("yyyy-MM-dd") ?? DateTime.Now.ToString("yyyy-MM-dd");
+    }
+
+    private void CancelEditDate()
+    {
+        _editingTaskId = null;
+        _editingDateValue = "";
+    }
+
+    private async Task SaveCompletionDate(Guid taskId)
+    {
+        if (DateTime.TryParse(_editingDateValue, out var selectedDate))
+        {
+            // Convert local date to UTC
+            var utcDate = selectedDate.ToUniversalTime();
+            await TaskService.CompleteTaskAsync(taskId, utcDate);
+            _editingTaskId = null;
+            _editingDateValue = "";
+            await LoadTasksAsync();
+            StateHasChanged();
+        }
+    }
 }
