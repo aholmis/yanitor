@@ -6,7 +6,6 @@
 @using Yanitor.Web.Domain.Models
 @using Yanitor.Web.Domain.Services
 @inject IStringLocalizer<ActiveTasks> L
-@inject IStringLocalizer<RoomTypeResources> RoomL
 @inject IStringLocalizer<HouseItemResources> ItemL
 @inject IStringLocalizer<TaskProvider> TaskL
 @inject NavigationManager Navigation
@@ -192,7 +191,7 @@
             ? (daysNumber == 1 ? L["Day"] : L["Days"]) 
             : (task.DaysUntilDue == 0 ? L["Today"] : task.DaysUntilDue == 1 ? L["Tomorrow"] : L["Days"]);
 
-        // Resolve item and room display from domain localizers
+        // Resolve item display from domain localizers (room name is user-entered; do not localize)
         var itemSpecificKey = $"Item_{task.ItemName}_Name";
         var itemTypeKey = $"ItemType_{task.Task.GetType().Name}_Name";
         var localizedItemName = ItemL[itemSpecificKey];
@@ -200,10 +199,7 @@
         {
             localizedItemName = ItemL[itemTypeKey];
         }
-        var roomTypeKey = $"RoomType_{task.RoomType}_Name";
-        var localizedRoomName = RoomL[roomTypeKey];
         var displayItemName = (!localizedItemName.ResourceNotFound && !string.IsNullOrWhiteSpace(localizedItemName.Value)) ? localizedItemName.Value : task.ItemName;
-        var displayRoomName = (!localizedRoomName.ResourceNotFound && !string.IsNullOrWhiteSpace(localizedRoomName.Value)) ? localizedRoomName.Value : task.RoomName;
 
         // Resolve task title/description using keys from MaintenanceTask
         var taskName = !string.IsNullOrWhiteSpace(task.Task.NameKey) ? TaskL[task.Task.NameKey] : TaskL[task.Task.Name];
@@ -228,7 +224,7 @@
                 <div class="active-tasks__card-info">
                     <h3 class="active-tasks__card-title">@displayTaskName</h3>
                     <p class="active-tasks__card-item">@displayItemName</p>
-                    <p class="active-tasks__card-location">@displayRoomName</p>
+                    <p class="active-tasks__card-location">@task.RoomName</p>
                 </div>
             </div>
             <p class="active-tasks__card-description">@displayTaskDescription</p>

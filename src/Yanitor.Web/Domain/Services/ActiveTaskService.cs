@@ -56,17 +56,12 @@ public interface IActiveTaskService
 /// <summary>
 /// Default implementation of IActiveTaskService.
 /// Generates active tasks based on house configuration and items.
-/// Uses domain-specific localizers for room and item display names.
+/// Uses raw user-entered names for room and item display.
 /// </summary>
 public class ActiveTaskService(
     IHouseConfigurationService houseConfigService,
-    IItemProvider itemProvider,
-    Microsoft.Extensions.Localization.IStringLocalizer<RoomTypeResources> roomLocalizer,
-    Microsoft.Extensions.Localization.IStringLocalizer<HouseItemResources> itemLocalizer) : IActiveTaskService
+    IItemProvider itemProvider) : IActiveTaskService
 {
-    private readonly Microsoft.Extensions.Localization.IStringLocalizer<RoomTypeResources> _roomLocalizer = roomLocalizer;
-    private readonly Microsoft.Extensions.Localization.IStringLocalizer<HouseItemResources> _itemLocalizer = itemLocalizer;
-
     // Store completion data by a composite key (item name + task id)
     private readonly Dictionary<string, (DateTime completedAt, DateTime nextDueDate)> _completionHistory = new();
 
@@ -158,8 +153,8 @@ public class ActiveTaskService(
     private ActiveTask CreateActiveTask(MaintenanceTask task, HouseItem item, Room room)
     {
         var key = GetTaskKey(item.Name, task.Id);
-        var itemName = LocalizeItemName(item);
-        var roomName = LocalizeRoomName(room);
+        var itemName = item.Name; // use raw item name
+        var roomName = room.Name; // use user-entered room name
         
         // Check if we have completion history for this task
         if (_completionHistory.TryGetValue(key, out var history))
@@ -195,34 +190,6 @@ public class ActiveTaskService(
             LastCompletedAt = null,
             NextDueDate = baseDate.AddDays(daysOffset)
         };
-    }
-
-    private string LocalizeItemName(HouseItem item)
-    {
-        var specificKey = $"Item_{item.Name}_Name";
-        var typeKey = $"ItemType_{item.Type}_Name";
-        var localizedSpecific = _itemLocalizer[specificKey];
-        if (!localizedSpecific.ResourceNotFound && !string.IsNullOrWhiteSpace(localizedSpecific.Value))
-        {
-            return localizedSpecific.Value;
-        }
-        var localizedType = _itemLocalizer[typeKey];
-        if (!localizedType.ResourceNotFound && !string.IsNullOrWhiteSpace(localizedType.Value))
-        {
-            return localizedType.Value;
-        }
-        return item.Name;
-    }
-
-    private string LocalizeRoomName(Room room)
-    {
-        var typeKey = $"RoomType_{room.Type}_Name";
-        var localizedType = _roomLocalizer[typeKey];
-        if (!localizedType.ResourceNotFound && !string.IsNullOrWhiteSpace(localizedType.Value))
-        {
-            return localizedType.Value;
-        }
-        return room.Name;
     }
 
     private static string GetTaskKey(string itemName, Guid taskId) => $"{itemName}_{taskId}";
