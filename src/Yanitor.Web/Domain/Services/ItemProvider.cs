@@ -1,4 +1,6 @@
-﻿namespace Yanitor.Web.Domain.Components;
+﻿using Yanitor.Web.Domain.Models;
+
+namespace Yanitor.Web.Domain.Services;
 
 /// <summary>
 /// Provides access to house items/components for the application.
@@ -140,6 +142,14 @@ public class ItemProvider(ITaskProvider taskProvider) : IItemProvider
                 Room = "Guest Bathroom",
                 RoomType = "Bathroom",
                 Tasks = taskProvider.GetTasksForItemType("Plumbing").ToList()
+            },
+            new HouseItem
+            {
+                Name = "Washing Machine",
+                Type = "WashingMachine",
+                Room = "Master Bathroom",
+                RoomType = "Bathroom",
+                Tasks = taskProvider.GetTasksForItemType("WashingMachine").ToList()
             },
             new HouseItem
             {

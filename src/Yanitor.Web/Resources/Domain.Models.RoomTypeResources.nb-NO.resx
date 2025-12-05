@@ -4,12 +4,10 @@
   <resheader name="version"><value>2.0</value></resheader>
   <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, ...</value></resheader>
   <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, ...</value></resheader>
-  <data name="Greeting" xml:space="preserve"><value>Hei</value></data>
-
   <!-- Romtyper -->
   <data name="RoomType_Bedroom_Name" xml:space="preserve"><value>Soverom</value></data>
   <data name="RoomType_Bathroom_Name" xml:space="preserve"><value>Bad</value></data>
-  <data name="RoomType_Kitchen_Name" xml:space="preserve"><value>Kjøkken</value></data>
+  <data name="RoomType_Kitchen_Name" xml:space="preserve"><value>Kj&#248;kken</value></data>
   <data name="RoomType_LivingRoom_Name" xml:space="preserve"><value>Stue</value></data>
   <data name="RoomType_DiningRoom_Name" xml:space="preserve"><value>Spisestue</value></data>
   <data name="RoomType_Hall_Name" xml:space="preserve"><value>Gang</value></data>
@@ -20,20 +18,4 @@
   <data name="RoomType_LaundryRoom_Name" xml:space="preserve"><value>Vaskerom</value></data>
   <data name="RoomType_Outdoor_Name" xml:space="preserve"><value>Ute</value></data>
   <data name="RoomType_Other_Name" xml:space="preserve"><value>Annet</value></data>
-
-  <!-- Elementtyper -->
-  <data name="ItemType_HVAC_Name" xml:space="preserve"><value>HVAC-system</value></data>
-  <data name="ItemType_Plumbing_Name" xml:space="preserve"><value>VVS</value></data>
-  <data name="ItemType_Door_Name" xml:space="preserve"><value>Dør</value></data>
-  <data name="ItemType_Window_Name" xml:space="preserve"><value>Vindu</value></data>
-  <data name="ItemType_Garage_Name" xml:space="preserve"><value>Garasjeportåpner</value></data>
-  <data name="ItemType_Safety_Name" xml:space="preserve"><value>Sikkerhetsenhet</value></data>
-  <data name="ItemType_Roof_Name" xml:space="preserve"><value>Tak</value></data>
-  <data name="ItemType_Exterior_Name" xml:space="preserve"><value>Utvendig</value></data>
-  <data name="ItemType_Insulation_Name" xml:space="preserve"><value>Isolasjon</value></data>
-  <data name="ItemType_WashingMachine_Name" xml:space="preserve"><value>Vaskemaskin</value></data>
-
-  <!-- Spesifikke elementoverstyringer (valgfritt) -->
-  <data name="Item_Main HVAC System_Name" xml:space="preserve"><value>Hoved HVAC-system</value></data>
-  <data name="Item_Water Heater_Name" xml:space="preserve"><value>Varmtvannsbereder</value></data>
 </root>

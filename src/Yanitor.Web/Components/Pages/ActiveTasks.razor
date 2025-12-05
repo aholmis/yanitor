@@ -1,0 +1,310 @@
+@page "/active-tasks"
+@page "/{culture}/active-tasks"
+@using System.Globalization
+@using Microsoft.Extensions.Localization
+@using Yanitor.Web.Domain
+@using Yanitor.Web.Domain.Models
+@using Yanitor.Web.Domain.Services
+@inject IStringLocalizer<ActiveTasks> L
+@inject IStringLocalizer<HouseItemResources> ItemL
+@inject IStringLocalizer<TaskProvider> TaskL
+@inject NavigationManager Navigation
+@inject IActiveTaskService TaskService
+@rendermode InteractiveServer
+
+<PageTitle>@L["PageTitle"]</PageTitle>
+
+<section class="active-tasks">
+    <header class="active-tasks__header">
+        <a href="@GetMyHouseUrl()" class="active-tasks__back-button" aria-label="@L["BackToMyHouse"]">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path d="M19 12H5M12 19l-7-7 7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </a>
+        <div class="active-tasks__header-content">
+            <h1 class="active-tasks__title">@L["PageTitle"]</h1>
+            <p class="active-tasks__subtitle">@L["Subtitle"]</p>
+        </div>
+    </header>
+
+    @if (_isLoading)
+    {
+        <div class="active-tasks__loading">
+            <p>@L["Loading"]</p>
+        </div>
+    }
+    else if (!_tasks.Any())
+    {
+        <div class="active-tasks__empty">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path d="M9 11l3 3L22 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+            </svg>
+            <p>@L["NoTasks"]</p>
+        </div>
+    }
+    else
+    {
+        @if (_overdueTasks.Any())
+        {
+            <section class="active-tasks__section active-tasks__section--overdue">
+                <h2 class="active-tasks__section-title">@L["OverdueTasks"] (@_overdueTasks.Count())</h2>
+                <div class="active-tasks__list">
+                    @foreach (var task in _overdueTasks)
+                    {
+                        @RenderTaskCard(task, "overdue")
+                    }
+                </div>
+            </section>
+        }
+
+        @if (_dueSoonTasks.Any())
+        {
+            <section class="active-tasks__section active-tasks__section--due-soon">
+                <h2 class="active-tasks__section-title">@L["DueSoon"] (@_dueSoonTasks.Count())</h2>
+                <div class="active-tasks__list">
+                    @foreach (var task in _dueSoonTasks)
+                    {
+                        @RenderTaskCard(task, "due-soon")
+                    }
+                </div>
+            </section>
+        }
+
+        @if (_upcomingTasks.Any())
+        {
+            <section class="active-tasks__section">
+                <h2 class="active-tasks__section-title">@L["UpcomingTasks"] (@_upcomingTasks.Count())</h2>
+                <div class="active-tasks__list">
+                    @foreach (var task in _upcomingTasks)
+                    {
+                        @RenderTaskCard(task, "")
+                    }
+                </div>
+            </section>
+        }
+    }
+</section>
+
+@code {
+    [Parameter]
+    public string? Culture { get; set; }
+
+    private bool _isLoading = true;
+    private List<ActiveTask> _tasks = new();
+    private IEnumerable<ActiveTask> _overdueTasks = Enumerable.Empty<ActiveTask>();
+    private IEnumerable<ActiveTask> _dueSoonTasks = Enumerable.Empty<ActiveTask>();
+    private IEnumerable<ActiveTask> _upcomingTasks = Enumerable.Empty<ActiveTask>();
+    private Guid? _editingTaskId = null;
+    private string _editingDateValue = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadTasksAsync();
+    }
+
+    private async Task LoadTasksAsync()
+    {
+        _isLoading = true;
+        
+        var allTasks = await TaskService.GetActiveTasksAsync();
+        _tasks = allTasks.ToList();
+        
+        _overdueTasks = _tasks.Where(t => t.IsOverdue).OrderBy(t => t.NextDueDate);
+        _dueSoonTasks = _tasks.Where(t => t.IsDueSoon && !t.IsOverdue).OrderBy(t => t.NextDueDate);
+        _upcomingTasks = _tasks.Where(t => !t.IsOverdue && !t.IsDueSoon).OrderBy(t => t.NextDueDate);
+        
+        _isLoading = false;
+    }
+
+    private async Task CompleteTask(Guid taskId)
+    {
+        await TaskService.CompleteTaskAsync(taskId);
+        await LoadTasksAsync();
+        StateHasChanged();
+    }
+
+    private string GetMyHouseUrl()
+    {
+        return string.IsNullOrWhiteSpace(Culture)
+            ? "/my-house"
+            : $"/{Culture}/my-house";
+    }
+
+    private string GetDaysUntilDueText(int days)
+    {
+        if (days == 0)
+            return L["DueToday"];
+        if (days == 1)
+            return L["DueTomorrow"];
+
+        return L["DueInDays", days];
+    }
+
+    private RenderFragment GetRoomIcon(RoomType roomType) => roomType switch
+    {
+        RoomType.Bedroom => @<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M2 20v-8a2 2 0 012-2h16a2 2 0 012 2v8M4 12V6h4v6M16 12V6h4v6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M2 16h20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>,
+        RoomType.Kitchen => @<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M4 2v8c0 2 1 3 2 3s2-1 2-3V2M4 2h4M5 2v8M6 2v8M7 2v8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            <path d="M4 13v9M18 2l-2 9h2v11" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>,
+        RoomType.Bathroom => @<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M9 6l11-3v2.99S12 7 9 6zM3.2 14.222V4a1 1 0 011-1h1a1 1 0 011 1v10.222" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <path d="M18 12H2v3.333c0 2.025 1.79 4.667 8 4.667s8-2.642 8-4.667V12z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <path d="M6 20v2M14 20v2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>,
+        RoomType.Hall => @<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M13 3h8v18h-8M3 21V3h8v18H3z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <path d="M7 8v2M7 14v2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>,
+        RoomType.Garage => @<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M4 22V6l8-4 8 4v16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <path d="M8 22V12h8v10M8 15h8M8 18h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>,
+        RoomType.Outdoor => @<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M17 8c0 1.5-2 4-2 4s-2-2.5-2-4a2 2 0 114 0z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <path d="M16 12v9M9 8c0 1.5-2 4-2 4s-2-2.5-2-4a2 2 0 114 0zM8 12v9M2 21h20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>,
+        RoomType.LivingRoom or RoomType.DiningRoom or RoomType.Office => @<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M9 22V12h6v10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>,
+        _ => @<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <rect x="5" y="5" width="14" height="14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+    };
+
+    private RenderFragment RenderTaskCard(ActiveTask task, string modifierClass) => __builder =>
+    {
+        var cardClass = string.IsNullOrWhiteSpace(modifierClass) 
+            ? "active-tasks__card" 
+            : $"active-tasks__card active-tasks__card--{modifierClass}";
+        var badgeClass = string.IsNullOrWhiteSpace(modifierClass)
+            ? "active-tasks__card-badge"
+            : $"active-tasks__card-badge active-tasks__card-badge--{modifierClass}";
+        
+        var daysNumber = Math.Abs(task.DaysUntilDue);
+        var daysText = task.IsOverdue 
+            ? (daysNumber == 1 ? L["Day"] : L["Days"]) 
+            : (task.DaysUntilDue == 0 ? L["Today"] : task.DaysUntilDue == 1 ? L["Tomorrow"] : L["Days"]);
+
+        // Resolve item display from domain localizers (room name is user-entered; do not localize)
+        var itemSpecificKey = $"Item_{task.ItemName}_Name";
+        var itemTypeKey = $"ItemType_{task.Task.GetType().Name}_Name";
+        var localizedItemName = ItemL[itemSpecificKey];
+        if (localizedItemName.ResourceNotFound || string.IsNullOrWhiteSpace(localizedItemName.Value))
+        {
+            localizedItemName = ItemL[itemTypeKey];
+        }
+        var displayItemName = (!localizedItemName.ResourceNotFound && !string.IsNullOrWhiteSpace(localizedItemName.Value)) ? localizedItemName.Value : task.ItemName;
+
+        // Resolve task title/description using keys from MaintenanceTask
+        var taskName = !string.IsNullOrWhiteSpace(task.Task.NameKey) ? TaskL[task.Task.NameKey] : TaskL[task.Task.Name];
+        var taskDescription = !string.IsNullOrWhiteSpace(task.Task.DescriptionKey) ? TaskL[task.Task.DescriptionKey] : TaskL[task.Task.Description];
+        var displayTaskName = (!taskName.ResourceNotFound && !string.IsNullOrWhiteSpace(taskName.Value)) ? taskName.Value : task.Task.Name;
+        var displayTaskDescription = (!taskDescription.ResourceNotFound && !string.IsNullOrWhiteSpace(taskDescription.Value)) ? taskDescription.Value : task.Task.Description;
+        
+        <article class="@cardClass">
+            <div class="@badgeClass">
+                <span class="active-tasks__card-badge-number">@daysNumber</span>
+                <span class="active-tasks__card-badge-text">@daysText</span>
+                @if (task.IsOverdue)
+                {
+                    <span class="active-tasks__card-badge-label">@L["Overdue"]</span>
+                }
+            </div>
+            
+            <div class="active-tasks__card-header">
+                <div class="active-tasks__card-icon">
+                    @GetRoomIcon(task.RoomType)
+                </div>
+                <div class="active-tasks__card-info">
+                    <h3 class="active-tasks__card-title">@displayTaskName</h3>
+                    <p class="active-tasks__card-item">@displayItemName</p>
+                    <p class="active-tasks__card-location">@task.RoomName</p>
+                </div>
+            </div>
+            <p class="active-tasks__card-description">@displayTaskDescription</p>
+            
+            @if (_editingTaskId == task.Id)
+            {
+                <div class="active-tasks__date-picker">
+                    <label for="date-@task.Id" class="active-tasks__date-picker-label">@L["SetCompletionDate"]</label>
+                    <div class="active-tasks__date-picker-controls">
+                        <input 
+                            type="date" 
+                            id="date-@task.Id"
+                            class="active-tasks__date-picker-input" 
+                            value="@_editingDateValue"
+                            @oninput="@(e => _editingDateValue = e.Value?.ToString() ?? "")"
+                            max="@DateTime.Now.ToString("yyyy-MM-dd")" />
+                        <button class="active-tasks__date-picker-button active-tasks__date-picker-button--save" @onclick="() => SaveCompletionDate(task.Id)">
+                            @L["Save"]
+                        </button>
+                        <button class="active-tasks__date-picker-button active-tasks__date-picker-button--cancel" @onclick="CancelEditDate">
+                            @L["Cancel"]
+                        </button>
+                    </div>
+                </div>
+            }
+            else if (task.LastCompletedAt.HasValue)
+            {
+                <button class="active-tasks__card-last-completed active-tasks__card-last-completed--clickable" 
+                        @onclick="() => StartEditingDate(task.Id, task.LastCompletedAt.Value)"
+                        title="@L["ClickToEditDate"]">
+                    @L["LastCompleted", task.LastCompletedAt.Value.ToLocalTime().ToString("d")]
+                    <svg class="active-tasks__edit-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+            }
+            else
+            {
+                <button class="active-tasks__card-last-completed active-tasks__card-last-completed--never active-tasks__card-last-completed--clickable" 
+                        @onclick="() => StartEditingDate(task.Id, null)"
+                        title="@L["ClickToSetDate"]">
+                    @L["NeverCompleted"]
+                    <svg class="active-tasks__edit-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+            }
+            
+            <div class="active-tasks__card-footer">
+                <button class="active-tasks__card-button" @onclick="() => CompleteTask(task.Id)">
+                    @L["MarkComplete"]
+                </button>
+            </div>
+        </article>
+    };
+
+    private void StartEditingDate(Guid taskId, DateTime? currentDate)
+    {
+        _editingTaskId = taskId;
+        _editingDateValue = currentDate?.ToLocalTime().ToString("yyyy-MM-dd") ?? DateTime.Now.ToString("yyyy-MM-dd");
+    }
+
+    private void CancelEditDate()
+    {
+        _editingTaskId = null;
+        _editingDateValue = "";
+    }
+
+    private async Task SaveCompletionDate(Guid taskId)
+    {
+        if (DateTime.TryParse(_editingDateValue, out var selectedDate))
+        {
+            var utcDate = selectedDate.ToUniversalTime();
+            await TaskService.CompleteTaskAsync(taskId, utcDate);
+            _editingTaskId = null;
+            _editingDateValue = "";
+            await LoadTasksAsync();
+            StateHasChanged();
+        }
+    }
+}

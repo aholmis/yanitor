@@ -1,4 +1,4 @@
-namespace Yanitor.Web.Domain;
+namespace Yanitor.Web.Domain.Models;
 
 /// <summary>
 /// Represents the complete configuration of a house, including all rooms.

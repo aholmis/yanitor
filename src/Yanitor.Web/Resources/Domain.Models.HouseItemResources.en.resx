@@ -4,23 +4,6 @@
   <resheader name="version"><value>2.0</value></resheader>
   <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, ...</value></resheader>
   <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, ...</value></resheader>
-  <data name="Greeting" xml:space="preserve"><value>Hello</value></data>
-
-  <!-- Room type display names -->
-  <data name="RoomType_Bedroom_Name" xml:space="preserve"><value>Bedroom</value></data>
-  <data name="RoomType_Bathroom_Name" xml:space="preserve"><value>Bathroom</value></data>
-  <data name="RoomType_Kitchen_Name" xml:space="preserve"><value>Kitchen</value></data>
-  <data name="RoomType_LivingRoom_Name" xml:space="preserve"><value>Living Room</value></data>
-  <data name="RoomType_DiningRoom_Name" xml:space="preserve"><value>Dining Room</value></data>
-  <data name="RoomType_Hall_Name" xml:space="preserve"><value>Hall</value></data>
-  <data name="RoomType_Garage_Name" xml:space="preserve"><value>Garage</value></data>
-  <data name="RoomType_Basement_Name" xml:space="preserve"><value>Basement</value></data>
-  <data name="RoomType_Attic_Name" xml:space="preserve"><value>Attic</value></data>
-  <data name="RoomType_Office_Name" xml:space="preserve"><value>Office</value></data>
-  <data name="RoomType_LaundryRoom_Name" xml:space="preserve"><value>Laundry Room</value></data>
-  <data name="RoomType_Outdoor_Name" xml:space="preserve"><value>Outdoor</value></data>
-  <data name="RoomType_Other_Name" xml:space="preserve"><value>Other</value></data>
-
   <!-- Item type display names -->
   <data name="ItemType_HVAC_Name" xml:space="preserve"><value>HVAC System</value></data>
   <data name="ItemType_Plumbing_Name" xml:space="preserve"><value>Plumbing</value></data>
@@ -32,8 +15,7 @@
   <data name="ItemType_Exterior_Name" xml:space="preserve"><value>Exterior</value></data>
   <data name="ItemType_Insulation_Name" xml:space="preserve"><value>Insulation</value></data>
   <data name="ItemType_WashingMachine_Name" xml:space="preserve"><value>Washing Machine</value></data>
-
-  <!-- Specific item overrides (optional examples) -->
+  <!-- Specific item overrides -->
   <data name="Item_Main HVAC System_Name" xml:space="preserve"><value>Main HVAC System</value></data>
   <data name="Item_Water Heater_Name" xml:space="preserve"><value>Water Heater</value></data>
 </root>

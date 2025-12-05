@@ -1,3 +1,5 @@
+using Yanitor.Web.Domain.Models;
+
 namespace Yanitor.Web.Domain.Services;
 
 /// <summary>

@@ -1,4 +1,4 @@
-namespace Yanitor.Web.Domain;
+namespace Yanitor.Web.Domain.Models;
 
 /// <summary>
 /// Represents a maintenance task for a house item.
@@ -9,6 +9,16 @@ public record MaintenanceTask
     /// Gets the unique identifier for the task.
     /// </summary>
     public Guid Id { get; init; } = Guid.NewGuid();
+
+    /// <summary>
+    /// Localization key for the task name.
+    /// </summary>
+    public string? NameKey { get; init; }
+
+    /// <summary>
+    /// Localization key for the task description.
+    /// </summary>
+    public string? DescriptionKey { get; init; }
 
     /// <summary>
     /// Gets the name of the maintenance task.

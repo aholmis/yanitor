@@ -2,10 +2,14 @@
 @page "/{culture}/my-house"
 @using System.Globalization
 @using Microsoft.Extensions.Localization
+@using Yanitor.Web.Domain
+@using Yanitor.Web.Domain.Models
 @using Yanitor.Web.Domain.Services
 @inject IStringLocalizer<MyHouse> L
 @inject NavigationManager Navigation
 @inject IHouseConfigurationService HouseConfigService
+@inject IActiveTaskService TaskService
+@inject IItemProvider ItemProvider
 @rendermode InteractiveServer
 
 <PageTitle>@L["PageTitle"]</PageTitle>
@@ -39,30 +43,32 @@
     else
     {
         <div class="my-house__cards">
-            <article class="my-house__card my-house__card--tasks">
-                <div class="my-house__card-icon">
-                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                        <path d="M9 11l3 3L22 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                        <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
-                    </svg>
-                </div>
-                <div class="my-house__card-content">
-                    <h2 class="my-house__card-title">@L["TasksTitle"]</h2>
-                    <p class="my-house__card-count">@_tasksCount</p>
-                    @if (_nextTask != null)
-                    {
-                        <div class="my-house__next-task">
-                            <p class="my-house__next-task-label">@L["NextTask"]:</p>
-                            <p class="my-house__next-task-name">@_nextTask.Name</p>
-                            <p class="my-house__next-task-due">@GetDaysUntilDueText(_nextTask.DaysUntilDue)</p>
-                        </div>
-                    }
-                    else
-                    {
-                        <p class="my-house__card-description">@L["NoTasksDescription"]</p>
-                    }
-                </div>
-            </article>
+            <a href="@GetActiveTasksUrl()" class="my-house__card-link">
+                <article class="my-house__card my-house__card--tasks">
+                    <div class="my-house__card-icon">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                            <path d="M9 11l3 3L22 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                        </svg>
+                    </div>
+                    <div class="my-house__card-content">
+                        <h2 class="my-house__card-title">@L["TasksTitle"]</h2>
+                        <p class="my-house__card-count">@_tasksCount</p>
+                        @if (_nextTask != null)
+                        {
+                            <div class="my-house__next-task">
+                                <p class="my-house__next-task-label">@L["NextTask"]:</p>
+                                <p class="my-house__next-task-name">@_nextTask.Task.Name</p>
+                                <p class="my-house__next-task-due">@GetDaysUntilDueText(_nextTask.DaysUntilDue)</p>
+                            </div>
+                        }
+                        else
+                        {
+                            <p class="my-house__card-description">@L["NoTasksDescription"]</p>
+                        }
+                    </div>
+                </article>
+            </a>
 
             <a href="@GetComponentsUrl()" class="my-house__card-link">
                 <article class="my-house__card my-house__card--components">
@@ -87,15 +93,21 @@
     [Parameter]
     public string? Culture { get; set; }
 
-    // Mock data - replace with actual data service later
-    private int _componentsCount = 12;
-    private int _tasksCount = 5;
-    private NextTask? _nextTask = new NextTask { Name = "Clean gutters", DaysUntilDue = 3 };
+    private int _componentsCount = 0;
+    private int _tasksCount = 0;
+    private ActiveTask? _nextTask = null;
     private bool _hasConfiguration = false;
 
     protected override async Task OnInitializedAsync()
     {
         _hasConfiguration = await HouseConfigService.HasConfigurationAsync();
+        
+        if (_hasConfiguration)
+        {
+            _componentsCount = ItemProvider.GetAllItems().Count();
+            _tasksCount = await TaskService.GetTaskCountAsync();
+            _nextTask = await TaskService.GetNextTaskAsync();
+        }
     }
 
     private void NavigateToBuilder()
@@ -109,6 +121,11 @@
         return !string.IsNullOrEmpty(Culture) ? $"/{Culture}/components" : "/components";
     }
 
+    private string GetActiveTasksUrl()
+    {
+        return !string.IsNullOrEmpty(Culture) ? $"/{Culture}/active-tasks" : "/active-tasks";
+    }
+
     private string GetDaysUntilDueText(int days)
     {
         if (days == 0)
@@ -119,11 +136,5 @@
             return L["Overdue", Math.Abs(days)];
         
         return L["DueInDays", days];
-    }
-
-    private record NextTask
-    {
-        public required string Name { get; init; }
-        public int DaysUntilDue { get; init; }
     }
 }
