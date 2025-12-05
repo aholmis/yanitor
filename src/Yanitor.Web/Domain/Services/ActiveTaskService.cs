@@ -56,11 +56,17 @@ public interface IActiveTaskService
 /// <summary>
 /// Default implementation of IActiveTaskService.
 /// Generates active tasks based on house configuration and items.
+/// Uses domain-specific localizers for room and item display names.
 /// </summary>
 public class ActiveTaskService(
     IHouseConfigurationService houseConfigService,
-    IItemProvider itemProvider) : IActiveTaskService
+    IItemProvider itemProvider,
+    Microsoft.Extensions.Localization.IStringLocalizer<RoomTypeResources> roomLocalizer,
+    Microsoft.Extensions.Localization.IStringLocalizer<HouseItemResources> itemLocalizer) : IActiveTaskService
 {
+    private readonly Microsoft.Extensions.Localization.IStringLocalizer<RoomTypeResources> _roomLocalizer = roomLocalizer;
+    private readonly Microsoft.Extensions.Localization.IStringLocalizer<HouseItemResources> _itemLocalizer = itemLocalizer;
+
     // Store completion data by a composite key (item name + task id)
     private readonly Dictionary<string, (DateTime completedAt, DateTime nextDueDate)> _completionHistory = new();
 
@@ -152,6 +158,8 @@ public class ActiveTaskService(
     private ActiveTask CreateActiveTask(MaintenanceTask task, HouseItem item, Room room)
     {
         var key = GetTaskKey(item.Name, task.Id);
+        var itemName = LocalizeItemName(item);
+        var roomName = LocalizeRoomName(room);
         
         // Check if we have completion history for this task
         if (_completionHistory.TryGetValue(key, out var history))
@@ -162,8 +170,8 @@ public class ActiveTaskService(
             {
                 Id = taskId,
                 Task = task,
-                ItemName = item.Name,
-                RoomName = room.Name,
+                ItemName = itemName,
+                RoomName = roomName,
                 RoomType = room.Type,
                 LastCompletedAt = history.completedAt,
                 NextDueDate = history.nextDueDate
@@ -181,23 +189,46 @@ public class ActiveTaskService(
         {
             Id = taskId2,
             Task = task,
-            ItemName = item.Name,
-            RoomName = room.Name,
+            ItemName = itemName,
+            RoomName = roomName,
             RoomType = room.Type,
             LastCompletedAt = null,
             NextDueDate = baseDate.AddDays(daysOffset)
         };
     }
 
-    private static string GetTaskKey(string itemName, Guid taskId)
+    private string LocalizeItemName(HouseItem item)
     {
-        return $"{itemName}_{taskId}";
+        var specificKey = $"Item_{item.Name}_Name";
+        var typeKey = $"ItemType_{item.Type}_Name";
+        var localizedSpecific = _itemLocalizer[specificKey];
+        if (!localizedSpecific.ResourceNotFound && !string.IsNullOrWhiteSpace(localizedSpecific.Value))
+        {
+            return localizedSpecific.Value;
+        }
+        var localizedType = _itemLocalizer[typeKey];
+        if (!localizedType.ResourceNotFound && !string.IsNullOrWhiteSpace(localizedType.Value))
+        {
+            return localizedType.Value;
+        }
+        return item.Name;
     }
+
+    private string LocalizeRoomName(Room room)
+    {
+        var typeKey = $"RoomType_{room.Type}_Name";
+        var localizedType = _roomLocalizer[typeKey];
+        if (!localizedType.ResourceNotFound && !string.IsNullOrWhiteSpace(localizedType.Value))
+        {
+            return localizedType.Value;
+        }
+        return room.Name;
+    }
+
+    private static string GetTaskKey(string itemName, Guid taskId) => $"{itemName}_{taskId}";
 
     private static Guid GenerateTaskId(string itemName, Guid taskId, string roomName)
     {
-        // Generate a deterministic GUID based on item name, task ID, and room name
-        // This ensures the same task always gets the same ID
         var combined = $"{itemName}_{taskId}_{roomName}";
         using var sha256 = System.Security.Cryptography.SHA256.Create();
         var hash = sha256.ComputeHash(System.Text.Encoding.UTF8.GetBytes(combined));

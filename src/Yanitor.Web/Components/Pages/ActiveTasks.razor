@@ -6,6 +6,9 @@
 @using Yanitor.Web.Domain.Models
 @using Yanitor.Web.Domain.Services
 @inject IStringLocalizer<ActiveTasks> L
+@inject IStringLocalizer<RoomTypeResources> RoomL
+@inject IStringLocalizer<HouseItemResources> ItemL
+@inject IStringLocalizer<TaskProvider> TaskL
 @inject NavigationManager Navigation
 @inject IActiveTaskService TaskService
 @rendermode InteractiveServer
@@ -186,8 +189,27 @@
         
         var daysNumber = Math.Abs(task.DaysUntilDue);
         var daysText = task.IsOverdue 
-            ? (daysNumber == 1 ? L["Day"] : L["Days"])
+            ? (daysNumber == 1 ? L["Day"] : L["Days"]) 
             : (task.DaysUntilDue == 0 ? L["Today"] : task.DaysUntilDue == 1 ? L["Tomorrow"] : L["Days"]);
+
+        // Resolve item and room display from domain localizers
+        var itemSpecificKey = $"Item_{task.ItemName}_Name";
+        var itemTypeKey = $"ItemType_{task.Task.GetType().Name}_Name";
+        var localizedItemName = ItemL[itemSpecificKey];
+        if (localizedItemName.ResourceNotFound || string.IsNullOrWhiteSpace(localizedItemName.Value))
+        {
+            localizedItemName = ItemL[itemTypeKey];
+        }
+        var roomTypeKey = $"RoomType_{task.RoomType}_Name";
+        var localizedRoomName = RoomL[roomTypeKey];
+        var displayItemName = (!localizedItemName.ResourceNotFound && !string.IsNullOrWhiteSpace(localizedItemName.Value)) ? localizedItemName.Value : task.ItemName;
+        var displayRoomName = (!localizedRoomName.ResourceNotFound && !string.IsNullOrWhiteSpace(localizedRoomName.Value)) ? localizedRoomName.Value : task.RoomName;
+
+        // Resolve task title/description using keys from MaintenanceTask
+        var taskName = !string.IsNullOrWhiteSpace(task.Task.NameKey) ? TaskL[task.Task.NameKey] : TaskL[task.Task.Name];
+        var taskDescription = !string.IsNullOrWhiteSpace(task.Task.DescriptionKey) ? TaskL[task.Task.DescriptionKey] : TaskL[task.Task.Description];
+        var displayTaskName = (!taskName.ResourceNotFound && !string.IsNullOrWhiteSpace(taskName.Value)) ? taskName.Value : task.Task.Name;
+        var displayTaskDescription = (!taskDescription.ResourceNotFound && !string.IsNullOrWhiteSpace(taskDescription.Value)) ? taskDescription.Value : task.Task.Description;
         
         <article class="@cardClass">
             <div class="@badgeClass">
@@ -204,12 +226,12 @@
                     @GetRoomIcon(task.RoomType)
                 </div>
                 <div class="active-tasks__card-info">
-                    <h3 class="active-tasks__card-title">@task.Task.Name</h3>
-                    <p class="active-tasks__card-item">@task.ItemName</p>
-                    <p class="active-tasks__card-location">@task.RoomName</p>
+                    <h3 class="active-tasks__card-title">@displayTaskName</h3>
+                    <p class="active-tasks__card-item">@displayItemName</p>
+                    <p class="active-tasks__card-location">@displayRoomName</p>
                 </div>
             </div>
-            <p class="active-tasks__card-description">@task.Task.Description</p>
+            <p class="active-tasks__card-description">@displayTaskDescription</p>
             
             @if (_editingTaskId == task.Id)
             {
@@ -281,7 +303,6 @@
     {
         if (DateTime.TryParse(_editingDateValue, out var selectedDate))
         {
-            // Convert local date to UTC
             var utcDate = selectedDate.ToUniversalTime();
             await TaskService.CompleteTaskAsync(taskId, utcDate);
             _editingTaskId = null;

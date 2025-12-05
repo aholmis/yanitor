@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, ...</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, ...</value></resheader>
+  <!-- Elementtyper -->
+  <data name="ItemType_HVAC_Name" xml:space="preserve"><value>HVAC-system</value></data>
+  <data name="ItemType_Plumbing_Name" xml:space="preserve"><value>VVS</value></data>
+  <data name="ItemType_Door_Name" xml:space="preserve"><value>D&#248;r</value></data>
+  <data name="ItemType_Window_Name" xml:space="preserve"><value>Vindu</value></data>
+  <data name="ItemType_Garage_Name" xml:space="preserve"><value>Garasjeport&#229;pner</value></data>
+  <data name="ItemType_Safety_Name" xml:space="preserve"><value>Sikkerhetsenhet</value></data>
+  <data name="ItemType_Roof_Name" xml:space="preserve"><value>Tak</value></data>
+  <data name="ItemType_Exterior_Name" xml:space="preserve"><value>Utvendig</value></data>
+  <data name="ItemType_Insulation_Name" xml:space="preserve"><value>Isolasjon</value></data>
+  <data name="ItemType_WashingMachine_Name" xml:space="preserve"><value>Vaskemaskin</value></data>
+  <!-- Spesifikke elementoverstyringer -->
+  <data name="Item_Main HVAC System_Name" xml:space="preserve"><value>Hoved HVAC-system</value></data>
+  <data name="Item_Water Heater_Name" xml:space="preserve"><value>Varmtvannsbereder</value></data>
+</root>
