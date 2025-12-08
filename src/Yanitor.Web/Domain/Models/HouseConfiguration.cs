@@ -16,6 +16,11 @@ public record HouseConfiguration
     public List<Room> Rooms { get; init; } = new();
 
     /// <summary>
+    /// Gets the set of selected item types present in the house.
+    /// </summary>
+    public HashSet<string> SelectedItemTypes { get; init; } = new(StringComparer.OrdinalIgnoreCase);
+
+    /// <summary>
     /// Gets when this configuration was created.
     /// </summary>
     public DateTime CreatedAt { get; init; } = DateTime.UtcNow;
@@ -34,10 +39,16 @@ public record HouseConfiguration
     }
 
     /// <summary>
-    /// Adds a room to the house configuration.
+    /// Adds a room to the house configuration. Only one room per RoomType is allowed.
     /// </summary>
     public HouseConfiguration AddRoom(Room room)
     {
+        // Prevent duplicates by RoomType
+        if (Rooms.Any(r => r.Type == room.Type))
+        {
+            return this; // unchanged if type exists
+        }
+
         var updatedRooms = new List<Room>(Rooms) { room };
         return this with { Rooms = updatedRooms, LastModifiedAt = DateTime.UtcNow };
     }

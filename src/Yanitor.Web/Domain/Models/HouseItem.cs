@@ -16,14 +16,9 @@ public record HouseItem
     public required string Type { get; init; }
 
     /// <summary>
-    /// Gets the room where this item is located.
-    /// </summary>
-    public required string Room { get; init; }
-
-    /// <summary>
     /// Gets the general type of room (e.g., Bedroom, Kitchen, Bathroom).
     /// </summary>
-    public required string RoomType { get; init; }
+    public required RoomType RoomType { get; init; }
 
     /// <summary>
     /// Gets the predefined maintenance tasks for this house item.

@@ -19,3 +19,41 @@
 - [ ] Icons for items
 - [ ] Yanitor Brand icon
 
+
+
+
+return new List<HouseItem>
+        {
+            new HouseItem
+            {
+                Name = "Ventilation System",
+                Type = "Ventilation",
+                Room = "Other",
+                RoomType = "Other",
+                Tasks = taskProvider.GetTasksForItemType("Ventilation").ToList()
+            },
+            new HouseItem
+            {
+                Name = "Master Bathroom Shower",
+                Type = "Shower",
+                Room = "Master Bathroom",
+                RoomType = "Bathroom",
+                Tasks = taskProvider.GetTasksForItemType("Shower").ToList()
+            },
+            new HouseItem
+            {
+                Name = "Washing Machine",
+                Type = "WashingMachine",
+                Room = "Master Bathroom",
+                RoomType = "Bathroom",
+                Tasks = taskProvider.GetTasksForItemType("WashingMachine").ToList()
+            },
+            new HouseItem
+            {
+                Name = "Dishwasher",
+                Type = "Dishwasher",
+                Room = "Kitchen",
+                RoomType = "Kitchen",
+                Tasks = taskProvider.GetTasksForItemType("Dishwasher").ToList()
+            }
+        };

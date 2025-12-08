@@ -59,81 +59,81 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="PageTitle" xml:space="preserve">
-    <value>House Builder</value>
+    <value>Husbygger</value>
   </data>
   <data name="Subtitle" xml:space="preserve">
-    <value>Add and organize rooms in your house</value>
+    <value>Legg til og organiser rom i huset ditt</value>
   </data>
   <data name="NoRoomsMessage" xml:space="preserve">
-    <value>No rooms added yet. Start by adding your first room below.</value>
+    <value>Ingen rom lagt til enda. Start med aa legge til ditt forste rom under.</value>
   </data>
   <data name="AddRoomTitle" xml:space="preserve">
-    <value>Add New Room</value>
+    <value>Legg til nytt rom</value>
   </data>
   <data name="RoomNameLabel" xml:space="preserve">
-    <value>Room Name</value>
+    <value>Romnavn</value>
   </data>
   <data name="RoomNamePlaceholder" xml:space="preserve">
-    <value>e.g., Master Bedroom</value>
+    <value>f.eks. Hovedsoverom</value>
   </data>
   <data name="RoomTypeLabel" xml:space="preserve">
-    <value>Room Type</value>
+    <value>Romtype</value>
   </data>
   <data name="AddRoomButton" xml:space="preserve">
-    <value>Add Room</value>
+    <value>Legg til rom</value>
   </data>
   <data name="RemoveRoom" xml:space="preserve">
-    <value>Remove {0}</value>
+    <value>Fjern {0}</value>
   </data>
   <data name="CancelButton" xml:space="preserve">
-    <value>Cancel</value>
+    <value>Avbryt</value>
   </data>
   <data name="SaveButton" xml:space="preserve">
-    <value>Save Configuration</value>
+    <value>Lagre konfigurasjon</value>
   </data>
   <data name="RoomType_Bedroom" xml:space="preserve">
-    <value>Bedroom</value>
+    <value>Soverom</value>
   </data>
   <data name="RoomType_Bathroom" xml:space="preserve">
-    <value>Bathroom</value>
+    <value>Baderom</value>
   </data>
   <data name="RoomType_Kitchen" xml:space="preserve">
-    <value>Kitchen</value>
+    <value>Kjokken</value>
   </data>
   <data name="RoomType_LivingRoom" xml:space="preserve">
-    <value>Living Room</value>
+    <value>Stue</value>
   </data>
   <data name="RoomType_DiningRoom" xml:space="preserve">
-    <value>Dining Room</value>
+    <value>Spisestue</value>
   </data>
   <data name="RoomType_Hall" xml:space="preserve">
-    <value>Hall</value>
+    <value>Gang</value>
   </data>
   <data name="RoomType_Garage" xml:space="preserve">
-    <value>Garage</value>
+    <value>Garasje</value>
   </data>
   <data name="RoomType_Basement" xml:space="preserve">
-    <value>Basement</value>
+    <value>Kjeller</value>
   </data>
   <data name="RoomType_Attic" xml:space="preserve">
-    <value>Attic</value>
+    <value>Loft</value>
   </data>
   <data name="RoomType_Office" xml:space="preserve">
-    <value>Office</value>
+    <value>Kontor</value>
   </data>
   <data name="RoomType_LaundryRoom" xml:space="preserve">
-    <value>Laundry Room</value>
+    <value>Vaskerom</value>
   </data>
   <data name="RoomType_Outdoor" xml:space="preserve">
-    <value>Outdoor</value>
+    <value>Utendors</value>
   </data>
   <data name="RoomType_Other" xml:space="preserve">
-    <value>Other</value>
+    <value>Annet</value>
   </data>
   <data name="SelectItemsTitle" xml:space="preserve">
-    <value>Select items you have</value>
+    <value>Velg komponenter du har</value>
   </data>
   <data name="SelectItemsHint" xml:space="preserve">
-    <value>Toggle the items present in your home. Selected items will turn blue.</value>
+    <value>Trykk for aa velge komponenter som finnes i hjemmet ditt. Valgte komponenter blir bla.</value>
   </data>
 </root>

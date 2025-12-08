@@ -104,7 +104,7 @@
         
         if (_hasConfiguration)
         {
-            _componentsCount = ItemProvider.GetAllItems().Count();
+            _componentsCount = (await ItemProvider.GetItemsForCurrentConfigurationAsync()).Count();
             _tasksCount = await TaskService.GetTaskCountAsync();
             _nextTask = await TaskService.GetNextTaskAsync();
         }

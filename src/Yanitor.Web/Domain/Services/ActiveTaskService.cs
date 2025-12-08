@@ -56,7 +56,6 @@ public interface IActiveTaskService
 /// <summary>
 /// Default implementation of IActiveTaskService.
 /// Generates active tasks based on house configuration and items.
-/// Uses raw user-entered names for room and item display.
 /// </summary>
 public class ActiveTaskService(
     IHouseConfigurationService houseConfigService,
@@ -68,27 +67,23 @@ public class ActiveTaskService(
     public async Task<IEnumerable<ActiveTask>> GetActiveTasksAsync()
     {
         var config = await houseConfigService.GetConfigurationAsync();
-        if (config == null || config.Rooms.Count == 0)
+        if (config == null || config.SelectedItemTypes.Count == 0)
         {
             return Enumerable.Empty<ActiveTask>();
         }
 
         var items = itemProvider.GetAllItems();
+        items = items.Where(i => config.SelectedItemTypes.Contains(i.Type));
+
         var activeTasks = new List<ActiveTask>();
 
-        // Generate tasks for items that match rooms in the configuration
+        // Generate tasks for selected items without room dependency
         foreach (var item in items)
         {
-            var matchingRoom = config.Rooms.FirstOrDefault(r =>
-                r.Type.ToString().Equals(item.RoomType, StringComparison.OrdinalIgnoreCase));
-
-            if (matchingRoom != null)
+            foreach (var task in item.Tasks)
             {
-                foreach (var task in item.Tasks)
-                {
-                    var activeTask = CreateActiveTask(task, item, matchingRoom);
-                    activeTasks.Add(activeTask);
-                }
+                var activeTask = CreateActiveTask(task, item);
+                activeTasks.Add(activeTask);
             }
         }
 
@@ -150,24 +145,25 @@ public class ActiveTaskService(
         return tasks.Count();
     }
 
-    private ActiveTask CreateActiveTask(MaintenanceTask task, HouseItem item, Room room)
+    private ActiveTask CreateActiveTask(MaintenanceTask task, HouseItem item)
     {
         var key = GetTaskKey(item.Name, task.Id);
-        var itemName = item.Name; // use raw item name
-        var roomName = room.Name; // use user-entered room name
+        var itemName = item.Name;
+        var roomName = string.Empty; // no room
+        var roomType = RoomType.Other; // default type since rooms are not used
         
         // Check if we have completion history for this task
         if (_completionHistory.TryGetValue(key, out var history))
         {
             // Use the stored completion history
-            var taskId = GenerateTaskId(item.Name, task.Id, room.Name);
+            var taskId = GenerateTaskId(item.Name, task.Id, roomName);
             return new ActiveTask
             {
                 Id = taskId,
                 Task = task,
                 ItemName = itemName,
                 RoomName = roomName,
-                RoomType = room.Type,
+                RoomType = roomType,
                 LastCompletedAt = history.completedAt,
                 NextDueDate = history.nextDueDate
             };
@@ -178,7 +174,7 @@ public class ActiveTaskService(
         var baseDate = DateTime.UtcNow;
         var taskHash = task.Id.GetHashCode();
         var daysOffset = Math.Abs(taskHash % task.IntervalDays);
-        var taskId2 = GenerateTaskId(item.Name, task.Id, room.Name);
+        var taskId2 = GenerateTaskId(item.Name, task.Id, roomName);
 
         return new ActiveTask
         {
@@ -186,7 +182,7 @@ public class ActiveTaskService(
             Task = task,
             ItemName = itemName,
             RoomName = roomName,
-            RoomType = room.Type,
+            RoomType = roomType,
             LastCompletedAt = null,
             NextDueDate = baseDate.AddDays(daysOffset)
         };
