@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Localization;
 using System.Globalization;
 using Yanitor.Web.Components;
 using Yanitor.Web.Domain.Services;
+using Microsoft.EntityFrameworkCore;
+using Yanitor.Web.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,11 +12,16 @@ builder.Services.AddRazorComponents().AddInteractiveServerComponents();
 builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
 builder.Services.AddLogging();
 
+// EF Core with SQLite
+builder.Services.AddDbContext<YanitorDbContext>(options =>
+    options.UseSqlite(builder.Configuration.GetConnectionString("Yanitor") ?? "Data Source=yanitor.db"));
+
 // Register domain services
 builder.Services.AddSingleton<ITaskProvider, TaskProvider>();
-builder.Services.AddSingleton<IItemProvider, ItemProvider>();
-builder.Services.AddSingleton<IHouseConfigurationService, HouseConfigurationService>();
-builder.Services.AddSingleton<IActiveTaskService, ActiveTaskService>();
+builder.Services.AddScoped<IItemProvider, ItemProvider>();
+// Replace in-memory with EF-backed implementation
+builder.Services.AddScoped<IHouseConfigurationService, EfHouseConfigurationService>();
+builder.Services.AddScoped<IActiveTaskService, ActiveTaskService>();
 
 var supportedCultures = new[] { new CultureInfo("en"), new CultureInfo("nb-NO") };
 var localizationOptions = new RequestLocalizationOptions
@@ -34,6 +41,13 @@ localizationOptions.RequestCultureProviders.Add(new CookieRequestCultureProvider
 localizationOptions.RequestCultureProviders.Add(new AcceptLanguageHeaderRequestCultureProvider());
 
 var app = builder.Build();
+
+// Apply EF Core migrations at startup
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<YanitorDbContext>();
+    await db.Database.MigrateAsync();
+}
 
 app.UseRequestLocalization(localizationOptions);
 

@@ -10,6 +10,8 @@
 @inject IHouseConfigurationService HouseConfigService
 @inject IActiveTaskService TaskService
 @inject IItemProvider ItemProvider
+@inject IStringLocalizer<TaskProvider> TaskL
+@inject IStringLocalizer<HouseItemResources> ItemL
 @rendermode InteractiveServer
 
 <PageTitle>@L["PageTitle"]</PageTitle>
@@ -58,7 +60,7 @@
                         {
                             <div class="my-house__next-task">
                                 <p class="my-house__next-task-label">@L["NextTask"]:</p>
-                                <p class="my-house__next-task-name">@_nextTask.Task.Name</p>
+                                <p class="my-house__next-task-name">@($"{GetDisplayTaskName(_nextTask.Task)} ({GetDisplayItemName(_nextTask.ItemName)})")</p>
                                 <p class="my-house__next-task-due">@GetDaysUntilDueText(_nextTask.DaysUntilDue)</p>
                             </div>
                         }
@@ -136,5 +138,36 @@
             return L["Overdue", Math.Abs(days)];
         
         return L["DueInDays", days];
+    }
+
+    private string GetDisplayTaskName(MaintenanceTask task)
+    {
+        var name = TaskL[task.NameKey];
+        return (!name.ResourceNotFound && !string.IsNullOrWhiteSpace(name.Value)) ? name.Value : task.NameKey;
+    }
+
+    private string GetDisplayItemName(string itemName)
+    {
+        // Try specific item name key first
+        var specific = ItemL[$"Item_{itemName}_Name"]; 
+        if (!specific.ResourceNotFound && !string.IsNullOrWhiteSpace(specific.Value))
+        {
+            return specific.Value;
+        }
+
+        // Fallback to item type display using the catalog from ItemProvider
+        var match = ItemProvider.GetAllItems().FirstOrDefault(i => string.Equals(i.Name, itemName, StringComparison.OrdinalIgnoreCase));
+        if (match is not null)
+        {
+            var typeKey = $"ItemType_{match.Type}_Name";
+            var typeName = ItemL[typeKey];
+            if (!typeName.ResourceNotFound && !string.IsNullOrWhiteSpace(typeName.Value))
+            {
+                return typeName.Value;
+            }
+        }
+
+        // Final fallback: raw item name
+        return itemName;
     }
 }

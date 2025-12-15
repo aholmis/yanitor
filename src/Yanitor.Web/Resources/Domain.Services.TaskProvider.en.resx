@@ -265,6 +265,20 @@
     <value>Clean the drain where water is pumped out to prevent blockages and maintain efficiency.</value>
   </data>
 
+  <!-- Dishwasher Tasks -->
+  <data name="Dishwasher_CleanFilter_Name" xml:space="preserve">
+    <value>Clean Filter</value>
+  </data>
+  <data name="Dishwasher_CleanFilter_Description" xml:space="preserve">
+    <value>Remove and rinse the dishwasher filter to improve water flow and prevent food debris buildup.</value>
+  </data>
+  <data name="Dishwasher_CleanDoorAndSeals_Name" xml:space="preserve">
+    <value>Clean Door and Seals</value>
+  </data>
+  <data name="Dishwasher_CleanDoorAndSeals_Description" xml:space="preserve">
+    <value>Wipe the door edges, gasket, and around the seals to prevent mold, odors, and ensure a proper watertight seal.</value>
+  </data>
+
   <!-- Generic Tasks -->
   <data name="Generic_RegularInspection_Name" xml:space="preserve">
     <value>Regular Inspection</value>

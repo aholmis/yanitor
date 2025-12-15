@@ -202,10 +202,10 @@
         var displayItemName = (!localizedItemName.ResourceNotFound && !string.IsNullOrWhiteSpace(localizedItemName.Value)) ? localizedItemName.Value : task.ItemName;
 
         // Resolve task title/description using keys from MaintenanceTask
-        var taskName = !string.IsNullOrWhiteSpace(task.Task.NameKey) ? TaskL[task.Task.NameKey] : TaskL[task.Task.Name];
-        var taskDescription = !string.IsNullOrWhiteSpace(task.Task.DescriptionKey) ? TaskL[task.Task.DescriptionKey] : TaskL[task.Task.Description];
-        var displayTaskName = (!taskName.ResourceNotFound && !string.IsNullOrWhiteSpace(taskName.Value)) ? taskName.Value : task.Task.Name;
-        var displayTaskDescription = (!taskDescription.ResourceNotFound && !string.IsNullOrWhiteSpace(taskDescription.Value)) ? taskDescription.Value : task.Task.Description;
+        var displayTaskName = TaskL[task.Task.NameKey];
+        var displayTaskDescription = TaskL[task.Task.DescriptionKey];
+        var taskNameValue = (!displayTaskName.ResourceNotFound && !string.IsNullOrWhiteSpace(displayTaskName.Value)) ? displayTaskName.Value : task.Task.NameKey;
+        var taskDescValue = (!displayTaskDescription.ResourceNotFound && !string.IsNullOrWhiteSpace(displayTaskDescription.Value)) ? displayTaskDescription.Value : task.Task.DescriptionKey;
         
         <article class="@cardClass">
             <div class="@badgeClass">
@@ -222,12 +222,12 @@
                     @GetRoomIcon(task.RoomType)
                 </div>
                 <div class="active-tasks__card-info">
-                    <h3 class="active-tasks__card-title">@displayTaskName</h3>
+                    <h3 class="active-tasks__card-title">@taskNameValue</h3>
                     <p class="active-tasks__card-item">@displayItemName</p>
                     <p class="active-tasks__card-location">@task.RoomName</p>
                 </div>
             </div>
-            <p class="active-tasks__card-description">@displayTaskDescription</p>
+            <p class="active-tasks__card-description">@taskDescValue</p>
             
             @if (_editingTaskId == task.Id)
             {

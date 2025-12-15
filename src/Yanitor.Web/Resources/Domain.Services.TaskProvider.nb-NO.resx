@@ -265,6 +265,20 @@
     <value>Rengjør avløpet der vannet pumpes ut for å forhindre blokkeringer og opprettholde effektivitet.</value>
   </data>
 
+  <!-- Oppvaskmaskin-oppgaver -->
+  <data name="Dishwasher_CleanFilter_Name" xml:space="preserve">
+    <value>Rengjør filter</value>
+  </data>
+  <data name="Dishwasher_CleanFilter_Description" xml:space="preserve">
+    <value>Ta ut og skyll oppvaskmaskinens filter for bedre vannflyt og for å hindre opphopning av matrester.</value>
+  </data>
+  <data name="Dishwasher_CleanDoorAndSeals_Name" xml:space="preserve">
+    <value>Rengjør dør og pakninger</value>
+  </data>
+  <data name="Dishwasher_CleanDoorAndSeals_Description" xml:space="preserve">
+    <value>Tørk av dørkanter, pakning og rundt tetninger for å hindre mugg, lukt og sikre god tetning.</value>
+  </data>
+
   <!-- Generic Tasks -->
   <data name="Generic_RegularInspection_Name" xml:space="preserve">
     <value>Regelmessig inspeksjon</value>

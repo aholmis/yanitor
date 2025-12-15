@@ -38,6 +38,7 @@ public class TaskProvider(IStringLocalizer<TaskProvider> localizer) : ITaskProvi
             "EXTERIOR" => GetExteriorTasks(),
             "INSULATION" => GetInsulationTasks(),
             "WASHINGMACHINE" => GetWashingMachineTasks(),
+            "DISHWASHER" => GetDishwasherTasks(),
             _ => GetGenericTasks()
         };
     }
@@ -48,24 +49,18 @@ public class TaskProvider(IStringLocalizer<TaskProvider> localizer) : ITaskProvi
         {
             NameKey = "HVAC_ChangeAirFilter_Name",
             DescriptionKey = "HVAC_ChangeAirFilter_Description",
-            Name = _localizer["HVAC_ChangeAirFilter_Name"],
-            Description = _localizer["HVAC_ChangeAirFilter_Description"],
             IntervalDays = 90
         },
         new MaintenanceTask
         {
             NameKey = "HVAC_ProfessionalInspection_Name",
             DescriptionKey = "HVAC_ProfessionalInspection_Description",
-            Name = _localizer["HVAC_ProfessionalInspection_Name"],
-            Description = _localizer["HVAC_ProfessionalInspection_Description"],
             IntervalDays = 365
         },
         new MaintenanceTask
         {
             NameKey = "HVAC_CleanVentsAndDucts_Name",
             DescriptionKey = "HVAC_CleanVentsAndDucts_Description",
-            Name = _localizer["HVAC_CleanVentsAndDucts_Name"],
-            Description = _localizer["HVAC_CleanVentsAndDucts_Description"],
             IntervalDays = 180
         }
     ];
@@ -76,24 +71,18 @@ public class TaskProvider(IStringLocalizer<TaskProvider> localizer) : ITaskProvi
         {
             NameKey = "Plumbing_CheckForLeaks_Name",
             DescriptionKey = "Plumbing_CheckForLeaks_Description",
-            Name = _localizer["Plumbing_CheckForLeaks_Name"],
-            Description = _localizer["Plumbing_CheckForLeaks_Description"],
             IntervalDays = 90
         },
         new MaintenanceTask
         {
             NameKey = "Plumbing_CleanDrains_Name",
             DescriptionKey = "Plumbing_CleanDrains_Description",
-            Name = _localizer["Plumbing_CleanDrains_Name"],
-            Description = _localizer["Plumbing_CleanDrains_Description"],
             IntervalDays = 180
         },
         new MaintenanceTask
         {
             NameKey = "Plumbing_TestWaterPressure_Name",
             DescriptionKey = "Plumbing_TestWaterPressure_Description",
-            Name = _localizer["Plumbing_TestWaterPressure_Name"],
-            Description = _localizer["Plumbing_TestWaterPressure_Description"],
             IntervalDays = 365
         }
     ];
@@ -104,24 +93,18 @@ public class TaskProvider(IStringLocalizer<TaskProvider> localizer) : ITaskProvi
         {
             NameKey = "Door_LubricateHinges_Name",
             DescriptionKey = "Door_LubricateHinges_Description",
-            Name = _localizer["Door_LubricateHinges_Name"],
-            Description = _localizer["Door_LubricateHinges_Description"],
             IntervalDays = 180
         },
         new MaintenanceTask
         {
             NameKey = "Door_CheckWeatherstripping_Name",
             DescriptionKey = "Door_CheckWeatherstripping_Description",
-            Name = _localizer["Door_CheckWeatherstripping_Name"],
-            Description = _localizer["Door_CheckWeatherstripping_Description"],
             IntervalDays = 365
         },
         new MaintenanceTask
         {
             NameKey = "Door_TightenHardware_Name",
             DescriptionKey = "Door_TightenHardware_Description",
-            Name = _localizer["Door_TightenHardware_Name"],
-            Description = _localizer["Door_TightenHardware_Description"],
             IntervalDays = 180
         }
     ];
@@ -132,24 +115,18 @@ public class TaskProvider(IStringLocalizer<TaskProvider> localizer) : ITaskProvi
         {
             NameKey = "Window_CleanWindows_Name",
             DescriptionKey = "Window_CleanWindows_Description",
-            Name = _localizer["Window_CleanWindows_Name"],
-            Description = _localizer["Window_CleanWindows_Description"],
             IntervalDays = 90
         },
         new MaintenanceTask
         {
             NameKey = "Window_CheckSeals_Name",
             DescriptionKey = "Window_CheckSeals_Description",
-            Name = _localizer["Window_CheckSeals_Name"],
-            Description = _localizer["Window_CheckSeals_Description"],
             IntervalDays = 180
         },
         new MaintenanceTask
         {
             NameKey = "Window_LubricateTracks_Name",
             DescriptionKey = "Window_LubricateTracks_Description",
-            Name = _localizer["Window_LubricateTracks_Name"],
-            Description = _localizer["Window_LubricateTracks_Description"],
             IntervalDays = 180
         }
     ];
@@ -160,24 +137,18 @@ public class TaskProvider(IStringLocalizer<TaskProvider> localizer) : ITaskProvi
         {
             NameKey = "Garage_LubricateMovingParts_Name",
             DescriptionKey = "Garage_LubricateMovingParts_Description",
-            Name = _localizer["Garage_LubricateMovingParts_Name"],
-            Description = _localizer["Garage_LubricateMovingParts_Description"],
             IntervalDays = 180
         },
         new MaintenanceTask
         {
             NameKey = "Garage_TestSafetyFeatures_Name",
             DescriptionKey = "Garage_TestSafetyFeatures_Description",
-            Name = _localizer["Garage_TestSafetyFeatures_Name"],
-            Description = _localizer["Garage_TestSafetyFeatures_Description"],
             IntervalDays = 90
         },
         new MaintenanceTask
         {
             NameKey = "Garage_ProfessionalInspection_Name",
             DescriptionKey = "Garage_ProfessionalInspection_Description",
-            Name = _localizer["Garage_ProfessionalInspection_Name"],
-            Description = _localizer["Garage_ProfessionalInspection_Description"],
             IntervalDays = 365
         }
     ];
@@ -188,24 +159,18 @@ public class TaskProvider(IStringLocalizer<TaskProvider> localizer) : ITaskProvi
         {
             NameKey = "Safety_TestAlarm_Name",
             DescriptionKey = "Safety_TestAlarm_Description",
-            Name = _localizer["Safety_TestAlarm_Name"],
-            Description = _localizer["Safety_TestAlarm_Description"],
             IntervalDays = 30
         },
         new MaintenanceTask
         {
             NameKey = "Safety_ReplaceBatteries_Name",
             DescriptionKey = "Safety_ReplaceBatteries_Description",
-            Name = _localizer["Safety_ReplaceBatteries_Name"],
-            Description = _localizer["Safety_ReplaceBatteries_Description"],
             IntervalDays = 365
         },
         new MaintenanceTask
         {
             NameKey = "Safety_CleanSensor_Name",
             DescriptionKey = "Safety_CleanSensor_Description",
-            Name = _localizer["Safety_CleanSensor_Name"],
-            Description = _localizer["Safety_CleanSensor_Description"],
             IntervalDays = 180
         }
     ];
@@ -216,24 +181,18 @@ public class TaskProvider(IStringLocalizer<TaskProvider> localizer) : ITaskProvi
         {
             NameKey = "Roof_InspectShingles_Name",
             DescriptionKey = "Roof_InspectShingles_Description",
-            Name = _localizer["Roof_InspectShingles_Name"],
-            Description = _localizer["Roof_InspectShingles_Description"],
             IntervalDays = 180
         },
         new MaintenanceTask
         {
             NameKey = "Roof_CheckForMoss_Name",
             DescriptionKey = "Roof_CheckForMoss_Description",
-            Name = _localizer["Roof_CheckForMoss_Name"],
-            Description = _localizer["Roof_CheckForMoss_Description"],
             IntervalDays = 365
         },
         new MaintenanceTask
         {
             NameKey = "Roof_ProfessionalInspection_Name",
             DescriptionKey = "Roof_ProfessionalInspection_Description",
-            Name = _localizer["Roof_ProfessionalInspection_Name"],
-            Description = _localizer["Roof_ProfessionalInspection_Description"],
             IntervalDays = 730
         }
     ];
@@ -244,24 +203,18 @@ public class TaskProvider(IStringLocalizer<TaskProvider> localizer) : ITaskProvi
         {
             NameKey = "Exterior_CleanGutters_Name",
             DescriptionKey = "Exterior_CleanGutters_Description",
-            Name = _localizer["Exterior_CleanGutters_Name"],
-            Description = _localizer["Exterior_CleanGutters_Description"],
             IntervalDays = 180
         },
         new MaintenanceTask
         {
             NameKey = "Exterior_InspectForDamage_Name",
             DescriptionKey = "Exterior_InspectForDamage_Description",
-            Name = _localizer["Exterior_InspectForDamage_Name"],
-            Description = _localizer["Exterior_InspectForDamage_Description"],
             IntervalDays = 90
         },
         new MaintenanceTask
         {
             NameKey = "Exterior_PaintTouchUp_Name",
             DescriptionKey = "Exterior_PaintTouchUp_Description",
-            Name = _localizer["Exterior_PaintTouchUp_Name"],
-            Description = _localizer["Exterior_PaintTouchUp_Description"],
             IntervalDays = 365
         }
     ];
@@ -272,24 +225,18 @@ public class TaskProvider(IStringLocalizer<TaskProvider> localizer) : ITaskProvi
         {
             NameKey = "Insulation_InspectForDamage_Name",
             DescriptionKey = "Insulation_InspectForDamage_Description",
-            Name = _localizer["Insulation_InspectForDamage_Name"],
-            Description = _localizer["Insulation_InspectForDamage_Description"],
             IntervalDays = 365
         },
         new MaintenanceTask
         {
             NameKey = "Insulation_CheckRValue_Name",
             DescriptionKey = "Insulation_CheckRValue_Description",
-            Name = _localizer["Insulation_CheckRValue_Name"],
-            Description = _localizer["Insulation_CheckRValue_Description"],
             IntervalDays = 1825
         },
         new MaintenanceTask
         {
             NameKey = "Insulation_SealAirLeaks_Name",
             DescriptionKey = "Insulation_SealAirLeaks_Description",
-            Name = _localizer["Insulation_SealAirLeaks_Name"],
-            Description = _localizer["Insulation_SealAirLeaks_Description"],
             IntervalDays = 365
         }
     ];
@@ -300,33 +247,41 @@ public class TaskProvider(IStringLocalizer<TaskProvider> localizer) : ITaskProvi
         {
             NameKey = "WashingMachine_RinseDrumCompartment_Name",
             DescriptionKey = "WashingMachine_RinseDrumCompartment_Description",
-            Name = _localizer["WashingMachine_RinseDrumCompartment_Name"],
-            Description = _localizer["WashingMachine_RinseDrumCompartment_Description"],
             IntervalDays = 30
         },
         new MaintenanceTask
         {
             NameKey = "WashingMachine_RinseSoapCompartment_Name",
             DescriptionKey = "WashingMachine_RinseSoapCompartment_Description",
-            Name = _localizer["WashingMachine_RinseSoapCompartment_Name"],
-            Description = _localizer["WashingMachine_RinseSoapCompartment_Description"],
             IntervalDays = 30
         },
         new MaintenanceTask
         {
             NameKey = "WashingMachine_RinseDrainFilter_Name",
             DescriptionKey = "WashingMachine_RinseDrainFilter_Description",
-            Name = _localizer["WashingMachine_RinseDrainFilter_Name"],
-            Description = _localizer["WashingMachine_RinseDrainFilter_Description"],
             IntervalDays = 90
         },
         new MaintenanceTask
         {
             NameKey = "WashingMachine_RinseDrainOutlet_Name",
             DescriptionKey = "WashingMachine_RinseDrainOutlet_Description",
-            Name = _localizer["WashingMachine_RinseDrainOutlet_Name"],
-            Description = _localizer["WashingMachine_RinseDrainOutlet_Description"],
             IntervalDays = 180
+        }
+    ];
+
+    private List<MaintenanceTask> GetDishwasherTasks() =>
+    [
+        new MaintenanceTask
+        {
+            NameKey = "Dishwasher_CleanFilter_Name",
+            DescriptionKey = "Dishwasher_CleanFilter_Description",
+            IntervalDays = 28
+        },
+        new MaintenanceTask
+        {
+            NameKey = "Dishwasher_CleanDoorAndSeals_Name",
+            DescriptionKey = "Dishwasher_CleanDoorAndSeals_Description",
+            IntervalDays = 30
         }
     ];
 
@@ -336,16 +291,12 @@ public class TaskProvider(IStringLocalizer<TaskProvider> localizer) : ITaskProvi
         {
             NameKey = "Generic_RegularInspection_Name",
             DescriptionKey = "Generic_RegularInspection_Description",
-            Name = _localizer["Generic_RegularInspection_Name"],
-            Description = _localizer["Generic_RegularInspection_Description"],
             IntervalDays = 180
         },
         new MaintenanceTask
         {
             NameKey = "Generic_CleanAndMaintain_Name",
             DescriptionKey = "Generic_CleanAndMaintain_Description",
-            Name = _localizer["Generic_CleanAndMaintain_Name"],
-            Description = _localizer["Generic_CleanAndMaintain_Description"],
             IntervalDays = 365
         }
     ];

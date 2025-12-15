@@ -8,6 +8,7 @@
 @inject IHouseConfigurationService HouseConfigService
 @inject IItemProvider ItemProvider
 @inject NavigationManager Navigation
+@inject IActiveTaskService TaskService
 @rendermode InteractiveServer
 
 <PageTitle>@L["PageTitle"]</PageTitle>
@@ -86,6 +87,9 @@
     {
         // Persist the selected items; the service updates the in-memory configuration.
         await HouseConfigService.SetSelectedItemTypesAsync(_selectedItemTypes);
+
+        // Ensure active tasks exist for the selected items
+        await TaskService.SyncActiveTasksAsync();
 
         // Navigate to My House; HasConfigurationAsync should now be true.
         var url = !string.IsNullOrEmpty(Culture) ? $"/{Culture}/my-house" : "/my-house";
