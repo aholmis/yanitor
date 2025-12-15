@@ -36,12 +36,20 @@ public class EfHouseConfigurationService
         var user = await EnsureDefaultUserAsync(_db);
         var house = await _db.Houses.Include(h => h.SelectedItemTypes)
             .FirstOrDefaultAsync(h => h.OwnerId == user.Id);
+
+        // Create the house if it does not exist and save immediately to get a generated Id
         if (house == null)
         {
             house = new House { OwnerId = user.Id };
             _db.Houses.Add(house);
+            await _db.SaveChangesAsync();
+            // Ensure navigation collection is initialized after creation
+            _db.Entry(house).Collection(h => h.SelectedItemTypes).Load();
         }
+
         var desired = configuration.SelectedItemTypes.ToHashSet(StringComparer.OrdinalIgnoreCase);
+
+        // Remove deselected item types
         foreach (var existing in house.SelectedItemTypes.ToList())
         {
             if (!desired.Contains(existing.Type))
@@ -49,15 +57,19 @@ public class EfHouseConfigurationService
                 _db.SelectedItemTypes.Remove(existing);
             }
         }
+
+        // Add newly selected item types
         var existingSet = house.SelectedItemTypes.Select(s => s.Type)
             .ToHashSet(StringComparer.OrdinalIgnoreCase);
         foreach (var type in desired)
         {
             if (!existingSet.Contains(type))
             {
-                house.SelectedItemTypes.Add(new SelectedItemType { HouseId = house.Id, Type = type });
+                // Add via navigation collection; EF will set the FK (HouseId) automatically
+                _db.SelectedItemTypes.Add(new SelectedItemType { Type = type, HouseId = house.Id });
             }
         }
+
         await _db.SaveChangesAsync();
 
         // Ensure tasks exist for the newly saved configuration

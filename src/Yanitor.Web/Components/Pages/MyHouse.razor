@@ -72,7 +72,7 @@
                 </article>
             </a>
 
-            <a href="@GetComponentsUrl()" class="my-house__card-link">
+            <a href="@GetItemsUrl()" class="my-house__card-link">
                 <article class="my-house__card my-house__card--components">
                     <div class="my-house__card-icon">
                         <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -118,9 +118,9 @@
         Navigation.NavigateTo(url);
     }
 
-    private string GetComponentsUrl()
+    private string GetItemsUrl()
     {
-        return !string.IsNullOrEmpty(Culture) ? $"/{Culture}/components" : "/components";
+        return !string.IsNullOrEmpty(Culture) ? $"/{Culture}/items" : "/items";
     }
 
     private string GetActiveTasksUrl()

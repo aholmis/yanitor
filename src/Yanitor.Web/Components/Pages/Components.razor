@@ -1,3 +1,5 @@
+@page "/items"
+@page "/{culture}/items"
 @page "/components"
 @page "/{culture}/components"
 @using System.Globalization
@@ -8,6 +10,7 @@
 @inject IStringLocalizer<Components> L
 @inject NavigationManager Navigation
 @inject IItemProvider ItemProvider
+@rendermode InteractiveServer
 
 <PageTitle>@L["PageTitle"]</PageTitle>
 
@@ -21,6 +24,14 @@
         <div class="components__header-content">
             <h1 class="components__title">@L["PageTitle"]</h1>
             <p class="components__subtitle">@L["Subtitle"]</p>
+        </div>
+        <div class="components__actions">
+            <button class="components__modify-button" type="button" @onclick="NavigateToBuilder" aria-label="@L["ModifyHouseAria"]">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+                </svg>
+                <span>@L["ModifyHouse"]</span>
+            </button>
         </div>
     </header>
 
@@ -84,6 +95,14 @@
         return string.IsNullOrWhiteSpace(Culture) 
             ? "/my-house" 
             : $"/{Culture}/my-house";
+    }
+
+    private void NavigateToBuilder()
+    {
+        var url = string.IsNullOrWhiteSpace(Culture) 
+            ? "/house-builder" 
+            : $"/{Culture}/house-builder";
+        Navigation.NavigateTo(url);
     }
 
     private RenderFragment GetRoomIcon(RoomType roomType) => roomType switch
