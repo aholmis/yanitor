@@ -192,14 +192,14 @@
             : (task.DaysUntilDue == 0 ? L["Today"] : task.DaysUntilDue == 1 ? L["Tomorrow"] : L["Days"]);
 
         // Resolve item display from domain localizers (room name is user-entered; do not localize)
-        var itemSpecificKey = $"Item_{task.ItemName}_Name";
-        var itemTypeKey = $"ItemType_{task.Task.GetType().Name}_Name";
+        var itemSpecificKey = $"Item_{task.Item.Name}_Name";
+        var itemTypeKey = $"ItemType_{task.Item.ItemType}_Name";
         var localizedItemName = ItemL[itemSpecificKey];
         if (localizedItemName.ResourceNotFound || string.IsNullOrWhiteSpace(localizedItemName.Value))
         {
             localizedItemName = ItemL[itemTypeKey];
         }
-        var displayItemName = (!localizedItemName.ResourceNotFound && !string.IsNullOrWhiteSpace(localizedItemName.Value)) ? localizedItemName.Value : task.ItemName;
+        var displayItemName = (!localizedItemName.ResourceNotFound && !string.IsNullOrWhiteSpace(localizedItemName.Value)) ? localizedItemName.Value : task.Item.Name;
 
         // Resolve task title/description using keys from MaintenanceTask
         var displayTaskName = TaskL[task.Task.NameKey];
@@ -219,12 +219,11 @@
             
             <div class="active-tasks__card-header">
                 <div class="active-tasks__card-icon">
-                    @GetRoomIcon(task.RoomType)
+                    @GetRoomIcon(task.Item.RoomType)
                 </div>
                 <div class="active-tasks__card-info">
-                    <h3 class="active-tasks__card-title">@taskNameValue</h3>
                     <p class="active-tasks__card-item">@displayItemName</p>
-                    <p class="active-tasks__card-location">@task.RoomName</p>
+                    <h3 class="active-tasks__card-title">@taskNameValue</h3>
                 </div>
             </div>
             <p class="active-tasks__card-description">@taskDescValue</p>
@@ -241,10 +240,10 @@
                             value="@_editingDateValue"
                             @oninput="@(e => _editingDateValue = e.Value?.ToString() ?? "")"
                             max="@DateTime.Now.ToString("yyyy-MM-dd")" />
-                        <button class="active-tasks__date-picker-button active-tasks__date-picker-button--save" @onclick="() => SaveCompletionDate(task.Id)">
+                        <button type="button" class="active-tasks__date-picker-button active-tasks__date-picker-button--save" @onclick="() => SaveCompletionDate(task.Id)">
                             @L["Save"]
                         </button>
-                        <button class="active-tasks__date-picker-button active-tasks__date-picker-button--cancel" @onclick="CancelEditDate">
+                        <button type="button" class="active-tasks__date-picker-button active-tasks__date-picker-button--cancel" @onclick="CancelEditDate">
                             @L["Cancel"]
                         </button>
                     </div>
@@ -252,7 +251,7 @@
             }
             else if (task.LastCompletedAt.HasValue)
             {
-                <button class="active-tasks__card-last-completed active-tasks__card-last-completed--clickable" 
+                <button type="button" class="active-tasks__card-last-completed active-tasks__card-last-completed--clickable"
                         @onclick="() => StartEditingDate(task.Id, task.LastCompletedAt.Value)"
                         title="@L["ClickToEditDate"]">
                     @L["LastCompleted", task.LastCompletedAt.Value.ToLocalTime().ToString("d")]
@@ -264,7 +263,7 @@
             }
             else
             {
-                <button class="active-tasks__card-last-completed active-tasks__card-last-completed--never active-tasks__card-last-completed--clickable" 
+                <button type="button" class="active-tasks__card-last-completed active-tasks__card-last-completed--never active-tasks__card-last-completed--clickable"
                         @onclick="() => StartEditingDate(task.Id, null)"
                         title="@L["ClickToSetDate"]">
                     @L["NeverCompleted"]
@@ -276,7 +275,7 @@
             }
             
             <div class="active-tasks__card-footer">
-                <button class="active-tasks__card-button" @onclick="() => CompleteTask(task.Id)">
+                <button type="button" class="active-tasks__card-button" @onclick="() => CompleteTask(task.Id)">
                     @L["MarkComplete"]
                 </button>
             </div>

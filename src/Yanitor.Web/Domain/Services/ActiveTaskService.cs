@@ -61,7 +61,7 @@ public class ActiveTaskService : IActiveTaskService
     public async Task<IEnumerable<ActiveTask>> GetTasksByRoomTypeAsync(RoomType roomType)
     {
         var all = await GetActiveTasksAsync();
-        return all.Where(t => t.RoomType == roomType);
+        return all.Where(t => t.Item.RoomType == roomType);
     }
 
     public async Task<ActiveTask?> GetNextTaskAsync()
@@ -119,7 +119,7 @@ public class ActiveTaskService : IActiveTaskService
 
         var selectedTypes = config.SelectedItemTypes.ToHashSet(StringComparer.OrdinalIgnoreCase);
         var items = (await _itemProvider.GetItemsForCurrentConfigurationAsync())
-            .Where(i => selectedTypes.Contains(i.Type))
+            .Where(i => selectedTypes.Contains(i.ItemType.ToString()))
             .ToList();
 
         // Existing tasks to avoid duplicates
@@ -148,7 +148,7 @@ public class ActiveTaskService : IActiveTaskService
                     HouseId = house.Id,
                     ItemName = item.Name,
                     TaskName = taskKey,
-                    TaskType = item.Type,
+                    TaskType = item.ItemType.ToString(),
                     RoomType = item.RoomType,
                     LastCompletedAt = null,
                     IntervalDays = task.IntervalDays,
@@ -170,13 +170,24 @@ public class ActiveTaskService : IActiveTaskService
             DescriptionKey = r.TaskName,
             IntervalDays = r.IntervalDays
         };
+
+        // Build a lightweight HouseItem instance based on persisted data
+        var itemType = Enum.TryParse<HouseItemType>(r.TaskType, true, out var parsed)
+            ? parsed
+            : HouseItemType.Ventilation;
+        var item = new HouseItem
+        {
+            Name = r.ItemName,
+            ItemType = itemType,
+            RoomType = r.RoomType,
+            Tasks = Array.Empty<MaintenanceTask>()
+        };
+
         return new ActiveTask
         {
             Id = r.Id,
             Task = mt,
-            ItemName = r.ItemName,
-            RoomName = string.Empty,
-            RoomType = r.RoomType,
+            Item = item,
             LastCompletedAt = r.LastCompletedAt,
             NextDueDate = r.NextDueDate
         };

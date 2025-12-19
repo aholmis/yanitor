@@ -62,11 +62,11 @@
                     {
                         <article class="components__item">
                             <div class="components__item-icon">
-                                @GetComponentIcon(component.Type)
+                                @GetComponentIcon(component.ItemType.ToString())
                             </div>
                             <div class="components__item-content">
                                 <h3 class="components__item-name">@component.Name</h3>
-                                <p class="components__item-type">@component.Type</p>
+                                <p class="components__item-type">@component.ItemType</p>
                             </div>
                         </article>
                     }

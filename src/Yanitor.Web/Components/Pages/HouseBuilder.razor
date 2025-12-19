@@ -26,25 +26,26 @@
             <div class="house-builder__item-grid">
                 @foreach (var item in _allItems)
                 {
-                    var isSelected = _selectedItemTypes.Contains(item.Type);
+                    var typeKey = item.ItemType.ToString();
+                    var isSelected = _selectedItemTypes.Contains(typeKey);
                     <button class="@(isSelected ? "house-item-button house-item-button--selected" : "house-item-button")" 
                             type="button"
-                            @onclick="() => ToggleItem(item.Type)"
+                            @onclick="() => ToggleItem(typeKey)"
                             aria-pressed="@isSelected"
                             aria-label="@L["ToggleItemAria", item.Name]">
                         <span class="house-item-button__icon">@GetRoomTypeIcon(item.RoomType)</span>
                         <span class="house-item-button__name">@item.Name</span>
-                        <span class="house-item-button__type">@item.Type</span>
+                        <span class="house-item-button__type">@typeKey</span>
                     </button>
                 }
             </div>
         </div>
 
         <div class="house-builder__actions">
-            <button class="btn btn--secondary" @onclick="Cancel">
+            <button type="button" class="btn btn--secondary" @onclick="Cancel">
                 @L["CancelButton"]
             </button>
-            <button class="btn btn--primary btn--large" 
+            <button type="button" class="btn btn--primary btn--large"
                     @onclick="SaveConfiguration"
                     disabled="@(_selectedItemTypes.Count == 0)">
                 @L["SaveButton"]

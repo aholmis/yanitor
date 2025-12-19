@@ -11,9 +11,9 @@ public interface ITaskProvider
     /// <summary>
     /// Gets predefined maintenance tasks for a specific item type.
     /// </summary>
-    /// <param name="itemType">The type of house item (e.g., HVAC, Plumbing, Door).</param>
+    /// <param name="itemType">The house item type.</param>
     /// <returns>A collection of maintenance tasks for the item type.</returns>
-    IEnumerable<MaintenanceTask> GetTasksForItemType(string itemType);
+    IEnumerable<MaintenanceTask> GetTasksForItemType(HouseItemType itemType);
 }
 
 /// <summary>
@@ -24,21 +24,14 @@ public class TaskProvider(IStringLocalizer<TaskProvider> localizer) : ITaskProvi
 {
     private readonly IStringLocalizer<TaskProvider> _localizer = localizer;
 
-    public IEnumerable<MaintenanceTask> GetTasksForItemType(string itemType)
+    public IEnumerable<MaintenanceTask> GetTasksForItemType(HouseItemType itemType)
     {
-        return itemType.ToUpperInvariant() switch
+        return itemType switch
         {
-            "HVAC" => GetHvacTasks(),
-            "PLUMBING" => GetPlumbingTasks(),
-            "DOOR" => GetDoorTasks(),
-            "WINDOW" => GetWindowTasks(),
-            "GARAGE" => GetGarageTasks(),
-            "SAFETY" => GetSafetyTasks(),
-            "ROOF" => GetRoofTasks(),
-            "EXTERIOR" => GetExteriorTasks(),
-            "INSULATION" => GetInsulationTasks(),
-            "WASHINGMACHINE" => GetWashingMachineTasks(),
-            "DISHWASHER" => GetDishwasherTasks(),
+            HouseItemType.Ventilation => GetHvacTasks(),
+            HouseItemType.Shower => GetPlumbingTasks(),
+            HouseItemType.WashingMachine => GetWashingMachineTasks(),
+            HouseItemType.Dishwasher => GetDishwasherTasks(),
             _ => GetGenericTasks()
         };
     }

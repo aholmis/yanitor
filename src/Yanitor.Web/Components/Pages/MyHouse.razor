@@ -35,7 +35,7 @@
                 <h2 class="my-house__empty-title">@L["BuildYourHouseTitle"]</h2>
                 <p class="my-house__empty-text">@L["BuildYourHouseMessage"]</p>
             </div>
-            <button class="my-house__add-button" @onclick="NavigateToBuilder" aria-label="@L["BuildYourHouseButton"]">
+            <button type="button" class="my-house__add-button" @onclick="NavigateToBuilder" aria-label="@L["BuildYourHouseButton"]">
                 <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                     <path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
                 </svg>
@@ -60,7 +60,7 @@
                         {
                             <div class="my-house__next-task">
                                 <p class="my-house__next-task-label">@L["NextTask"]:</p>
-                                <p class="my-house__next-task-name">@($"{GetDisplayTaskName(_nextTask.Task)} ({GetDisplayItemName(_nextTask.ItemName)})")</p>
+                                <p class="my-house__next-task-name">@($"{GetDisplayTaskName(_nextTask.Task)} ({GetDisplayItemName(_nextTask.Item)})")</p>
                                 <p class="my-house__next-task-due">@GetDaysUntilDueText(_nextTask.DaysUntilDue)</p>
                             </div>
                         }
@@ -146,28 +146,24 @@
         return (!name.ResourceNotFound && !string.IsNullOrWhiteSpace(name.Value)) ? name.Value : task.NameKey;
     }
 
-    private string GetDisplayItemName(string itemName)
+    private string GetDisplayItemName(HouseItem item)
     {
         // Try specific item name key first
-        var specific = ItemL[$"Item_{itemName}_Name"]; 
+        var specific = ItemL[$"Item_{item.Name}_Name"]; 
         if (!specific.ResourceNotFound && !string.IsNullOrWhiteSpace(specific.Value))
         {
             return specific.Value;
         }
 
-        // Fallback to item type display using the catalog from ItemProvider
-        var match = ItemProvider.GetAllItems().FirstOrDefault(i => string.Equals(i.Name, itemName, StringComparison.OrdinalIgnoreCase));
-        if (match is not null)
+        // Fallback to item type display
+        var typeKey = $"ItemType_{item.ItemType}_Name";
+        var typeName = ItemL[typeKey];
+        if (!typeName.ResourceNotFound && !string.IsNullOrWhiteSpace(typeName.Value))
         {
-            var typeKey = $"ItemType_{match.Type}_Name";
-            var typeName = ItemL[typeKey];
-            if (!typeName.ResourceNotFound && !string.IsNullOrWhiteSpace(typeName.Value))
-            {
-                return typeName.Value;
-            }
+            return typeName.Value;
         }
 
         // Final fallback: raw item name
-        return itemName;
+        return item.Name;
     }
 }

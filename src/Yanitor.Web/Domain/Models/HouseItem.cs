@@ -13,7 +13,7 @@ public record HouseItem
     /// <summary>
     /// Gets the type/category of the house item (e.g., HVAC, Plumbing, Door).
     /// </summary>
-    public required string Type { get; init; }
+    public required HouseItemType ItemType { get; init; }
 
     /// <summary>
     /// Gets the general type of room (e.g., Bedroom, Kitchen, Bathroom).

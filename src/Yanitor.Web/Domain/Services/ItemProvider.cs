@@ -35,30 +35,30 @@ public class ItemProvider(ITaskProvider taskProvider, IHouseConfigurationService
             new HouseItem
             {
                 Name = "Ventilation System",
-                Type = "Ventilation",
+                ItemType = HouseItemType.Ventilation,
                 RoomType = RoomType.Other,
-                Tasks = taskProvider.GetTasksForItemType("Ventilation").ToList()
+                Tasks = taskProvider.GetTasksForItemType(HouseItemType.Ventilation).ToList()
             },
             new HouseItem
             {
                 Name = "Master Bathroom Shower",
-                Type = "Shower",
+                ItemType = HouseItemType.Shower,
                 RoomType = RoomType.Bathroom,
-                Tasks = taskProvider.GetTasksForItemType("Shower").ToList()
+                Tasks = taskProvider.GetTasksForItemType(HouseItemType.Shower).ToList()
             },
             new HouseItem
             {
                 Name = "Washing Machine",
-                Type = "WashingMachine",
+                ItemType = HouseItemType.WashingMachine,
                 RoomType = RoomType.Bathroom,
-                Tasks = taskProvider.GetTasksForItemType("WashingMachine").ToList()
+                Tasks = taskProvider.GetTasksForItemType(HouseItemType.WashingMachine).ToList()
             },
             new HouseItem
             {
                 Name = "Dishwasher",
-                Type = "Dishwasher",
+                ItemType = HouseItemType.Dishwasher,
                 RoomType = RoomType.Kitchen,
-                Tasks = taskProvider.GetTasksForItemType("Dishwasher").ToList()
+                Tasks = taskProvider.GetTasksForItemType(HouseItemType.Dishwasher).ToList()
             }
         };
     }
@@ -74,6 +74,6 @@ public class ItemProvider(ITaskProvider taskProvider, IHouseConfigurationService
         }
 
         var selected = config.SelectedItemTypes;
-        return _items.Where(i => selected.Contains(i.Type));
+        return _items.Where(i => selected.Contains(i.ItemType.ToString()));
     }
 }
