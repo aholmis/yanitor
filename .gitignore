@@ -15,7 +15,7 @@
 *.userprefs
 
 # sqlite database files
-#*.db
+*.db
 
 # Mono auto generated files
 mono_crash.*
