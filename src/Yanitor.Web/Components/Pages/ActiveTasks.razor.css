@@ -214,10 +214,11 @@
 .active-tasks__card-info {
     flex: 1;
     min-width: 0;
+    font-size: 1.0625rem;
 }
 
 .active-tasks__card-title {
-    font-size: 1.25rem;
+    font-size: 1.5rem;
     font-weight: 600;
     margin: 0 0 0.25rem 0;
     color: var(--text-primary, #1a1a1a);
@@ -225,33 +226,32 @@
 }
 
 .active-tasks__card-item {
-    font-size: 0.9375rem;
+    font-size: 1.1rem;
     font-weight: 600;
     color: var(--primary, #1976d2);
     margin: 0 0 0.125rem 0;
 }
 
-.active-tasks__card-location {
-    font-size: 0.8125rem;
-    color: var(--text-secondary, #666);
-    margin: 0;
-}
-
 /* Description spans both columns */
 .active-tasks__card-description {
-    grid-column: 1 / -1;
-    grid-row: 3;
-    font-size: 0.9375rem;
+    grid-column: 2;
+    grid-row: 2;
     color: var(--text-secondary, #666);
     margin: 0;
     line-height: 1.5;
 }
 
-/* Last completed date */
+.active-tasks__card-due-date {
+    grid-column: 1 / -1;
+    grid-row: 3;
+    margin: 0.35rem 0 0 0;
+    font-size: 0.9rem;
+    color: var(--text-secondary, #666);
+}
+
 .active-tasks__card-last-completed {
     grid-column: 1 / -1;
     grid-row: 4;
-    font-size: 0.8125rem;
     color: var(--text-tertiary, #999);
     margin: 0;
     font-style: italic;
@@ -440,15 +440,15 @@
         gap: 1rem;
     }
 
-    /* Optimized mobile layout - keep badge compact on left */
+    /* Optimized mobile layout - stack content with clear rows */
     .active-tasks__card {
         grid-template-columns: auto 1fr;
-        grid-template-rows: auto auto auto auto;
+        grid-template-rows: auto auto auto auto auto;
         padding: 1rem;
-        gap: 1rem;
+        gap: 0.75rem;
     }
 
-    /* Badge stays compact on mobile - left side */
+    /* Badge stays compact on mobile - left side, spanning header + description */
     .active-tasks__card-badge {
         grid-column: 1;
         grid-row: 1 / 3;
@@ -477,16 +477,16 @@
     }
 
     .active-tasks__card-description {
+        grid-column: 2;
+        grid-row: 2;
+    }
+
+    .active-tasks__card-due-date {
         grid-column: 1 / -1;
         grid-row: 3;
-        font-size: 0.875rem;
     }
 
-    .active-tasks__card-last-completed {
-        grid-column: 1 / -1;
-        grid-row: 4;
-    }
-
+    .active-tasks__card-last-completed,
     .active-tasks__date-picker {
         grid-column: 1 / -1;
         grid-row: 4;
@@ -503,10 +503,6 @@
         width: 100%;
         padding: 0.875rem;
         font-size: 0.9375rem;
-    }
-
-    .active-tasks__card-title {
-        font-size: 1rem;
     }
 
     .active-tasks__card-icon {

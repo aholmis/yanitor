@@ -130,4 +130,10 @@
   <data name="RoomType_Other" xml:space="preserve">
     <value>Other</value>
   </data>
+  <data name="SelectItemsTitle" xml:space="preserve">
+    <value>Select items you have</value>
+  </data>
+  <data name="SelectItemsHint" xml:space="preserve">
+    <value>Toggle the items present in your home. Selected items will turn blue.</value>
+  </data>
 </root>

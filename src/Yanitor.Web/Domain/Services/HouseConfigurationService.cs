@@ -20,22 +20,15 @@ public interface IHouseConfigurationService
     Task SaveConfigurationAsync(HouseConfiguration configuration);
 
     /// <summary>
-    /// Adds a room to the current house configuration.
-    /// </summary>
-    /// <param name="room">The room to add.</param>
-    Task AddRoomAsync(Room room);
-
-    /// <summary>
-    /// Removes a room from the current house configuration.
-    /// </summary>
-    /// <param name="roomId">The ID of the room to remove.</param>
-    Task RemoveRoomAsync(Guid roomId);
-
-    /// <summary>
     /// Checks if a house configuration exists.
     /// </summary>
     /// <returns>True if a configuration exists, false otherwise.</returns>
     Task<bool> HasConfigurationAsync();
+
+    /// <summary>
+    /// Sets the selected item types present in the house.
+    /// </summary>
+    Task SetSelectedItemTypesAsync(IEnumerable<string> itemTypes);
 }
 
 /// <summary>
@@ -57,31 +50,27 @@ public class HouseConfigurationService : IHouseConfigurationService
         return Task.CompletedTask;
     }
 
-    public async Task AddRoomAsync(Room room)
+    public async Task<bool> HasConfigurationAsync()
     {
         var config = await GetConfigurationAsync();
-        if (config == null)
-        {
-            config = new HouseConfiguration();
-        }
-
-        _configuration = config.AddRoom(room);
+        return config != null && config.SelectedItemTypes.Count > 0;
     }
 
-    public async Task RemoveRoomAsync(Guid roomId)
+    public async Task SetSelectedItemTypesAsync(IEnumerable<string> itemTypes)
     {
-        var config = await GetConfigurationAsync();
-        if (config == null)
+        var config = await GetConfigurationAsync() ?? new HouseConfiguration();
+
+        // return if no changes
+        if (config.SelectedItemTypes.SetEquals(itemTypes))
         {
             return;
         }
 
-        _configuration = config.RemoveRoom(roomId);
-    }
-
-    public async Task<bool> HasConfigurationAsync()
-    {
-        var config = await GetConfigurationAsync();
-        return config != null && config.Rooms.Count > 0;
+        config.SelectedItemTypes.Clear();
+        foreach (var t in itemTypes)
+        {
+            config.SelectedItemTypes.Add(t);
+        }
+        _configuration = config with { LastModifiedAt = DateTime.UtcNow };
     }
 }

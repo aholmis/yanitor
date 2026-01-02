@@ -65,10 +65,10 @@
     <value>Oversikt over vedlikehold av boligen din</value>
   </data>
   <data name="ComponentsTitle" xml:space="preserve">
-    <value>Komponenter</value>
+    <value>Elementer</value>
   </data>
   <data name="ComponentsDescription" xml:space="preserve">
-    <value>Huskomponenter sporet</value>
+    <value>Huselementer som spores</value>
   </data>
   <data name="TasksTitle" xml:space="preserve">
     <value>Oppgaver</value>
@@ -90,5 +90,14 @@
   </data>
   <data name="Overdue" xml:space="preserve">
     <value>Forfalt for {0} dager siden</value>
+  </data>
+  <data name="BuildYourHouseTitle" xml:space="preserve">
+    <value>Bygg huset ditt</value>
+  </data>
+  <data name="BuildYourHouseMessage" xml:space="preserve">
+    <value>Begynn med å legge til rom i huset for å spore vedlikehold og elementer</value>
+  </data>
+  <data name="BuildYourHouseButton" xml:space="preserve">
+    <value>Legg til rom i huset ditt</value>
   </data>
 </root>

@@ -64,19 +64,19 @@
     <value>Bytt luftfilter</value>
   </data>
   <data name="HVAC_ChangeAirFilter_Description" xml:space="preserve">
-    <value>Skift luftfilter i ventilasjonsanlegget for å opprettholde luftkvalitet og systemeffektivitet.</value>
+	<value>Slå av ventilasjonsanlegget, åpne lokket til filteret, ta ut det gamle filteret, støvsug så godt du kommer til, sett inn et nytt filter i samme størrelse med pilen i riktig luftstrømsretning, lukk lokket igjen og start anlegget på nytt.</value>
   </data>
   <data name="HVAC_ProfessionalInspection_Name" xml:space="preserve">
     <value>Profesjonell inspeksjon</value>
   </data>
   <data name="HVAC_ProfessionalInspection_Description" xml:space="preserve">
-    <value>Bestill profesjonell inspeksjon og vedlikehold av ventilasjonsanlegget.</value>
+	<value>Bestill en sertifisert tekniker som kan inspisere anlegget, kontrollere trykk og luftmengder, elektriske koblinger, sikkerhetsfunksjoner og filter, og utføre anbefalt vedlikehold etter produsentens retningslinjer.</value>
   </data>
   <data name="HVAC_CleanVentsAndDucts_Name" xml:space="preserve">
     <value>Rengjør ventiler og kanaler</value>
   </data>
   <data name="HVAC_CleanVentsAndDucts_Description" xml:space="preserve">
-    <value>Rengjør lufteventiler og inspiser kanalsystemet for rusk eller blokkeringer.</value>
+	<value>Ta av ventildeksler og rister, støvsug og tørk dem med en fuktig klut, og se inn i tilgjengelige kanalåpninger etter støv, rusk eller skader; kontakt fagperson ved behov for grundigere kanalrengjøring.</value>
   </data>
 
   <!-- Plumbing Tasks -->
@@ -84,19 +84,19 @@
     <value>Sjekk for lekkasjer</value>
   </data>
   <data name="Plumbing_CheckForLeaks_Description" xml:space="preserve">
-    <value>Inspiser rør, kraner og koblinger for tegn på lekkasjer eller vannskader.</value>
+	<value>Se under servanter, rundt dusjen og langs synlige rør etter drypp, fuktflekker, misfarging eller rust; stram forsiktig løse koblinger og noter forhold som bør vurderes av rørlegger.</value>
   </data>
   <data name="Plumbing_CleanDrains_Name" xml:space="preserve">
     <value>Rengjør sluk</value>
   </data>
   <data name="Plumbing_CleanDrains_Description" xml:space="preserve">
-    <value>Rengjør og spyl sluk for å forhindre tetting og opphopning.</value>
+	<value>Fjern synlige hår og rusk fra slukristen, skyll med varmt vann, og bruk eventuelt stakefjær eller godkjent avløpsrens (aldri bland kjemikalier) for å åpne tregt eller delvis tett avløp.</value>
   </data>
   <data name="Plumbing_TestWaterPressure_Name" xml:space="preserve">
     <value>Test vanntrykk</value>
   </data>
   <data name="Plumbing_TestWaterPressure_Description" xml:space="preserve">
-    <value>Kontroller vanntrykk og juster om nødvendig for å forhindre rørskader.</value>
+	<value>Koble et enkelt trykkmåleinstrument til en utekran eller servant, åpne kranen helt for å lese vanntrykket i boligen, og juster trykkreduksjonsventilen eller kontakt rørlegger hvis trykket ligger utenfor anbefalt område.</value>
   </data>
 
   <!-- Door Tasks -->
@@ -104,7 +104,7 @@
     <value>Smør hengsler</value>
   </data>
   <data name="Door_LubricateHinges_Description" xml:space="preserve">
-    <value>Påfør smøremiddel på dørhengslene for å forhindre knerking og sikre jevn drift.</value>
+    <value>Påfør smøremiddel på dørhengslene for å forhindre knirking og sikre jevn drift.</value>
   </data>
   <data name="Door_CheckWeatherstripping_Name" xml:space="preserve">
     <value>Sjekk tetningslister</value>
@@ -244,25 +244,53 @@
     <value>Skyll trommelrom</value>
   </data>
   <data name="WashingMachine_RinseDrumCompartment_Description" xml:space="preserve">
-    <value>Rengjør hovedtrommelrommet for å forhindre opphopning og lukt.</value>
+	<value>Kjør en tom vask på høy temperatur med maskinrens eller mildt vaskemiddel etter produsentens anvisninger, tørk deretter av trommel og gummimansjett, og la døren stå åpen til alt er tørt.</value>
   </data>
   <data name="WashingMachine_RinseSoapCompartment_Name" xml:space="preserve">
     <value>Skyll såperom</value>
   </data>
   <data name="WashingMachine_RinseSoapCompartment_Description" xml:space="preserve">
-    <value>Rengjør hovedrommet for vaskemiddel og skyllemiddel for å forhindre opphopning og lukt.</value>
+	<value>Trekk ut såpeskuffen, ta fra hverandre løse deler om mulig, skyll delene i lunkent vann mens du børster bort såperester, tørk lett av og skyv skuffen tilbake på plass.</value>
   </data>
   <data name="WashingMachine_RinseDrainFilter_Name" xml:space="preserve">
     <value>Skyll avløpsfilter</value>
   </data>
   <data name="WashingMachine_RinseDrainFilter_Description" xml:space="preserve">
-    <value>Fjern og rengjør avløpsfilteret for å forhindre tetting og sikre riktig drenering.</value>
+	<value>Finn serviceluken til avløpsfilteret, legg et brett eller håndkle under, åpne lokket forsiktig for å slippe ut vann, ta ut filteret, fjern lo og rusk, skyll det rent og sett det godt på plass igjen før du lukker lokket.</value>
   </data>
   <data name="WashingMachine_RinseDrainOutlet_Name" xml:space="preserve">
     <value>Skyll avløpsutløp</value>
   </data>
   <data name="WashingMachine_RinseDrainOutlet_Description" xml:space="preserve">
-    <value>Rengjør avløpet der vannet pumpes ut for å forhindre blokkeringer og opprettholde effektivitet.</value>
+	<value>Kontroller avløpsslangens tilkobling og røret eller sluket den går ned i for knekk, belegg eller blokkeringer, fjern synlig lo og rusk, og skyll gjennom med vann slik at avløpsvannet kan renne fritt.</value>
+  </data>
+
+  <!-- Oppvaskmaskin-oppgaver -->
+  <data name="Dishwasher_CleanFilter_Name" xml:space="preserve">
+    <value>Rengjør filter</value>
+  </data>
+  <data name="Dishwasher_CleanFilter_Description" xml:space="preserve">
+	<value>Ta ut den nederste kurven, lås opp og løft ut filterenheten, skyll filtrene i lunkent vann mens du forsiktig børster bort matrester, kontroller for blokkeringer under filterområdet, og sett filtrene godt på plass igjen.</value>
+  </data>
+  <data name="Dishwasher_CleanDoorAndSeals_Name" xml:space="preserve">
+    <value>Rengjør dør og pakninger</value>
+  </data>
+  <data name="Dishwasher_CleanDoorAndSeals_Description" xml:space="preserve">
+	<value>Bruk en myk klut og mildt rengjøringsmiddel til å tørke av dørkanter, gummipakning og rundt tetningene, fjern synlig belegg og mugg, og tørk godt etterpå for å sikre en tett og luktfri dør.</value>
+  </data>
+
+  <!-- Baderomsservant og badekaravløp -->
+  <data name="BathroomSink_CleanDrain_Name" xml:space="preserve">
+    <value>Rengjør servantavløp</value>
+  </data>
+  <data name="BathroomSink_CleanDrain_Description" xml:space="preserve">
+	<value>Ta av silen eller slukristen, fjern hår og såperester, skyll med varmt vann, og bruk eventuelt en enkel stakefjær eller godkjent avløpsrens for å holde servantavløpet åpent.</value>
+  </data>
+  <data name="BathtubDrain_CleanDrain_Name" xml:space="preserve">
+    <value>Rengjør badekaravløp</value>
+  </data>
+  <data name="BathtubDrain_CleanDrain_Description" xml:space="preserve">
+	<value>Ta av sil eller propp, fjern hår og såperester, skyll med varmt vann, og bruk eventuelt stakefjær eller godkjent avløpsrens dersom vannet renner sakte ut av karet.</value>
   </data>
 
   <!-- Generic Tasks -->

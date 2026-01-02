@@ -18,17 +18,7 @@ public record ActiveTask
     /// <summary>
     /// Gets the house item this task is for.
     /// </summary>
-    public required string ItemName { get; init; }
-
-    /// <summary>
-    /// Gets the room where the item is located.
-    /// </summary>
-    public required string RoomName { get; init; }
-
-    /// <summary>
-    /// Gets the type of room.
-    /// </summary>
-    public required RoomType RoomType { get; init; }
+    public required HouseItem Item { get; init; }
 
     /// <summary>
     /// Gets the date when this task was last completed.

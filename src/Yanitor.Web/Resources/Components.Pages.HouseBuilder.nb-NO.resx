@@ -59,81 +59,81 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="PageTitle" xml:space="preserve">
-    <value>Aktive oppgaver</value>
+    <value>Husbygger</value>
   </data>
   <data name="Subtitle" xml:space="preserve">
-    <value>Dine kommende vedlikeholdsoppgaver</value>
+    <value>Legg til og organiser rom i huset ditt</value>
   </data>
-  <data name="BackToMyHouse" xml:space="preserve">
-    <value>Tilbake til Mitt hus</value>
+  <data name="NoRoomsMessage" xml:space="preserve">
+    <value>Ingen rom lagt til enda. Start med aa legge til ditt forste rom under.</value>
   </data>
-  <data name="Loading" xml:space="preserve">
-    <value>Laster oppgaver...</value>
+  <data name="AddRoomTitle" xml:space="preserve">
+    <value>Legg til nytt rom</value>
   </data>
-  <data name="NoTasks" xml:space="preserve">
-    <value>Ingen aktive oppgaver for oyeblikket</value>
+  <data name="RoomNameLabel" xml:space="preserve">
+    <value>Romnavn</value>
   </data>
-  <data name="OverdueTasks" xml:space="preserve">
-    <value>Forsinkede oppgaver</value>
+  <data name="RoomNamePlaceholder" xml:space="preserve">
+    <value>f.eks. Hovedsoverom</value>
   </data>
-  <data name="DueSoon" xml:space="preserve">
-    <value>Forfaller snart</value>
+  <data name="RoomTypeLabel" xml:space="preserve">
+    <value>Romtype</value>
   </data>
-  <data name="UpcomingTasks" xml:space="preserve">
-    <value>Kommende oppgaver</value>
+  <data name="AddRoomButton" xml:space="preserve">
+    <value>Legg til rom</value>
   </data>
-  <data name="DueToday" xml:space="preserve">
-    <value>Forfaller i dag</value>
+  <data name="RemoveRoom" xml:space="preserve">
+    <value>Fjern {0}</value>
   </data>
-  <data name="DueTomorrow" xml:space="preserve">
-    <value>Forfaller i morgen</value>
-  </data>
-  <data name="DueInDays" xml:space="preserve">
-    <value>Forfaller om {0} dager</value>
-  </data>
-  <data name="OverdueByDays" xml:space="preserve">
-    <value>Forsinket med {0} dager</value>
-  </data>
-  <data name="DueOn" xml:space="preserve">
-    <value>Forfaller {0}</value>
-  </data>
-  <data name="MarkComplete" xml:space="preserve">
-    <value>Merk som fullfort</value>
-  </data>
-  <data name="LastCompleted" xml:space="preserve">
-    <value>Sist fullført: {0}</value>
-  </data>
-  <data name="NeverCompleted" xml:space="preserve">
-    <value>Aldri fullført</value>
-  </data>
-  <data name="SetCompletionDate" xml:space="preserve">
-    <value>Angi fullføringsdato</value>
-  </data>
-  <data name="Save" xml:space="preserve">
-    <value>Lagre</value>
-  </data>
-  <data name="Cancel" xml:space="preserve">
+  <data name="CancelButton" xml:space="preserve">
     <value>Avbryt</value>
   </data>
-  <data name="ClickToEditDate" xml:space="preserve">
-    <value>Klikk for å endre fullføringsdato</value>
+  <data name="SaveButton" xml:space="preserve">
+    <value>Lagre konfigurasjon</value>
   </data>
-  <data name="ClickToSetDate" xml:space="preserve">
-    <value>Klikk for å angi fullføringsdato</value>
+  <data name="RoomType_Bedroom" xml:space="preserve">
+    <value>Soverom</value>
   </data>
-  <data name="Day" xml:space="preserve">
-    <value>dag</value>
+  <data name="RoomType_Bathroom" xml:space="preserve">
+    <value>Baderom</value>
   </data>
-  <data name="Days" xml:space="preserve">
-    <value>dager</value>
+  <data name="RoomType_Kitchen" xml:space="preserve">
+    <value>Kjokken</value>
   </data>
-  <data name="Today" xml:space="preserve">
-    <value>i dag</value>
+  <data name="RoomType_LivingRoom" xml:space="preserve">
+    <value>Stue</value>
   </data>
-  <data name="Tomorrow" xml:space="preserve">
-    <value>i morgen</value>
+  <data name="RoomType_DiningRoom" xml:space="preserve">
+    <value>Spisestue</value>
   </data>
-  <data name="Overdue" xml:space="preserve">
-    <value>forsinket</value>
+  <data name="RoomType_Hall" xml:space="preserve">
+    <value>Gang</value>
+  </data>
+  <data name="RoomType_Garage" xml:space="preserve">
+    <value>Garasje</value>
+  </data>
+  <data name="RoomType_Basement" xml:space="preserve">
+    <value>Kjeller</value>
+  </data>
+  <data name="RoomType_Attic" xml:space="preserve">
+    <value>Loft</value>
+  </data>
+  <data name="RoomType_Office" xml:space="preserve">
+    <value>Kontor</value>
+  </data>
+  <data name="RoomType_LaundryRoom" xml:space="preserve">
+    <value>Vaskerom</value>
+  </data>
+  <data name="RoomType_Outdoor" xml:space="preserve">
+    <value>Utendors</value>
+  </data>
+  <data name="RoomType_Other" xml:space="preserve">
+    <value>Annet</value>
+  </data>
+  <data name="SelectItemsTitle" xml:space="preserve">
+    <value>Velg komponenter du har</value>
+  </data>
+  <data name="SelectItemsHint" xml:space="preserve">
+    <value>Trykk for aa velge komponenter som finnes i hjemmet ditt. Valgte komponenter blir bla.</value>
   </data>
 </root>

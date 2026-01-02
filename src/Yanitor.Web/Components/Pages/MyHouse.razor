@@ -10,6 +10,8 @@
 @inject IHouseConfigurationService HouseConfigService
 @inject IActiveTaskService TaskService
 @inject IItemProvider ItemProvider
+@inject IStringLocalizer<TaskProvider> TaskL
+@inject IStringLocalizer<HouseItemResources> ItemL
 @rendermode InteractiveServer
 
 <PageTitle>@L["PageTitle"]</PageTitle>
@@ -33,7 +35,7 @@
                 <h2 class="my-house__empty-title">@L["BuildYourHouseTitle"]</h2>
                 <p class="my-house__empty-text">@L["BuildYourHouseMessage"]</p>
             </div>
-            <button class="my-house__add-button" @onclick="NavigateToBuilder" aria-label="@L["BuildYourHouseButton"]">
+            <button type="button" class="my-house__add-button" @onclick="NavigateToBuilder" aria-label="@L["BuildYourHouseButton"]">
                 <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                     <path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
                 </svg>
@@ -58,7 +60,7 @@
                         {
                             <div class="my-house__next-task">
                                 <p class="my-house__next-task-label">@L["NextTask"]:</p>
-                                <p class="my-house__next-task-name">@_nextTask.Task.Name</p>
+                                <p class="my-house__next-task-name">@($"{GetDisplayTaskName(_nextTask.Task)} ({GetDisplayItemName(_nextTask.Item)})")</p>
                                 <p class="my-house__next-task-due">@GetDaysUntilDueText(_nextTask.DaysUntilDue)</p>
                             </div>
                         }
@@ -70,7 +72,7 @@
                 </article>
             </a>
 
-            <a href="@GetComponentsUrl()" class="my-house__card-link">
+            <a href="@GetItemsUrl()" class="my-house__card-link">
                 <article class="my-house__card my-house__card--components">
                     <div class="my-house__card-icon">
                         <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -104,7 +106,7 @@
         
         if (_hasConfiguration)
         {
-            _componentsCount = ItemProvider.GetAllItems().Count();
+            _componentsCount = (await ItemProvider.GetItemsForCurrentConfigurationAsync()).Count();
             _tasksCount = await TaskService.GetTaskCountAsync();
             _nextTask = await TaskService.GetNextTaskAsync();
         }
@@ -116,9 +118,9 @@
         Navigation.NavigateTo(url);
     }
 
-    private string GetComponentsUrl()
+    private string GetItemsUrl()
     {
-        return !string.IsNullOrEmpty(Culture) ? $"/{Culture}/components" : "/components";
+        return !string.IsNullOrEmpty(Culture) ? $"/{Culture}/items" : "/items";
     }
 
     private string GetActiveTasksUrl()
@@ -136,5 +138,32 @@
             return L["Overdue", Math.Abs(days)];
         
         return L["DueInDays", days];
+    }
+
+    private string GetDisplayTaskName(MaintenanceTask task)
+    {
+        var name = TaskL[task.NameKey];
+        return (!name.ResourceNotFound && !string.IsNullOrWhiteSpace(name.Value)) ? name.Value : task.NameKey;
+    }
+
+    private string GetDisplayItemName(HouseItem item)
+    {
+        // Try specific item name key first
+        var specific = ItemL[$"Item_{item.Name}_Name"]; 
+        if (!specific.ResourceNotFound && !string.IsNullOrWhiteSpace(specific.Value))
+        {
+            return specific.Value;
+        }
+
+        // Fallback to item type display
+        var typeKey = $"ItemType_{item.ItemType}_Name";
+        var typeName = ItemL[typeKey];
+        if (!typeName.ResourceNotFound && !string.IsNullOrWhiteSpace(typeName.Value))
+        {
+            return typeName.Value;
+        }
+
+        // Final fallback: raw item name
+        return item.Name;
     }
 }

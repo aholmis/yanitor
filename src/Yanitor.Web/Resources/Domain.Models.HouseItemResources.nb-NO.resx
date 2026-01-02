@@ -18,4 +18,8 @@
   <!-- Spesifikke elementoverstyringer -->
   <data name="Item_Main HVAC System_Name" xml:space="preserve"><value>Hoved HVAC-system</value></data>
   <data name="Item_Water Heater_Name" xml:space="preserve"><value>Varmtvannsbereder</value></data>
+  <data name="Item_Bathroom Sink_Name" xml:space="preserve"><value>Baderomsservant</value></data>
+  <data name="Item_Bathtub Drain_Name" xml:space="preserve"><value>Badekaravløp</value></data>
+  <data name="Item_Interior Doors_Name" xml:space="preserve"><value>Innvendige dører</value></data>
+  <data name="Item_Smoke Detectors_Name" xml:space="preserve"><value>Røykvarslere</value></data>
 </root>

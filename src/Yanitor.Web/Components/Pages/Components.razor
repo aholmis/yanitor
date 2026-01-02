@@ -1,3 +1,5 @@
+@page "/items"
+@page "/{culture}/items"
 @page "/components"
 @page "/{culture}/components"
 @using System.Globalization
@@ -8,6 +10,7 @@
 @inject IStringLocalizer<Components> L
 @inject NavigationManager Navigation
 @inject IItemProvider ItemProvider
+@rendermode InteractiveServer
 
 <PageTitle>@L["PageTitle"]</PageTitle>
 
@@ -22,9 +25,18 @@
             <h1 class="components__title">@L["PageTitle"]</h1>
             <p class="components__subtitle">@L["Subtitle"]</p>
         </div>
+        <div class="components__actions">
+            <button class="components__modify-button" type="button" @onclick="NavigateToBuilder" aria-label="@L["ModifyHouseAria"]">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M4 20h4l9.5-9.5a1.5 1.5 0 000-2.121L15.621 6.5a1.5 1.5 0 00-2.121 0L4 16v4z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M13.5 7.5l3 3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span>@L["ModifyHouse"]</span>
+            </button>
+        </div>
     </header>
 
-    @if (_componentsByRoom.Count == 0)
+    @if (_componentsByRoomType.Count == 0)
     {
         <div class="components__empty">
             <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -36,26 +48,25 @@
     }
     else
     {
-        @foreach (var room in _componentsByRoom.OrderBy(r => r.Key))
+        @foreach (var group in _componentsByRoomType.OrderBy(r => r.Key.ToString()))
         {
             <section class="components__room">
                 <header class="components__room-header">
                     <div class="components__room-icon">
-                        @GetRoomIcon(room.Value.First().RoomType)
+                        @GetRoomIcon(group.Key)
                     </div>
-                    <h2 class="components__room-name">@room.Key</h2>
+                    <h2 class="components__room-name">@group.Key</h2>
                 </header>
                 
                 <div class="components__list">
-                    @foreach (var component in room.Value)
+                    @foreach (var component in group.Value)
                     {
                         <article class="components__item">
                             <div class="components__item-icon">
-                                @GetComponentIcon(component.Type)
+                                @GetComponentIcon(component.ItemType.ToString())
                             </div>
                             <div class="components__item-content">
                                 <h3 class="components__item-name">@component.Name</h3>
-                                <p class="components__item-type">@component.Type</p>
                             </div>
                         </article>
                     }
@@ -69,11 +80,14 @@
     [Parameter]
     public string? Culture { get; set; }
 
-    private Dictionary<string, List<HouseItem>> _componentsByRoom = new();
+    private Dictionary<RoomType, List<HouseItem>> _componentsByRoomType = new();
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
-        _componentsByRoom = ItemProvider.GetItemsByRoom();
+        var items = await ItemProvider.GetItemsForCurrentConfigurationAsync();
+        _componentsByRoomType = items
+            .GroupBy(i => i.RoomType)
+            .ToDictionary(g => g.Key, g => g.ToList());
     }
 
     private string GetMyHouseUrl()
@@ -83,30 +97,38 @@
             : $"/{Culture}/my-house";
     }
 
-    private RenderFragment GetRoomIcon(string roomType) => roomType switch
+    private void NavigateToBuilder()
     {
-        "Bedroom" => @<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        var url = string.IsNullOrWhiteSpace(Culture) 
+            ? "/house-builder" 
+            : $"/{Culture}/house-builder";
+        Navigation.NavigateTo(url);
+    }
+
+    private RenderFragment GetRoomIcon(RoomType roomType) => roomType switch
+    {
+        RoomType.Bedroom => @<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
             <path d="M2 20v-8a2 2 0 012-2h16a2 2 0 012 2v8M4 12V6h4v6M16 12V6h4v6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
             <path d="M2 16h20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
         </svg>,
-        "Kitchen" => @<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        RoomType.Kitchen => @<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
             <path d="M4 2v8c0 2 1 3 2 3s2-1 2-3V2M4 2h4M5 2v8M6 2v8M7 2v8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
             <path d="M4 13v9M18 2l-2 9h2v11" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>,
-        "Bathroom" => @<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        RoomType.Bathroom => @<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
             <path d="M9 6l11-3v2.99S12 7 9 6zM3.2 14.222V4a1 1 0 011-1h1a1 1 0 011 1v10.222" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
             <path d="M18 12H2v3.333c0 2.025 1.79 4.667 8 4.667s8-2.642 8-4.667V12z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
             <path d="M6 20v2M14 20v2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
         </svg>,
-        "Hall" => @<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        RoomType.Hall => @<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
             <path d="M13 3h8v18h-8M3 21V3h8v18H3z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
             <path d="M7 8v2M7 14v2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
         </svg>,
-        "Garage" => @<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        RoomType.Garage => @<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
             <path d="M4 22V6l8-4 8 4v16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
             <path d="M8 22V12h8v10M8 15h8M8 18h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
         </svg>,
-        "Outdoor" => @<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        RoomType.Outdoor => @<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
             <path d="M17 8c0 1.5-2 4-2 4s-2-2.5-2-4a2 2 0 114 0z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
             <path d="M16 12v9M9 8c0 1.5-2 4-2 4s-2-2.5-2-4a2 2 0 114 0zM8 12v9M2 21h20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
         </svg>,
@@ -117,6 +139,41 @@
 
     private RenderFragment GetComponentIcon(string type) => type switch
     {
+        "WashingMachine" => @<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <rect x="4" y="3" width="16" height="18" rx="1.5" stroke="currentColor" stroke-width="2" />
+            <circle cx="12" cy="13" r="4" stroke="currentColor" stroke-width="2" />
+            <path d="M9 13.5c.6 1 1.7 1.5 3 1.5 1.3 0 2.4-.5 3-1.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+            <path d="M8 7.5h5.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" />
+            <circle cx="16.5" cy="7.5" r="0.9" fill="currentColor" />
+        </svg>,
+        "Dishwasher" => @<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <rect x="4" y="3" width="16" height="18" rx="1.5" stroke="currentColor" stroke-width="2" />
+            <path d="M7 8h7.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" />
+            <circle cx="16.5" cy="8" r="0.9" fill="currentColor" />
+            <path d="M7 16.5c.5-1 1.3-1.5 2.3-1.5S11 15.5 11.5 16.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+            <path d="M12.5 16.5c.5-1 1.3-1.5 2.3-1.5s1.7.5 2.2 1.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+            <path d="M7 14h10" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" />
+        </svg>,
+        "BathroomSink" => @<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M9 8a3 3 0 116 0v2" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+            <path d="M5 11h14v3a3 3 0 01-3 3H8a3 3 0 01-3-3v-3z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            <circle cx="12" cy="13" r="0.75" fill="currentColor" />
+        </svg>,
+        "BathtubDrain" => @<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <rect x="4" y="10" width="16" height="6" rx="3" stroke="currentColor" stroke-width="2" />
+            <circle cx="9" cy="13" r="0.9" fill="currentColor" />
+            <circle cx="12" cy="13" r="0.9" fill="currentColor" />
+            <circle cx="15" cy="13" r="0.9" fill="currentColor" />
+        </svg>,
+        "InteriorDoor" => @<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <rect x="6" y="3" width="12" height="18" rx="1" stroke="currentColor" stroke-width="2" />
+            <circle cx="15" cy="12" r="1" fill="currentColor" />
+        </svg>,
+        "SmokeDetector" => @<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="2" />
+            <circle cx="12" cy="8" r="0.9" fill="currentColor" />
+            <path d="M7 15c.5 1.5.5 2.5 0 4M12 15c.5 1.5.5 2.5 0 4M17 15c.5 1.5.5 2.5 0 4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" />
+        </svg>,
         "HVAC" => @<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
             <path d="M14 3v4a1 1 0 001 1h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
             <path d="M17 21H7a2 2 0 01-2-2V5a2 2 0 012-2h7l5 5v11a2 2 0 01-2 2z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>

@@ -64,19 +64,19 @@
     <value>Change Air Filter</value>
   </data>
   <data name="HVAC_ChangeAirFilter_Description" xml:space="preserve">
-    <value>Replace HVAC air filter to maintain air quality and system efficiency.</value>
+    <value>Turn off the HVAC system, open the filter access panel, remove the old filter, use a vacuum cleaner in the area, insert a new filter of the same size with the airflow arrow in the correct direction, then close the panel and restart the system.</value>
   </data>
   <data name="HVAC_ProfessionalInspection_Name" xml:space="preserve">
     <value>Professional Inspection</value>
   </data>
   <data name="HVAC_ProfessionalInspection_Description" xml:space="preserve">
-    <value>Schedule professional HVAC system inspection and maintenance.</value>
+    <value>Schedule a certified HVAC technician to inspect the unit, check refrigerant levels, electrical connections, safety controls, filters, and overall performance, and complete any recommended maintenance according to the manufacturer’s guidance.</value>
   </data>
   <data name="HVAC_CleanVentsAndDucts_Name" xml:space="preserve">
     <value>Clean Vents and Ducts</value>
   </data>
   <data name="HVAC_CleanVentsAndDucts_Description" xml:space="preserve">
-    <value>Clean air vents and inspect ductwork for debris or blockages.</value>
+    <value>Remove and vacuum vent covers and registers, wipe them with a damp cloth, and visually inspect accessible duct openings for dust buildup, obstructions, or damage; contact a professional if deeper duct cleaning is needed.</value>
   </data>
 
   <!-- Plumbing Tasks -->
@@ -84,19 +84,19 @@
     <value>Check for Leaks</value>
   </data>
   <data name="Plumbing_CheckForLeaks_Description" xml:space="preserve">
-    <value>Inspect pipes, faucets, and connections for any signs of leaks or water damage.</value>
+    <value>Look under sinks, around the shower, and along exposed pipes for dripping water, damp spots, stains, or corrosion; gently tighten any loose fittings and note issues that require a licensed plumber.</value>
   </data>
   <data name="Plumbing_CleanDrains_Name" xml:space="preserve">
     <value>Clean Drains</value>
   </data>
   <data name="Plumbing_CleanDrains_Description" xml:space="preserve">
-    <value>Clean and flush drains to prevent clogs and buildup.</value>
+    <value>Remove visible hair and debris from drain covers, flush the drain with hot water, and if needed use a drain snake or a manufacturer-approved cleaner (never mix chemicals) to clear slow or partially clogged drains.</value>
   </data>
   <data name="Plumbing_TestWaterPressure_Name" xml:space="preserve">
     <value>Test Water Pressure</value>
   </data>
   <data name="Plumbing_TestWaterPressure_Description" xml:space="preserve">
-    <value>Check water pressure and adjust if necessary to prevent pipe damage.</value>
+    <value>Attach a simple pressure gauge to an outdoor spigot or faucet, fully open the tap to read the household water pressure, and adjust the pressure regulator or contact a plumber if readings fall outside the recommended range.</value>
   </data>
 
   <!-- Door Tasks -->
@@ -244,25 +244,53 @@
     <value>Rinse Drum Compartment</value>
   </data>
   <data name="WashingMachine_RinseDrumCompartment_Description" xml:space="preserve">
-    <value>Clean the main drum compartment to prevent buildup and odors.</value>
+    <value>Run an empty hot wash cycle with a washer cleaner or mild detergent according to the manufacturer’s instructions, then wipe the drum and door gasket to remove residue and leave the door open to dry.</value>
   </data>
   <data name="WashingMachine_RinseSoapCompartment_Name" xml:space="preserve">
     <value>Rinse Soap Compartment</value>
   </data>
   <data name="WashingMachine_RinseSoapCompartment_Description" xml:space="preserve">
-    <value>Clean the main detergent and softener compartment to prevent buildup and odors.</value>
+    <value>Pull out the detergent drawer, disassemble removable parts if applicable, rinse them under warm water while brushing away soap buildup, dry the pieces, and slide the drawer back into place.</value>
   </data>
   <data name="WashingMachine_RinseDrainFilter_Name" xml:space="preserve">
     <value>Rinse Drain Filter</value>
   </data>
   <data name="WashingMachine_RinseDrainFilter_Description" xml:space="preserve">
-    <value>Remove and clean the drain filter to prevent clogs and ensure proper drainage.</value>
+    <value>Locate the drain filter access panel, place a tray or towel underneath, slowly open the cap to drain water, remove the filter, clear away lint and debris, rinse it clean, then reinstall and securely close the cap.</value>
   </data>
   <data name="WashingMachine_RinseDrainOutlet_Name" xml:space="preserve">
     <value>Rinse Drain Outlet</value>
   </data>
   <data name="WashingMachine_RinseDrainOutlet_Description" xml:space="preserve">
-    <value>Clean the drain where water is pumped out to prevent blockages and maintain efficiency.</value>
+    <value>Inspect the drain hose connection and standpipe or drain for kinks, buildup, or obstructions, remove any visible lint or debris, and flush the outlet with water to ensure wastewater can flow freely.</value>
+  </data>
+
+  <!-- Dishwasher Tasks -->
+  <data name="Dishwasher_CleanFilter_Name" xml:space="preserve">
+    <value>Clean Filter</value>
+  </data>
+  <data name="Dishwasher_CleanFilter_Description" xml:space="preserve">
+    <value>Remove the lower rack, unlock and lift out the filter assembly, rinse filters under warm water while gently brushing away food particles, check for blockages beneath the filter area, then reinstall the filters securely.</value>
+  </data>
+  <data name="Dishwasher_CleanDoorAndSeals_Name" xml:space="preserve">
+    <value>Clean Door and Seals</value>
+  </data>
+  <data name="Dishwasher_CleanDoorAndSeals_Description" xml:space="preserve">
+    <value>Use a soft cloth and mild detergent to wipe the inner door edges, gasket, and around the seals, removing residue and mold, then dry the surfaces thoroughly to maintain a tight, odor-free seal.</value>
+  </data>
+
+  <!-- Bathroom sink & bathtub drain tasks -->
+  <data name="BathroomSink_CleanDrain_Name" xml:space="preserve">
+    <value>Clean bathroom sink drain</value>
+  </data>
+  <data name="BathroomSink_CleanDrain_Description" xml:space="preserve">
+    <value>Remove the drain cover, clear hair and debris, flush with hot water, and if needed use a simple drain snake or approved cleaner to keep the bathroom sink draining freely.</value>
+  </data>
+  <data name="BathtubDrain_CleanDrain_Name" xml:space="preserve">
+    <value>Clean bathtub drain</value>
+  </data>
+  <data name="BathtubDrain_CleanDrain_Description" xml:space="preserve">
+    <value>Remove the strainer or stopper, clear hair and soap scum, flush with hot water, and use a drain snake or approved cleaner if water drains slowly from the tub.</value>
   </data>
 
   <!-- Generic Tasks -->

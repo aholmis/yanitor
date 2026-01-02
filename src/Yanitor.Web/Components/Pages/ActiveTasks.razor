@@ -141,6 +141,46 @@
         return L["DueInDays", days];
     }
 
+    private RenderFragment GetItemIcon(HouseItem item) => item.ItemType switch
+    {
+        HouseItemType.WashingMachine => @<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <rect x="4" y="3" width="16" height="18" rx="1.5" stroke="currentColor" stroke-width="2" />
+            <circle cx="12" cy="13" r="4" stroke="currentColor" stroke-width="2" />
+            <path d="M9 13.5c.6 1 1.7 1.5 3 1.5 1.3 0 2.4-.5 3-1.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+            <path d="M8 7.5h5.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" />
+            <circle cx="16.5" cy="7.5" r="0.9" fill="currentColor" />
+        </svg>,
+        HouseItemType.Dishwasher => @<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <rect x="4" y="3" width="16" height="18" rx="1.5" stroke="currentColor" stroke-width="2" />
+            <path d="M7 8h7.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" />
+            <circle cx="16.5" cy="8" r="0.9" fill="currentColor" />
+            <path d="M7 16.5c.5-1 1.3-1.5 2.3-1.5S11 15.5 11.5 16.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+            <path d="M12.5 16.5c.5-1 1.3-1.5 2.3-1.5s1.7.5 2.2 1.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+            <path d="M7 14h10" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" />
+        </svg>,
+        HouseItemType.BathroomSink => @<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M9 8a3 3 0 116 0v2" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+            <path d="M5 11h14v3a3 3 0 01-3 3H8a3 3 0 01-3-3v-3z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            <circle cx="12" cy="13" r="0.75" fill="currentColor" />
+        </svg>,
+        HouseItemType.BathtubDrain => @<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <rect x="4" y="10" width="16" height="6" rx="3" stroke="currentColor" stroke-width="2" />
+            <circle cx="9" cy="13" r="0.9" fill="currentColor" />
+            <circle cx="12" cy="13" r="0.9" fill="currentColor" />
+            <circle cx="15" cy="13" r="0.9" fill="currentColor" />
+        </svg>,
+        HouseItemType.InteriorDoor => @<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <rect x="7" y="3" width="10" height="18" rx="1" stroke="currentColor" stroke-width="2" />
+            <circle cx="14" cy="12" r="0.9" fill="currentColor" />
+        </svg>,
+        HouseItemType.SmokeDetector => @<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="2" />
+            <circle cx="12" cy="8" r="0.9" fill="currentColor" />
+            <path d="M7 15c.5 1.5.5 2.5 0 4M12 15c.5 1.5.5 2.5 0 4M17 15c.5 1.5.5 2.5 0 4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" />
+        </svg>,
+        _ => GetRoomTypeIcon(item.RoomType)
+    };
+
     private RenderFragment GetRoomIcon(RoomType roomType) => roomType switch
     {
         RoomType.Bedroom => @<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -192,20 +232,21 @@
             : (task.DaysUntilDue == 0 ? L["Today"] : task.DaysUntilDue == 1 ? L["Tomorrow"] : L["Days"]);
 
         // Resolve item display from domain localizers (room name is user-entered; do not localize)
-        var itemSpecificKey = $"Item_{task.ItemName}_Name";
-        var itemTypeKey = $"ItemType_{task.Task.GetType().Name}_Name";
+        var itemSpecificKey = $"Item_{task.Item.Name}_Name";
+        var itemTypeKey = $"ItemType_{task.Item.ItemType}_Name";
         var localizedItemName = ItemL[itemSpecificKey];
         if (localizedItemName.ResourceNotFound || string.IsNullOrWhiteSpace(localizedItemName.Value))
         {
             localizedItemName = ItemL[itemTypeKey];
         }
-        var displayItemName = (!localizedItemName.ResourceNotFound && !string.IsNullOrWhiteSpace(localizedItemName.Value)) ? localizedItemName.Value : task.ItemName;
+        var displayItemName = (!localizedItemName.ResourceNotFound && !string.IsNullOrWhiteSpace(localizedItemName.Value)) ? localizedItemName.Value : task.Item.Name;
 
         // Resolve task title/description using keys from MaintenanceTask
-        var taskName = !string.IsNullOrWhiteSpace(task.Task.NameKey) ? TaskL[task.Task.NameKey] : TaskL[task.Task.Name];
-        var taskDescription = !string.IsNullOrWhiteSpace(task.Task.DescriptionKey) ? TaskL[task.Task.DescriptionKey] : TaskL[task.Task.Description];
-        var displayTaskName = (!taskName.ResourceNotFound && !string.IsNullOrWhiteSpace(taskName.Value)) ? taskName.Value : task.Task.Name;
-        var displayTaskDescription = (!taskDescription.ResourceNotFound && !string.IsNullOrWhiteSpace(taskDescription.Value)) ? taskDescription.Value : task.Task.Description;
+        var displayTaskName = TaskL[task.Task.NameKey];
+        var displayTaskDescription = TaskL[task.Task.DescriptionKey];
+        var taskNameValue = (!displayTaskName.ResourceNotFound && !string.IsNullOrWhiteSpace(displayTaskName.Value)) ? displayTaskName.Value : task.Task.NameKey;
+        var taskDescValue = (!displayTaskDescription.ResourceNotFound && !string.IsNullOrWhiteSpace(displayTaskDescription.Value)) ? displayTaskDescription.Value : task.Task.DescriptionKey;
+        var dueDateText = L["DueOn", task.NextDueDate.ToLocalTime().ToString("d")];
         
         <article class="@cardClass">
             <div class="@badgeClass">
@@ -219,15 +260,15 @@
             
             <div class="active-tasks__card-header">
                 <div class="active-tasks__card-icon">
-                    @GetRoomIcon(task.RoomType)
+                    @GetItemIcon(task.Item)
                 </div>
                 <div class="active-tasks__card-info">
-                    <h3 class="active-tasks__card-title">@displayTaskName</h3>
                     <p class="active-tasks__card-item">@displayItemName</p>
-                    <p class="active-tasks__card-location">@task.RoomName</p>
+                    <h3 class="active-tasks__card-title">@taskNameValue</h3>
                 </div>
             </div>
-            <p class="active-tasks__card-description">@displayTaskDescription</p>
+            <p class="active-tasks__card-description">@taskDescValue</p>
+            <p class="active-tasks__card-due-date">@dueDateText</p>
             
             @if (_editingTaskId == task.Id)
             {
@@ -241,10 +282,10 @@
                             value="@_editingDateValue"
                             @oninput="@(e => _editingDateValue = e.Value?.ToString() ?? "")"
                             max="@DateTime.Now.ToString("yyyy-MM-dd")" />
-                        <button class="active-tasks__date-picker-button active-tasks__date-picker-button--save" @onclick="() => SaveCompletionDate(task.Id)">
+                        <button type="button" class="active-tasks__date-picker-button active-tasks__date-picker-button--save" @onclick="() => SaveCompletionDate(task.Id)">
                             @L["Save"]
                         </button>
-                        <button class="active-tasks__date-picker-button active-tasks__date-picker-button--cancel" @onclick="CancelEditDate">
+                        <button type="button" class="active-tasks__date-picker-button active-tasks__date-picker-button--cancel" @onclick="CancelEditDate">
                             @L["Cancel"]
                         </button>
                     </div>
@@ -252,7 +293,7 @@
             }
             else if (task.LastCompletedAt.HasValue)
             {
-                <button class="active-tasks__card-last-completed active-tasks__card-last-completed--clickable" 
+                <button type="button" class="active-tasks__card-last-completed active-tasks__card-last-completed--clickable"
                         @onclick="() => StartEditingDate(task.Id, task.LastCompletedAt.Value)"
                         title="@L["ClickToEditDate"]">
                     @L["LastCompleted", task.LastCompletedAt.Value.ToLocalTime().ToString("d")]
@@ -264,7 +305,7 @@
             }
             else
             {
-                <button class="active-tasks__card-last-completed active-tasks__card-last-completed--never active-tasks__card-last-completed--clickable" 
+                <button type="button" class="active-tasks__card-last-completed active-tasks__card-last-completed--never active-tasks__card-last-completed--clickable"
                         @onclick="() => StartEditingDate(task.Id, null)"
                         title="@L["ClickToSetDate"]">
                     @L["NeverCompleted"]
@@ -276,7 +317,7 @@
             }
             
             <div class="active-tasks__card-footer">
-                <button class="active-tasks__card-button" @onclick="() => CompleteTask(task.Id)">
+                <button type="button" class="active-tasks__card-button" @onclick="() => CompleteTask(task.Id)">
                     @L["MarkComplete"]
                 </button>
             </div>
