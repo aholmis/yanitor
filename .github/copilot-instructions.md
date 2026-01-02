@@ -208,13 +208,53 @@ Copilot must prioritize these guidelines over inferred patterns from existing co
 
 ---
 
-## 9. Unit Testing
+## 9. Yanitor Architecture & Domain Patterns
 
-If C# code has logic that should be unit tested, Copilot should also generate a corresponding test file using xUnit in the `Tests` project.
+- **Single Blazor Server app**: The solution currently consists of `Yanitor.Web`, a Blazor Server app configured in `src/Yanitor.Web/Program.cs` using EF Core + SQLite (`Yanitor` connection string, defaulting to `Data Source=yanitor.db`).
+- **Persistence model**: `YanitorDbContext` in `Data/YanitorDbContext.cs` defines EF entities `User`, `House`, `SelectedItemType`, and `ActiveTaskRow`. Domain types like `HouseItem`, `MaintenanceTask`, and `ActiveTask` live under `Domain/Models` and are mapped from EF rows in domain services (e.g., `ActiveTaskService.MapToDomain`). New persistence should follow this **EF-row + domain model** separation.
+- **House configuration flow**: UI components (`HouseBuilder`, `MyHouse`) only talk to `IHouseConfigurationService`, `IItemProvider`, and `IActiveTaskService`. The concrete implementation `EfHouseConfigurationService` persists selected item types to `SelectedItemType` rows and then triggers `IActiveTaskService.SyncActiveTasksAsync()` to materialize `ActiveTaskRow` entries. New features must preserve this flow (UI → `IHouseConfigurationService` → EF + task sync) instead of writing directly to `YanitorDbContext` from components.
+- **Default user and single-house assumption**: `EfHouseConfigurationService.EnsureDefaultUserAsync` creates a single dev user named `"Anders"` and a single `House` per user. Until multi-user support is implemented, all services assume **one logical house per dev**. Do not introduce multi-user assumptions without revisiting this helper and related queries.
+- **Task generation & keys**: `ItemProvider` defines the canonical list of `HouseItem` instances and wires them to tasks via `ITaskProvider.GetTasksForItemType(HouseItemType)`. `ActiveTaskService.SyncActiveTasksAsync` treats `HouseItem.Name` and `MaintenanceTask.NameKey` as stable identifiers when creating `ActiveTaskRow` records. When adding new tasks or items:
+    - Extend `HouseItemType`, `ItemProvider.InitializeItems`, and the corresponding domain resources (`Domain.Models.HouseItemResources.*.resx`).
+    - Ensure `MaintenanceTask.NameKey`/`DescriptionKey` values are used as resource keys in `Domain.Services.TaskProvider.*.resx`.
+    - Avoid persisting localized strings; always store keys and map to localized text via `IStringLocalizer`.
+- **Immutable domain records**: Domain models like `ActiveTask` are C# `record` types with pure helpers (e.g., `MarkAsCompleted` returns a new instance). Prefer this pattern for new domain objects and keep side-effectful operations in services.
 
 ---
 
-## 10. Permissions
+## 10. Localization, Routing, and UI Conventions
+
+- **Culture from route + cookie**: `Program.cs` configures `RequestLocalizationOptions` with custom `RouteDataRequestCultureProvider` and also query-string, cookie, and `Accept-Language` providers. All top-level pages use **two route templates**, e.g. `@page "/my-house"` and `@page "/{culture}/my-house"`. New pages must follow this pattern so culture can be injected via route values.
+- **Resource structure**: UI components use `IStringLocalizer<TComponent>` with resources under `Resources/Components.Pages.*.resx`. Domain- and service-level strings live in `Domain.*.resx`, and shared/global strings in `SharedResources.*.resx`. When adding user-visible text:
+    - Add keys to the relevant `.resx` file for `en` and `nb-NO` (and optionally the neutral `.resx` fallback).
+    - Use the existing key naming patterns, e.g. `ItemType_Ventilation_Name`, `Item_Ventilation System_Name`, or `Task_SomeKey_Title`.
+- **Culture-aware navigation**: Components such as `MyHouse` and `ActiveTasks` construct URLs that preserve the optional culture segment (see `GetActiveTasksUrl`, `GetMyHouseUrl`). New navigation helpers should follow the same pattern: derive URLs from the current `Culture` parameter when present and fall back to culture-less routes.
+- **Interactive render mode**: All interactive pages (`MyHouse`, `HouseBuilder`, `ActiveTasks`, etc.) use `@rendermode InteractiveServer`. New interactive components should do the same unless there is a specific reason to use a different render mode.
+
+---
+
+## 11. Build, Database, and Migrations Workflow
+
+- **Running locally**: From the repo root, run `dotnet run --project src/Yanitor.Web/Yanitor.Web.csproj`. On startup, `Program.cs` creates a scope and calls `db.Database.MigrateAsync()`, applying pending EF Core migrations to the SQLite database file.
+- **Migrations**: When changing EF entities in `YanitorDbContext.cs`, add a migration in the `src/Yanitor.Web` project, for example:
+
+    ```bash
+    dotnet ef migrations add <Name> --project src/Yanitor.Web --startup-project src/Yanitor.Web
+    dotnet ef database update --project src/Yanitor.Web --startup-project src/Yanitor.Web
+    ```
+
+    Keep migrations in `src/Yanitor.Web/Migrations` and avoid editing generated migration code manually unless necessary.
+- **Seeding and test data**: The app currently boots with a single default user and no explicit seed data beyond `ItemProvider`'s in-memory definitions. If additional seed data is required, prefer **idempotent seeding in a domain service or a dedicated initializer** invoked at startup, rather than hardcoding values directly into components.
+
+---
+
+## 12. Unit Testing
+
+If C# code has logic that should be unit tested, Copilot should generate or extend a corresponding test project using xUnit (e.g., a `Yanitor.Tests` project at the solution root) and follow the existing domain/service boundaries (test `Domain.Services` and `Domain.Models` rather than UI markup where possible).
+
+---
+
+## 13. Permissions
 
 - You are allowed to run all `dotnet` commands necessary to build, test, and run the Blazor project.
 - You are allowed to read any file in the repository to understand context.
