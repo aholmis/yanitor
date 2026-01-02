@@ -14,12 +14,19 @@
   <data name="ItemType_Roof_Name" xml:space="preserve"><value>Roof</value></data>
   <data name="ItemType_Exterior_Name" xml:space="preserve"><value>Exterior</value></data>
   <data name="ItemType_Insulation_Name" xml:space="preserve"><value>Insulation</value></data>
+  <data name="ItemType_Ventilation_Name" xml:space="preserve"><value>Ventilation system</value></data>
+  <data name="ItemType_Shower_Name" xml:space="preserve"><value>Shower</value></data>
   <data name="ItemType_WashingMachine_Name" xml:space="preserve"><value>Washing Machine</value></data>
+  <data name="ItemType_Dishwasher_Name" xml:space="preserve"><value>Dishwasher</value></data>
+  <data name="ItemType_BathroomSink_Name" xml:space="preserve"><value>Bathroom sink</value></data>
+  <data name="ItemType_BathtubDrain_Name" xml:space="preserve"><value>Bathtub</value></data>
+  <data name="ItemType_InteriorDoor_Name" xml:space="preserve"><value>Interior doors</value></data>
+  <data name="ItemType_SmokeDetector_Name" xml:space="preserve"><value>Smoke detectors</value></data>
   <!-- Specific item overrides -->
   <data name="Item_Main HVAC System_Name" xml:space="preserve"><value>Main HVAC System</value></data>
   <data name="Item_Water Heater_Name" xml:space="preserve"><value>Water Heater</value></data>
   <data name="Item_Bathroom Sink_Name" xml:space="preserve"><value>Bathroom sink</value></data>
-  <data name="Item_Bathtub Drain_Name" xml:space="preserve"><value>Bathtub drain</value></data>
+  <data name="Item_Bathtub Drain_Name" xml:space="preserve"><value>Bathtub</value></data>
   <data name="Item_Interior Doors_Name" xml:space="preserve"><value>Interior doors</value></data>
   <data name="Item_Smoke Detectors_Name" xml:space="preserve"><value>Smoke detectors</value></data>
 </root>

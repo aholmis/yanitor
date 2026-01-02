@@ -91,6 +91,38 @@
     color: var(--text-primary, #1a1a1a);
 }
 
+.active-tasks__filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 0 0 1rem 0;
+}
+
+.active-tasks__filter-pill {
+    padding: 0.35rem 0.9rem;
+    border-radius: 999px;
+    border: 1px solid var(--border, #ddd);
+    background-color: var(--surface, #ffffff);
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--text-secondary, #555);
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.active-tasks__filter-pill:hover {
+    border-color: var(--primary, #007acc);
+    color: var(--primary, #007acc);
+    box-shadow: 0 0 0 2px rgba(0, 122, 204, 0.12);
+}
+
+.active-tasks__filter-pill--active {
+    background-color: var(--primary, #007acc);
+    color: #ffffff;
+    border-color: var(--primary, #007acc);
+    box-shadow: 0 0 0 2px rgba(0, 122, 204, 0.18);
+}
+
 .active-tasks__list {
     display: grid;
     gap: 1.5rem;

@@ -136,4 +136,10 @@
   <data name="Overdue" xml:space="preserve">
     <value>forsinket</value>
   </data>
+  <data name="FilterByItemType" xml:space="preserve">
+    <value>Filtrer på enhetstype</value>
+  </data>
+  <data name="Filter_All" xml:space="preserve">
+    <value>Alle</value>
+  </data>
 </root>

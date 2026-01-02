@@ -1,10 +1,12 @@
 @page "/active-tasks"
 @page "/{culture}/active-tasks"
 @using System.Globalization
+@using Microsoft.AspNetCore.Components.Web
 @using Microsoft.Extensions.Localization
 @using Yanitor.Web.Domain
 @using Yanitor.Web.Domain.Models
 @using Yanitor.Web.Domain.Services
+@using Yanitor.Web.Components
 @inject IStringLocalizer<ActiveTasks> L
 @inject IStringLocalizer<HouseItemResources> ItemL
 @inject IStringLocalizer<TaskProvider> TaskL
@@ -75,6 +77,27 @@
         {
             <section class="active-tasks__section">
                 <h2 class="active-tasks__section-title">@L["UpcomingTasks"] (@_upcomingTasks.Count())</h2>
+
+                @if (_availableItemTypes.Any())
+                {
+                    <nav class="active-tasks__filters" aria-label="@L["FilterByItemType"]">
+                        <button type="button"
+                                class="@GetFilterPillClass(null)"
+                                @onclick="() => SetItemTypeFilter(null)">
+                            @L["Filter_All"]
+                        </button>
+
+                        @foreach (var itemType in _availableItemTypes)
+                        {
+                            <button type="button"
+                                    class="@GetFilterPillClass(itemType)"
+                                    @onclick="() => SetItemTypeFilter(itemType)">
+                                @ItemL[$"ItemType_{itemType}_Name"]
+                            </button>
+                        }
+                    </nav>
+                }
+
                 <div class="active-tasks__list">
                     @foreach (var task in _upcomingTasks)
                     {
@@ -95,6 +118,8 @@
     private IEnumerable<ActiveTask> _overdueTasks = Enumerable.Empty<ActiveTask>();
     private IEnumerable<ActiveTask> _dueSoonTasks = Enumerable.Empty<ActiveTask>();
     private IEnumerable<ActiveTask> _upcomingTasks = Enumerable.Empty<ActiveTask>();
+    private IReadOnlyList<HouseItemType> _availableItemTypes = Array.Empty<HouseItemType>();
+    private HouseItemType? _selectedItemTypeFilter = null;
     private Guid? _editingTaskId = null;
     private string _editingDateValue = "";
 
@@ -106,14 +131,10 @@
     private async Task LoadTasksAsync()
     {
         _isLoading = true;
-        
-        var allTasks = await TaskService.GetActiveTasksAsync();
-        _tasks = allTasks.ToList();
-        
-        _overdueTasks = _tasks.Where(t => t.IsOverdue).OrderBy(t => t.NextDueDate);
-        _dueSoonTasks = _tasks.Where(t => t.IsDueSoon && !t.IsOverdue).OrderBy(t => t.NextDueDate);
-        _upcomingTasks = _tasks.Where(t => !t.IsOverdue && !t.IsDueSoon).OrderBy(t => t.NextDueDate);
-        
+        _tasks = (await TaskService.GetActiveTasksAsync()).ToList();
+
+        RecalculateTaskBuckets();
+
         _isLoading = false;
     }
 
@@ -141,81 +162,44 @@
         return L["DueInDays", days];
     }
 
-    private RenderFragment GetItemIcon(HouseItem item) => item.ItemType switch
+    private void RecalculateTaskBuckets()
     {
-        HouseItemType.WashingMachine => @<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <rect x="4" y="3" width="16" height="18" rx="1.5" stroke="currentColor" stroke-width="2" />
-            <circle cx="12" cy="13" r="4" stroke="currentColor" stroke-width="2" />
-            <path d="M9 13.5c.6 1 1.7 1.5 3 1.5 1.3 0 2.4-.5 3-1.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
-            <path d="M8 7.5h5.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" />
-            <circle cx="16.5" cy="7.5" r="0.9" fill="currentColor" />
-        </svg>,
-        HouseItemType.Dishwasher => @<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <rect x="4" y="3" width="16" height="18" rx="1.5" stroke="currentColor" stroke-width="2" />
-            <path d="M7 8h7.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" />
-            <circle cx="16.5" cy="8" r="0.9" fill="currentColor" />
-            <path d="M7 16.5c.5-1 1.3-1.5 2.3-1.5S11 15.5 11.5 16.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
-            <path d="M12.5 16.5c.5-1 1.3-1.5 2.3-1.5s1.7.5 2.2 1.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
-            <path d="M7 14h10" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" />
-        </svg>,
-        HouseItemType.BathroomSink => @<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <path d="M9 8a3 3 0 116 0v2" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
-            <path d="M5 11h14v3a3 3 0 01-3 3H8a3 3 0 01-3-3v-3z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-            <circle cx="12" cy="13" r="0.75" fill="currentColor" />
-        </svg>,
-        HouseItemType.BathtubDrain => @<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <rect x="4" y="10" width="16" height="6" rx="3" stroke="currentColor" stroke-width="2" />
-            <circle cx="9" cy="13" r="0.9" fill="currentColor" />
-            <circle cx="12" cy="13" r="0.9" fill="currentColor" />
-            <circle cx="15" cy="13" r="0.9" fill="currentColor" />
-        </svg>,
-        HouseItemType.InteriorDoor => @<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <rect x="7" y="3" width="10" height="18" rx="1" stroke="currentColor" stroke-width="2" />
-            <circle cx="14" cy="12" r="0.9" fill="currentColor" />
-        </svg>,
-        HouseItemType.SmokeDetector => @<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="2" />
-            <circle cx="12" cy="8" r="0.9" fill="currentColor" />
-            <path d="M7 15c.5 1.5.5 2.5 0 4M12 15c.5 1.5.5 2.5 0 4M17 15c.5 1.5.5 2.5 0 4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" />
-        </svg>,
-        _ => GetRoomTypeIcon(item.RoomType)
-    };
+        _availableItemTypes = _tasks
+            .Select(t => t.Item.ItemType)
+            .Distinct()
+            .OrderBy(t => t.ToString())
+            .ToList();
 
-    private RenderFragment GetRoomIcon(RoomType roomType) => roomType switch
+        IEnumerable<ActiveTask> query = _tasks;
+        if (_selectedItemTypeFilter.HasValue)
+        {
+            query = query.Where(t => t.Item.ItemType == _selectedItemTypeFilter.Value);
+        }
+
+        _overdueTasks = query.Where(t => t.IsOverdue).OrderBy(t => t.NextDueDate);
+        _dueSoonTasks = query.Where(t => t.IsDueSoon && !t.IsOverdue).OrderBy(t => t.NextDueDate);
+        _upcomingTasks = query.Where(t => !t.IsOverdue && !t.IsDueSoon).OrderBy(t => t.NextDueDate);
+    }
+
+    private void SetItemTypeFilter(HouseItemType? itemType)
     {
-        RoomType.Bedroom => @<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <path d="M2 20v-8a2 2 0 012-2h16a2 2 0 012 2v8M4 12V6h4v6M16 12V6h4v6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M2 16h20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-        </svg>,
-        RoomType.Kitchen => @<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <path d="M4 2v8c0 2 1 3 2 3s2-1 2-3V2M4 2h4M5 2v8M6 2v8M7 2v8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-            <path d="M4 13v9M18 2l-2 9h2v11" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>,
-        RoomType.Bathroom => @<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <path d="M9 6l11-3v2.99S12 7 9 6zM3.2 14.222V4a1 1 0 011-1h1a1 1 0 011 1v10.222" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-            <path d="M18 12H2v3.333c0 2.025 1.79 4.667 8 4.667s8-2.642 8-4.667V12z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-            <path d="M6 20v2M14 20v2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-        </svg>,
-        RoomType.Hall => @<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <path d="M13 3h8v18h-8M3 21V3h8v18H3z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-            <path d="M7 8v2M7 14v2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-        </svg>,
-        RoomType.Garage => @<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <path d="M4 22V6l8-4 8 4v16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-            <path d="M8 22V12h8v10M8 15h8M8 18h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-        </svg>,
-        RoomType.Outdoor => @<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <path d="M17 8c0 1.5-2 4-2 4s-2-2.5-2-4a2 2 0 114 0z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-            <path d="M16 12v9M9 8c0 1.5-2 4-2 4s-2-2.5-2-4a2 2 0 114 0zM8 12v9M2 21h20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-        </svg>,
-        RoomType.LivingRoom or RoomType.DiningRoom or RoomType.Office => @<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M9 22V12h6v10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>,
-        _ => @<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <rect x="5" y="5" width="14" height="14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-    };
+        _selectedItemTypeFilter = itemType;
+        RecalculateTaskBuckets();
+    }
+
+    private string GetFilterPillClass(HouseItemType? itemType)
+    {
+        var isAllPill = !itemType.HasValue;
+        var isFilterAll = !_selectedItemTypeFilter.HasValue;
+
+        var isActive = (isAllPill && isFilterAll) ||
+                       (!isAllPill && _selectedItemTypeFilter.HasValue && _selectedItemTypeFilter.Value.Equals(itemType!.Value));
+
+        return isActive
+            ? "active-tasks__filter-pill active-tasks__filter-pill--active"
+            : "active-tasks__filter-pill";
+    }
+
 
     private RenderFragment RenderTaskCard(ActiveTask task, string modifierClass) => __builder =>
     {
@@ -260,7 +244,7 @@
             
             <div class="active-tasks__card-header">
                 <div class="active-tasks__card-icon">
-                    @GetItemIcon(task.Item)
+                    <Yanitor.Web.Components.IconFactory Item="task.Item" />
                 </div>
                 <div class="active-tasks__card-info">
                     <p class="active-tasks__card-item">@displayItemName</p>
