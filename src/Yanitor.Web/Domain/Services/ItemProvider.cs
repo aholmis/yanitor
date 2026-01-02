@@ -59,6 +59,34 @@ public class ItemProvider(ITaskProvider taskProvider, IHouseConfigurationService
                 ItemType = HouseItemType.Dishwasher,
                 RoomType = RoomType.Kitchen,
                 Tasks = taskProvider.GetTasksForItemType(HouseItemType.Dishwasher).ToList()
+            },
+            new HouseItem
+            {
+                Name = "Bathroom Sink",
+                ItemType = HouseItemType.BathroomSink,
+                RoomType = RoomType.Bathroom,
+                Tasks = taskProvider.GetTasksForItemType(HouseItemType.BathroomSink).ToList()
+            },
+            new HouseItem
+            {
+                Name = "Bathtub Drain",
+                ItemType = HouseItemType.BathtubDrain,
+                RoomType = RoomType.Bathroom,
+                Tasks = taskProvider.GetTasksForItemType(HouseItemType.BathtubDrain).ToList()
+            },
+            new HouseItem
+            {
+                Name = "Interior Doors",
+                ItemType = HouseItemType.InteriorDoor,
+                RoomType = RoomType.Hall,
+                Tasks = taskProvider.GetTasksForItemType(HouseItemType.InteriorDoor).ToList()
+            },
+            new HouseItem
+            {
+                Name = "Smoke Detectors",
+                ItemType = HouseItemType.SmokeDetector,
+                RoomType = RoomType.Hall,
+                Tasks = taskProvider.GetTasksForItemType(HouseItemType.SmokeDetector).ToList()
             }
         };
     }

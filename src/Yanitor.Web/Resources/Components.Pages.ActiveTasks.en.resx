@@ -94,6 +94,9 @@
   <data name="OverdueByDays" xml:space="preserve">
     <value>Overdue by {0} days</value>
   </data>
+  <data name="DueOn" xml:space="preserve">
+    <value>Due on {0}</value>
+  </data>
   <data name="MarkComplete" xml:space="preserve">
     <value>Mark as Complete</value>
   </data>

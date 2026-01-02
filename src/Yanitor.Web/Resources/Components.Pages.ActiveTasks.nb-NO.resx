@@ -94,6 +94,9 @@
   <data name="OverdueByDays" xml:space="preserve">
     <value>Forsinket med {0} dager</value>
   </data>
+  <data name="DueOn" xml:space="preserve">
+    <value>Forfaller {0}</value>
+  </data>
   <data name="MarkComplete" xml:space="preserve">
     <value>Merk som fullfort</value>
   </data>

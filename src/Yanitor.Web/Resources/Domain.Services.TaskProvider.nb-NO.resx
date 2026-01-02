@@ -279,6 +279,20 @@
 	<value>Bruk en myk klut og mildt rengjøringsmiddel til å tørke av dørkanter, gummipakning og rundt tetningene, fjern synlig belegg og mugg, og tørk godt etterpå for å sikre en tett og luktfri dør.</value>
   </data>
 
+  <!-- Baderomsservant og badekaravløp -->
+  <data name="BathroomSink_CleanDrain_Name" xml:space="preserve">
+    <value>Rengjør servantavløp</value>
+  </data>
+  <data name="BathroomSink_CleanDrain_Description" xml:space="preserve">
+	<value>Ta av silen eller slukristen, fjern hår og såperester, skyll med varmt vann, og bruk eventuelt en enkel stakefjær eller godkjent avløpsrens for å holde servantavløpet åpent.</value>
+  </data>
+  <data name="BathtubDrain_CleanDrain_Name" xml:space="preserve">
+    <value>Rengjør badekaravløp</value>
+  </data>
+  <data name="BathtubDrain_CleanDrain_Description" xml:space="preserve">
+	<value>Ta av sil eller propp, fjern hår og såperester, skyll med varmt vann, og bruk eventuelt stakefjær eller godkjent avløpsrens dersom vannet renner sakte ut av karet.</value>
+  </data>
+
   <!-- Generic Tasks -->
   <data name="Generic_RegularInspection_Name" xml:space="preserve">
     <value>Regelmessig inspeksjon</value>

@@ -18,4 +18,8 @@
   <!-- Specific item overrides -->
   <data name="Item_Main HVAC System_Name" xml:space="preserve"><value>Main HVAC System</value></data>
   <data name="Item_Water Heater_Name" xml:space="preserve"><value>Water Heater</value></data>
+  <data name="Item_Bathroom Sink_Name" xml:space="preserve"><value>Bathroom sink</value></data>
+  <data name="Item_Bathtub Drain_Name" xml:space="preserve"><value>Bathtub drain</value></data>
+  <data name="Item_Interior Doors_Name" xml:space="preserve"><value>Interior doors</value></data>
+  <data name="Item_Smoke Detectors_Name" xml:space="preserve"><value>Smoke detectors</value></data>
 </root>

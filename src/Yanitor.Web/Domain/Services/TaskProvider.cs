@@ -32,6 +32,10 @@ public class TaskProvider(IStringLocalizer<TaskProvider> localizer) : ITaskProvi
             HouseItemType.Shower => GetPlumbingTasks(),
             HouseItemType.WashingMachine => GetWashingMachineTasks(),
             HouseItemType.Dishwasher => GetDishwasherTasks(),
+            HouseItemType.BathroomSink => GetBathroomSinkTasks(),
+            HouseItemType.BathtubDrain => GetBathtubDrainTasks(),
+            HouseItemType.InteriorDoor => GetDoorTasks(),
+            HouseItemType.SmokeDetector => GetSafetyTasks(),
             _ => GetGenericTasks()
         };
     }
@@ -275,6 +279,26 @@ public class TaskProvider(IStringLocalizer<TaskProvider> localizer) : ITaskProvi
             NameKey = "Dishwasher_CleanDoorAndSeals_Name",
             DescriptionKey = "Dishwasher_CleanDoorAndSeals_Description",
             IntervalDays = 30
+        }
+    ];
+
+    private List<MaintenanceTask> GetBathroomSinkTasks() =>
+    [
+        new MaintenanceTask
+        {
+            NameKey = "BathroomSink_CleanDrain_Name",
+            DescriptionKey = "BathroomSink_CleanDrain_Description",
+            IntervalDays = 90
+        }
+    ];
+
+    private List<MaintenanceTask> GetBathtubDrainTasks() =>
+    [
+        new MaintenanceTask
+        {
+            NameKey = "BathtubDrain_CleanDrain_Name",
+            DescriptionKey = "BathtubDrain_CleanDrain_Description",
+            IntervalDays = 90
         }
     ];
 

@@ -279,6 +279,20 @@
     <value>Use a soft cloth and mild detergent to wipe the inner door edges, gasket, and around the seals, removing residue and mold, then dry the surfaces thoroughly to maintain a tight, odor-free seal.</value>
   </data>
 
+  <!-- Bathroom sink & bathtub drain tasks -->
+  <data name="BathroomSink_CleanDrain_Name" xml:space="preserve">
+    <value>Clean bathroom sink drain</value>
+  </data>
+  <data name="BathroomSink_CleanDrain_Description" xml:space="preserve">
+    <value>Remove the drain cover, clear hair and debris, flush with hot water, and if needed use a simple drain snake or approved cleaner to keep the bathroom sink draining freely.</value>
+  </data>
+  <data name="BathtubDrain_CleanDrain_Name" xml:space="preserve">
+    <value>Clean bathtub drain</value>
+  </data>
+  <data name="BathtubDrain_CleanDrain_Description" xml:space="preserve">
+    <value>Remove the strainer or stopper, clear hair and soap scum, flush with hot water, and use a drain snake or approved cleaner if water drains slowly from the tub.</value>
+  </data>
+
   <!-- Generic Tasks -->
   <data name="Generic_RegularInspection_Name" xml:space="preserve">
     <value>Regular Inspection</value>

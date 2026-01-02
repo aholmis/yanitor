@@ -23,5 +23,25 @@ public enum HouseItemType
     /// <summary>
     /// A dishwasher appliance.
     /// </summary>
-    Dishwasher
+    Dishwasher,
+
+    /// <summary>
+    /// A bathroom sink and its drain.
+    /// </summary>
+    BathroomSink,
+
+    /// <summary>
+    /// A bathtub drain.
+    /// </summary>
+    BathtubDrain,
+
+    /// <summary>
+    /// Interior doors inside the home.
+    /// </summary>
+    InteriorDoor,
+
+    /// <summary>
+    /// Smoke detectors / smoke alarms.
+    /// </summary>
+    SmokeDetector
 }

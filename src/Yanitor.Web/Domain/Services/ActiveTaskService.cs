@@ -163,11 +163,16 @@ public class ActiveTaskService : IActiveTaskService
 
     private static ActiveTask MapToDomain(ActiveTaskRow r)
     {
-        // Treat TaskName as the localization key for both name and description.
+        // TaskName stores the localized name key (e.g., "HVAC_ChangeAirFilter_Name").
+        // Derive the description key using the naming convention when possible.
+        var descriptionKey = r.TaskName.EndsWith("_Name", StringComparison.Ordinal)
+            ? r.TaskName.Replace("_Name", "_Description", StringComparison.Ordinal)
+            : r.TaskName;
+
         var mt = new MaintenanceTask
         {
             NameKey = r.TaskName,
-            DescriptionKey = r.TaskName,
+            DescriptionKey = descriptionKey,
             IntervalDays = r.IntervalDays
         };
 
