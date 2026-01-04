@@ -136,4 +136,10 @@
   <data name="Overdue" xml:space="preserve">
     <value>overdue</value>
   </data>
+  <data name="FilterByItemType" xml:space="preserve">
+    <value>Filter by item type</value>
+  </data>
+  <data name="Filter_All" xml:space="preserve">
+    <value>All</value>
+  </data>
 </root>

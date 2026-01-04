@@ -69,7 +69,7 @@ public class ItemProvider(ITaskProvider taskProvider, IHouseConfigurationService
             },
             new HouseItem
             {
-                Name = "Bathtub Drain",
+                Name = "Bathtub",
                 ItemType = HouseItemType.BathtubDrain,
                 RoomType = RoomType.Bathroom,
                 Tasks = taskProvider.GetTasksForItemType(HouseItemType.BathtubDrain).ToList()
