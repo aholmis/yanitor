@@ -9,11 +9,15 @@
 @using Yanitor.Web.Domain.Models
 @using Yanitor.Web.Domain.Services
 @using Yanitor.Web.Components
+@using Yanitor.Web.Services
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize]
 @inject IStringLocalizer<Components> L
 @inject NavigationManager Navigation
 @inject IItemProvider ItemProvider
 @inject IStringLocalizer<HouseItemResources> ItemL
 @inject IStringLocalizer<RoomTypeResources> RoomL
+@inject IUserContext UserContext
 @rendermode InteractiveServer
 
 <PageTitle>@L["PageTitle"]</PageTitle>

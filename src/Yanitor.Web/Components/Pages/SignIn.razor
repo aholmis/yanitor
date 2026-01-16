@@ -1,0 +1,62 @@
+@page "/sign-in"
+@page "/{culture}/sign-in"
+@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<SignIn> L
+
+<PageTitle>@L["PageTitle"]</PageTitle>
+
+<section class="sign-in">
+    <div class="sign-in__card">
+        <div class="sign-in__header">
+            <svg class="sign-in__logo" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                <!-- House roof -->
+                <path d="M100 20 L180 80 L170 80 L170 90 L30 90 L30 80 L20 80 Z" fill="currentColor" class="sign-in__logo-roof"/>
+                <!-- House body -->
+                <rect x="40" y="85" width="120" height="95" rx="2" fill="currentColor" class="sign-in__logo-body"/>
+                <!-- Door -->
+                <rect x="85" y="125" width="30" height="55" rx="2" fill="currentColor" class="sign-in__logo-door"/>
+                <!-- Door knob -->
+                <circle cx="108" cy="155" r="2" fill="currentColor" class="sign-in__logo-knob"/>
+                <!-- Windows -->
+                <rect x="55" y="105" width="25" height="25" rx="2" fill="currentColor" class="sign-in__logo-window"/>
+                <rect x="120" y="105" width="25" height="25" rx="2" fill="currentColor" class="sign-in__logo-window"/>
+            </svg>
+            <h1 class="sign-in__title">@L["PageTitle"]</h1>
+            <p class="sign-in__subtitle">@L["Subtitle"]</p>
+        </div>
+
+        <form class="sign-in__form" method="post" action="/auth/sign-in">
+            <input type="hidden" name="culture" value="@Culture" />
+            <input type="hidden" name="returnUrl" value="@GetReturnUrl()" />
+            
+            <div class="sign-in__field">
+                <label for="email" class="sign-in__label">@L["EmailLabel"]</label>
+                <input 
+                    id="email" 
+                    name="email"
+                    type="email" 
+                    class="sign-in__input"
+                    placeholder="@L["EmailPlaceholder"]" 
+                    required 
+                    maxlength="320"
+                    autofocus />
+            </div>
+
+            <button type="submit" class="sign-in__button">
+                <span>@L["SignInButton"]</span>
+            </button>
+        </form>
+    </div>
+</section>
+
+@code {
+    [Parameter]
+    public string? Culture { get; set; }
+
+    private string GetReturnUrl()
+    {
+        return string.IsNullOrWhiteSpace(Culture) 
+            ? "/my-house" 
+            : $"/{Culture}/my-house";
+    }
+}

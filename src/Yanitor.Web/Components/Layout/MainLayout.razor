@@ -1,7 +1,21 @@
 ﻿@inherits LayoutComponentBase
+@using Yanitor.Web.Services
+@using System.Net.Http.Json
+@inject IUserContext UserContext
+@inject NavigationManager Navigation
+@inject HttpClient Http
 
 <header class="main-header">
     <div class="main-header__content">
+        @if (_userEmail != null)
+        {
+            <div class="main-header__user">
+                <span class="main-header__user-email">@_userEmail</span>
+                <button type="button" class="main-header__sign-out" @onclick="SignOut">
+                    Sign Out
+                </button>
+            </div>
+        }
         <CultureSelector />
     </div>
 </header>
@@ -15,3 +29,18 @@
     <a href="." class="reload">Reload</a>
     <span class="dismiss">🗙</span>
 </div>
+
+@code {
+    private string? _userEmail;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _userEmail = await UserContext.GetCurrentUserEmailAsync();
+    }
+
+    private async Task SignOut()
+    {
+        await Http.PostAsync("/api/auth/sign-out", null);
+        Navigation.NavigateTo("/", forceLoad: true);
+    }
+}

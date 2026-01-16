@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Yanitor.Web.Data;
 using Yanitor.Web.Domain.Models;
 using Microsoft.Extensions.DependencyInjection;
+using Yanitor.Web.Services;
 
 namespace Yanitor.Web.Domain.Services;
 
@@ -10,19 +11,20 @@ public class EfHouseConfigurationService
 {
     private readonly YanitorDbContext _db;
     private readonly IServiceProvider _services;
+    private readonly IUserContext _userContext;
 
-    public EfHouseConfigurationService(YanitorDbContext db, IServiceProvider services)
+    public EfHouseConfigurationService(YanitorDbContext db, IServiceProvider services, IUserContext userContext)
     {
         _db = db;
         _services = services;
+        _userContext = userContext;
     }
 
     public async Task<HouseConfiguration?> GetConfigurationAsync()
     {
-        var user = await EnsureDefaultUserAsync(_db);
-        var house = await _db.Houses.Include(h => h.SelectedItemTypes)
-            .FirstOrDefaultAsync(h => h.OwnerId == user.Id);
+        var house = await GetCurrentUserHouseAsync();
         if (house == null) return null;
+        
         var config = new HouseConfiguration();
         foreach (var t in house.SelectedItemTypes.Select(s => s.Type))
         {
@@ -33,19 +35,7 @@ public class EfHouseConfigurationService
 
     public async Task SaveConfigurationAsync(HouseConfiguration configuration)
     {
-        var user = await EnsureDefaultUserAsync(_db);
-        var house = await _db.Houses.Include(h => h.SelectedItemTypes)
-            .FirstOrDefaultAsync(h => h.OwnerId == user.Id);
-
-        // Create the house if it does not exist and save immediately to get a generated Id
-        if (house == null)
-        {
-            house = new House { OwnerId = user.Id };
-            _db.Houses.Add(house);
-            await _db.SaveChangesAsync();
-            // Ensure navigation collection is initialized after creation
-            _db.Entry(house).Collection(h => h.SelectedItemTypes).Load();
-        }
+        var house = await GetCurrentUserHouseAsync();
 
         var desired = configuration.SelectedItemTypes.ToHashSet(StringComparer.OrdinalIgnoreCase);
 
@@ -79,9 +69,11 @@ public class EfHouseConfigurationService
 
     public async Task<bool> HasConfigurationAsync()
     {
-        var user = await EnsureDefaultUserAsync(_db);
+        var userId = await _userContext.GetCurrentUserIdAsync();
+        if (userId == null) return false;
+        
         var has = await _db.Houses.Include(h => h.SelectedItemTypes)
-            .AnyAsync(h => h.OwnerId == user.Id && h.SelectedItemTypes.Any());
+            .AnyAsync(h => h.OwnerId == userId.Value && h.SelectedItemTypes.Any());
         return has;
     }
 
@@ -95,15 +87,24 @@ public class EfHouseConfigurationService
         await SaveConfigurationAsync(config);
     }
 
-    internal static async Task<User> EnsureDefaultUserAsync(YanitorDbContext db)
+    private async Task<House> GetCurrentUserHouseAsync()
     {
-        var user = await db.Users.FirstOrDefaultAsync(u => u.Name == "Anders");
-        if (user == null)
+        var userId = await _userContext.GetCurrentUserIdAsync();
+        if (userId == null)
+            throw new InvalidOperationException("No authenticated user");
+
+        var house = await _db.Houses
+            .Include(h => h.SelectedItemTypes)
+            .FirstOrDefaultAsync(h => h.OwnerId == userId.Value);
+
+        if (house == null)
         {
-            user = new User { Name = "Anders" };
-            db.Users.Add(user);
-            await db.SaveChangesAsync();
+            house = new House { OwnerId = userId.Value };
+            _db.Houses.Add(house);
+            await _db.SaveChangesAsync();
+            _db.Entry(house).Collection(h => h.SelectedItemTypes).Load();
         }
-        return user;
+
+        return house;
     }
 }
