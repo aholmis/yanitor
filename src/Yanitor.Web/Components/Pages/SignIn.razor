@@ -1,7 +1,9 @@
 @page "/sign-in"
 @page "/{culture}/sign-in"
 @using Microsoft.Extensions.Localization
+@using System.Security.Claims
 @inject IStringLocalizer<SignIn> L
+@inject IHttpContextAccessor HttpContextAccessor
 
 <PageTitle>@L["PageTitle"]</PageTitle>
 
@@ -25,6 +27,20 @@
             <p class="sign-in__subtitle">@L["Subtitle"]</p>
         </div>
 
+        @if (IsAuthenticated)
+        {
+            <div class="sign-in__continue-section">
+                <p class="sign-in__continue-label">@L["ContinueAsLabel"]</p>
+                <a href="@GetReturnUrl()" class="sign-in__continue-button">
+                    <span class="sign-in__continue-email">@AuthenticatedEmail</span>
+                    <span>@L["ContinueButton"]</span>
+                </a>
+                <div class="sign-in__divider">
+                    <span>@L["OrDivider"]</span>
+                </div>
+            </div>
+        }
+
         <form class="sign-in__form" method="post" action="/auth/sign-in">
             <input type="hidden" name="culture" value="@Culture" />
             <input type="hidden" name="returnUrl" value="@GetReturnUrl()" />
@@ -39,7 +55,7 @@
                     placeholder="@L["EmailPlaceholder"]" 
                     required 
                     maxlength="320"
-                    autofocus />
+                    autofocus="@(!IsAuthenticated)" />
             </div>
 
             <button type="submit" class="sign-in__button">
@@ -52,6 +68,10 @@
 @code {
     [Parameter]
     public string? Culture { get; set; }
+
+    private bool IsAuthenticated => HttpContextAccessor.HttpContext?.User?.Identity?.IsAuthenticated == true;
+    
+    private string? AuthenticatedEmail => HttpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.Email)?.Value;
 
     private string GetReturnUrl()
     {
