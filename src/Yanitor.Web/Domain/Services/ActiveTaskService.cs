@@ -1,6 +1,7 @@
 using Yanitor.Web.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using Yanitor.Web.Data;
+using Yanitor.Web.Services;
 
 namespace Yanitor.Web.Domain.Services;
 
@@ -31,26 +32,33 @@ public class ActiveTaskService : IActiveTaskService
     private readonly YanitorDbContext _db;
     private readonly IHouseConfigurationService _houseConfigService;
     private readonly IItemProvider _itemProvider;
+    private readonly IUserContext _userContext;
 
-    public ActiveTaskService(YanitorDbContext db, IHouseConfigurationService houseConfigService, IItemProvider itemProvider)
+    public ActiveTaskService(
+        YanitorDbContext db,
+        IHouseConfigurationService houseConfigService,
+        IItemProvider itemProvider,
+        IUserContext userContext)
     {
         _db = db;
         _houseConfigService = houseConfigService;
         _itemProvider = itemProvider;
+        _userContext = userContext;
     }
 
     public async Task<IEnumerable<ActiveTask>> GetActiveTasksAsync()
     {
         var config = await _houseConfigService.GetConfigurationAsync();
-        var user = await EfHouseConfigurationService.EnsureDefaultUserAsync(_db);
-        var house = await _db.Houses.FirstOrDefaultAsync(h => h.OwnerId == user.Id);
-        if (config == null || house == null || config.SelectedItemTypes.Count == 0)
+        var houseId = await GetCurrentUserHouseIdAsync();
+
+        if (config == null || config.SelectedItemTypes.Count == 0)
         {
             return Enumerable.Empty<ActiveTask>();
         }
+
         var types = config.SelectedItemTypes.ToHashSet(StringComparer.OrdinalIgnoreCase);
         var rows = await _db.ActiveTasks
-            .Where(r => r.HouseId == house.Id && types.Contains(r.TaskType))
+            .Where(r => r.HouseId == houseId && types.Contains(r.TaskType))
             .OrderBy(r => r.NextDueDate)
             .AsNoTracking()
             .ToListAsync();
@@ -97,22 +105,23 @@ public class ActiveTaskService : IActiveTaskService
     public async Task<int> GetTaskCountAsync()
     {
         var config = await _houseConfigService.GetConfigurationAsync();
-        var user = await EfHouseConfigurationService.EnsureDefaultUserAsync(_db);
-        var house = await _db.Houses.FirstOrDefaultAsync(h => h.OwnerId == user.Id);
-        if (config == null || house == null || config.SelectedItemTypes.Count == 0)
+        var houseId = await GetCurrentUserHouseIdAsync();
+
+        if (config == null || config.SelectedItemTypes.Count == 0)
         {
             return 0;
         }
+
         var types = config.SelectedItemTypes.ToHashSet(StringComparer.OrdinalIgnoreCase);
-        return await _db.ActiveTasks.CountAsync(r => r.HouseId == house.Id && types.Contains(r.TaskType));
+        return await _db.ActiveTasks.CountAsync(r => r.HouseId == houseId && types.Contains(r.TaskType));
     }
 
     public async Task SyncActiveTasksAsync()
     {
         var config = await _houseConfigService.GetConfigurationAsync();
-        var user = await EfHouseConfigurationService.EnsureDefaultUserAsync(_db);
-        var house = await _db.Houses.FirstOrDefaultAsync(h => h.OwnerId == user.Id);
-        if (config == null || house == null || config.SelectedItemTypes.Count == 0)
+        var houseId = await GetCurrentUserHouseIdAsync();
+
+        if (config == null || config.SelectedItemTypes.Count == 0)
         {
             return;
         }
@@ -124,7 +133,7 @@ public class ActiveTaskService : IActiveTaskService
 
         // Existing tasks to avoid duplicates
         var existing = await _db.ActiveTasks
-            .Where(r => r.HouseId == house.Id)
+            .Where(r => r.HouseId == houseId)
             .Select(r => new { r.ItemName, r.TaskName })
             .ToListAsync();
         var existingSet = existing.Select(e => (e.ItemName, e.TaskName))
@@ -145,7 +154,7 @@ public class ActiveTaskService : IActiveTaskService
 
                 var row = new ActiveTaskRow
                 {
-                    HouseId = house.Id,
+                    HouseId = houseId,
                     ItemName = item.Name,
                     TaskName = taskKey,
                     TaskType = item.ItemType.ToString(),
@@ -159,6 +168,23 @@ public class ActiveTaskService : IActiveTaskService
         }
 
         await _db.SaveChangesAsync();
+    }
+
+    private async Task<Guid> GetCurrentUserHouseIdAsync()
+    {
+        var userId = await _userContext.GetCurrentUserIdAsync();
+        if (userId == null)
+            throw new InvalidOperationException("No authenticated user");
+
+        var house = await _db.Houses
+            .Where(h => h.OwnerId == userId.Value)
+            .Select(h => new { h.Id })
+            .FirstOrDefaultAsync();
+
+        if (house == null)
+            throw new InvalidOperationException("User has no house configured");
+
+        return house.Id;
     }
 
     private static ActiveTask MapToDomain(ActiveTaskRow r)

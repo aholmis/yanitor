@@ -1,0 +1,41 @@
+@namespace Yanitor.Web.Components.Layout
+
+<details class="user-menu" aria-label="User menu">
+    <summary class="user-menu__summary" aria-label="@UserEmail">
+        @DisplayEmail
+    </summary>
+
+    <div class="user-menu__dropdown" role="menu">
+        <form method="post" action="/api/auth/sign-out" class="user-menu__dropdown-item" role="none">
+            <input type="hidden" name="__RequestVerificationToken" value="@AntiForgeryToken" />
+            <button type="submit" class="user-menu__dropdown-button" role="menuitem">
+                @SignOutText
+            </button>
+        </form>
+    </div>
+</details>
+
+@code {
+    /// <summary>
+    /// The current user's email, displayed as the dropdown toggle.
+    /// </summary>
+    [Parameter, EditorRequired]
+    public string UserEmail { get; set; } = string.Empty;
+
+    /// <summary>
+    /// Antiforgery token to include in the sign-out POST.
+    /// </summary>
+    [Parameter]
+    public string? AntiForgeryToken { get; set; }
+
+    /// <summary>
+    /// Text for the sign-out menu item.
+    /// </summary>
+    [Parameter]
+    public string SignOutText { get; set; } = "Sign Out";
+
+    private string DisplayEmail
+        => string.IsNullOrWhiteSpace(UserEmail)
+            ? string.Empty
+            : UserEmail[..Math.Min(UserEmail.Length, 30)] + (UserEmail.Length > 30 ? "..." : string.Empty);
+}

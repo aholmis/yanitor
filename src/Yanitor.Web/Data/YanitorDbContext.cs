@@ -15,11 +15,13 @@ public class YanitorDbContext(DbContextOptions<YanitorDbContext> options) : DbCo
         modelBuilder.Entity<User>(b =>
         {
             b.HasKey(x => x.Id);
-            b.HasIndex(x => x.Name).IsUnique();
-            b.Property(x => x.Name).HasMaxLength(200).IsRequired();
-            b.HasOne(x => x.House)
+            b.HasIndex(x => x.Email).IsUnique();
+            b.Property(x => x.Email).HasMaxLength(320).IsRequired();
+            b.Property(x => x.DisplayName).HasMaxLength(200);
+            b.Property(x => x.CreatedAt).IsRequired();
+            b.HasMany(x => x.Houses)
                 .WithOne(x => x.Owner)
-                .HasForeignKey<House>(x => x.OwnerId)
+                .HasForeignKey(x => x.OwnerId)
                 .OnDelete(DeleteBehavior.Cascade);
         });
 
@@ -62,9 +64,13 @@ public class YanitorDbContext(DbContextOptions<YanitorDbContext> options) : DbCo
 public class User
 {
     public Guid Id { get; set; } = Guid.NewGuid();
-    public string Name { get; set; } = string.Empty;
-    public Guid? HouseId { get; set; }
-    public House? House { get; set; }
+    public string Email { get; set; } = string.Empty;
+    public string? DisplayName { get; set; }
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    public DateTime? LastLoginAt { get; set; }
+    public bool EmailVerified { get; set; } = false;
+    
+    public ICollection<House> Houses { get; set; } = new List<House>();
 }
 
 public class House

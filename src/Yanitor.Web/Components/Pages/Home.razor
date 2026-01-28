@@ -1,5 +1,7 @@
 @page "/"
 @page "/{culture}"
+@page "/home"
+@page "/{culture}/home"
 @using System.Globalization;
 @using Microsoft.Extensions.Localization
 @inject IStringLocalizer<Home> L
@@ -11,7 +13,7 @@
         <div class="home__hero-content">
             <h1 class="home__title">@L["WelcomeMessage"]</h1>
             <p class="home__subtitle">@L["Subtitle"]</p>
-            <a href="@GetMyHouseUrl()" class="home__cta">@L["GetStartedButton"]</a>
+            <a href="@GetSignInUrl()" class="home__cta">@L["GetStartedButton"]</a>
         </div>
         <div class="home__hero-graphic">
             <svg class="home__house-icon" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
@@ -75,10 +77,10 @@
     [Parameter]
     public string? Culture { get; set; }
 
-    private string GetMyHouseUrl()
+    private string GetSignInUrl()
     {
         return string.IsNullOrWhiteSpace(Culture) 
-            ? "/my-house" 
-            : $"/{Culture}/my-house";
+            ? "/sign-in" 
+            : $"/{Culture}/sign-in";
     }
 }

@@ -7,11 +7,15 @@
 @using Yanitor.Web.Domain.Models
 @using Yanitor.Web.Domain.Services
 @using Yanitor.Web.Components
+@using Yanitor.Web.Services
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize]
 @inject IStringLocalizer<ActiveTasks> L
 @inject IStringLocalizer<HouseItemResources> ItemL
 @inject IStringLocalizer<TaskProvider> TaskL
 @inject NavigationManager Navigation
 @inject IActiveTaskService TaskService
+@inject IUserContext UserContext
 @rendermode InteractiveServer
 
 <PageTitle>@L["PageTitle"]</PageTitle>
