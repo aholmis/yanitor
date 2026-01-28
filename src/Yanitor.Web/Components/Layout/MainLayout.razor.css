@@ -20,11 +20,6 @@
     color: white;
 }
 
-.main-header__user-email {
-    font-size: 0.875rem;
-    font-weight: 500;
-}
-
 .main-header__sign-out {
     padding: 0.5rem 1rem;
     font-size: 0.875rem;

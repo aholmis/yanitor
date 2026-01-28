@@ -13,14 +13,7 @@
         @if (_userEmail != null && !IsSignInPage && !IsLandingPage)
         {
             <div class="main-header__user">
-                <span class="main-header__user-email">@_userEmail</span>
-
-                <form method="post" action="/api/auth/sign-out" class="main-header__sign-out-form">
-                    <input type="hidden" name="__RequestVerificationToken" value="@_antiForgeryToken" />
-                    <button type="submit" class="main-header__sign-out">
-                        Sign Out
-                    </button>
-                </form>
+                <UserMenu UserEmail="@_userEmail" AntiForgeryToken="@_antiForgeryToken" />
             </div>
         }
         <CultureSelector />
