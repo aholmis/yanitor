@@ -123,4 +123,28 @@
   <data name="PageTitle" xml:space="preserve">
     <value>Hjem</value>
   </data>
+  <data name="Subtitle" xml:space="preserve">
+    <value>Hold hjemmet ditt i perfekt stand med smart vedlikeholdsoppfølging</value>
+  </data>
+  <data name="GetStartedButton" xml:space="preserve">
+    <value>Kom i gang</value>
+  </data>
+  <data name="ScheduleTasksTitle" xml:space="preserve">
+    <value>Planlegg oppgaver</value>
+  </data>
+  <data name="ScheduleTasksDescription" xml:space="preserve">
+    <value>Planlegg og følg opp regelmessige vedlikeholdsoppgaver for hjemmet ditt</value>
+  </data>
+  <data name="StayOrganizedTitle" xml:space="preserve">
+    <value>Hold oversikt</value>
+  </data>
+  <data name="StayOrganizedDescription" xml:space="preserve">
+    <value>Samle alle vedlikeholdsregistreringer og påminnelser på ett sted</value>
+  </data>
+  <data name="ExpertTipsTitle" xml:space="preserve">
+    <value>Eksperttips</value>
+  </data>
+  <data name="ExpertTipsDescription" xml:space="preserve">
+    <value>Få veiledning om vedlikehold av alle deler av hjemmet ditt</value>
+  </data>
 </root>
