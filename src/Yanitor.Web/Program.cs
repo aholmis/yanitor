@@ -228,7 +228,27 @@ app.MapPost("/api/auth/sign-in", async (SignInRequest request, Yanitor.Web.Servi
 app.MapPost("/api/auth/sign-out", async (HttpContext httpContext) =>
 {
     await httpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-    return Results.Ok();
+
+    var path = httpContext.Request.PathBase + httpContext.Request.Path;
+    var culture = httpContext.Request.RouteValues.TryGetValue("culture", out var cultureValue)
+        ? cultureValue?.ToString()
+        : null;
+
+    // If culture isn't a route value (this endpoint isn't culture-routed), fall back to referer path parsing
+    if (string.IsNullOrWhiteSpace(culture) && httpContext.Request.Headers.TryGetValue("Referer", out var refererValues))
+    {
+        if (Uri.TryCreate(refererValues.FirstOrDefault(), UriKind.Absolute, out var refererUri))
+        {
+            var segments = refererUri.AbsolutePath.Split('/', StringSplitOptions.RemoveEmptyEntries);
+            if (segments.Length > 0)
+            {
+                culture = segments[0];
+            }
+        }
+    }
+
+    var redirectUrl = string.IsNullOrWhiteSpace(culture) ? "/sign-in" : $"/{culture}/sign-in";
+    return Results.Redirect(redirectUrl);
 });
 
 // Endpoint to persist culture via cookie and redirect
