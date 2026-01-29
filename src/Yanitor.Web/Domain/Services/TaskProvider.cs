@@ -46,7 +46,7 @@ public class TaskProvider(IStringLocalizer<TaskProvider> localizer) : ITaskProvi
         {
             NameKey = "HVAC_ChangeAirFilter_Name",
             DescriptionKey = "HVAC_ChangeAirFilter_Description",
-            IntervalDays = 90
+            IntervalDays = 180
         },
         new MaintenanceTask
         {
@@ -272,7 +272,7 @@ public class TaskProvider(IStringLocalizer<TaskProvider> localizer) : ITaskProvi
         {
             NameKey = "Dishwasher_CleanFilter_Name",
             DescriptionKey = "Dishwasher_CleanFilter_Description",
-            IntervalDays = 28
+            IntervalDays = 14
         },
         new MaintenanceTask
         {
