@@ -9,6 +9,8 @@ public class YanitorDbContext(DbContextOptions<YanitorDbContext> options) : DbCo
     public DbSet<House> Houses => Set<House>();
     public DbSet<SelectedItemType> SelectedItemTypes => Set<SelectedItemType>();
     public DbSet<ActiveTaskRow> ActiveTasks => Set<ActiveTaskRow>();
+    public DbSet<NotificationPreferenceRow> NotificationPreferences => Set<NotificationPreferenceRow>();
+    public DbSet<NotificationLogRow> NotificationLogs => Set<NotificationLogRow>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -58,6 +60,35 @@ public class YanitorDbContext(DbContextOptions<YanitorDbContext> options) : DbCo
                 .HasForeignKey(x => x.HouseId)
                 .OnDelete(DeleteBehavior.Cascade);
         });
+
+        modelBuilder.Entity<NotificationPreferenceRow>(b =>
+        {
+            b.HasKey(x => x.Id);
+            b.HasIndex(x => new { x.UserId, x.Method }).IsUnique();
+            b.Property(x => x.Method).IsRequired();
+            b.Property(x => x.IsEnabled).IsRequired();
+            b.Property(x => x.ReminderDaysBeforeDue).HasDefaultValue(1);
+            b.HasOne<User>()
+                .WithMany()
+                .HasForeignKey(x => x.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        modelBuilder.Entity<NotificationLogRow>(b =>
+        {
+            b.HasKey(x => x.Id);
+            b.Property(x => x.Method).IsRequired();
+            b.Property(x => x.SentAt).IsRequired();
+            b.Property(x => x.Success).IsRequired();
+            b.Property(x => x.Recipient).HasMaxLength(320);
+            b.Property(x => x.ErrorMessage).HasMaxLength(1000);
+            b.HasIndex(x => new { x.UserId, x.SentAt });
+            b.HasIndex(x => x.TaskId);
+            b.HasOne<User>()
+                .WithMany()
+                .HasForeignKey(x => x.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
     }
 }
 
@@ -100,4 +131,26 @@ public class ActiveTaskRow
     public DateTime? LastCompletedAt { get; set; }
     public DateTime NextDueDate { get; set; }
     public int IntervalDays { get; set; }
+}
+
+public class NotificationPreferenceRow
+{
+    public Guid Id { get; set; } = Guid.NewGuid();
+    public Guid UserId { get; set; }
+    public int Method { get; set; } // NotificationMethod enum as int
+    public bool IsEnabled { get; set; } = true;
+    public TimeOnly? PreferredTime { get; set; }
+    public int? ReminderDaysBeforeDue { get; set; } = 1;
+}
+
+public class NotificationLogRow
+{
+    public Guid Id { get; set; } = Guid.NewGuid();
+    public Guid UserId { get; set; }
+    public Guid TaskId { get; set; }
+    public int Method { get; set; } // NotificationMethod enum as int
+    public DateTime SentAt { get; set; } = DateTime.UtcNow;
+    public bool Success { get; set; }
+    public string? ErrorMessage { get; set; }
+    public string? Recipient { get; set; }
 }

@@ -10,6 +10,8 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
+using Yanitor.Web.Services.Notifications;
+using Yanitor.Web.BackgroundServices;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -81,6 +83,12 @@ builder.Services.AddScoped<IItemProvider, ItemProvider>();
 // Replace in-memory with EF-backed implementation
 builder.Services.AddScoped<IHouseConfigurationService, EfHouseConfigurationService>();
 builder.Services.AddScoped<IActiveTaskService, ActiveTaskService>();
+
+// Register notification services
+builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
+builder.Services.AddScoped<IEmailSender, SmtpEmailSender>();
+builder.Services.AddScoped<INotificationService, EmailNotificationService>();
+builder.Services.AddHostedService<TaskReminderWorker>();
 
 var supportedCultures = new[] { new CultureInfo("en"), new CultureInfo("nb-NO") };
 var localizationOptions = new RequestLocalizationOptions
