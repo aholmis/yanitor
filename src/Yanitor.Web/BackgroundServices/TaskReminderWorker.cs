@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Yanitor.Web.Data;
 using Yanitor.Web.Domain.Models;
 using Yanitor.Web.Services.Notifications;
+using Yanitor.Web.Services.Reminders;
 
 namespace Yanitor.Web.BackgroundServices;
 
@@ -11,7 +12,8 @@ namespace Yanitor.Web.BackgroundServices;
 /// </summary>
 public class TaskReminderWorker(
     IServiceScopeFactory scopeFactory,
-    ILogger<TaskReminderWorker> logger) : BackgroundService
+    ILogger<TaskReminderWorker> logger,
+    TaskReminderCalculator calculator) : BackgroundService
 {
     private readonly TimeSpan _checkInterval = TimeSpan.FromHours(1);
 
@@ -40,19 +42,18 @@ public class TaskReminderWorker(
         logger.LogInformation("TaskReminderWorker stopping");
     }
 
-    private async Task CheckAndSendRemindersAsync(CancellationToken cancellationToken)
+    private async Task CheckAndSendRemindersAsync(CancellationToken ct)
     {
         using var scope = scopeFactory.CreateScope();
         var dbContext = scope.ServiceProvider.GetRequiredService<YanitorDbContext>();
         var notificationService = scope.ServiceProvider.GetRequiredService<INotificationService>();
 
         var now = DateTime.UtcNow;
-        var currentTime = TimeOnly.FromDateTime(now);
 
         // Get all users with enabled email notifications
         var usersWithPreferences = await dbContext.NotificationPreferences
             .Where(p => p.Method == (int)NotificationMethod.Email && p.IsEnabled)
-            .ToListAsync(cancellationToken);
+            .ToListAsync(ct);
 
         logger.LogInformation("Checking reminders for {Count} users with email preferences", usersWithPreferences.Count);
 
@@ -60,48 +61,16 @@ public class TaskReminderWorker(
         {
             try
             {
-                // Check if it's the right time to send notifications for this user
-                if (preference.PreferredTime.HasValue)
-                {
-                    var preferredTime = preference.PreferredTime.Value;
-                    var timeDifference = Math.Abs((currentTime - preferredTime).TotalMinutes);
-                    
-                    // Only send if within 30 minutes of preferred time
-                    if (timeDifference > 30)
-                    {
-                        continue;
-                    }
-                }
-
-                var reminderDays = preference.ReminderDaysBeforeDue ?? 1;
-                var reminderThreshold = now.AddDays(reminderDays);
-
-                // Get user's houses
-                var userHouses = await dbContext.Houses
-                    .Where(h => h.OwnerId == preference.UserId)
-                    .Select(h => h.Id)
-                    .ToListAsync(cancellationToken);
-
-                if (!userHouses.Any())
-                {
-                    continue;
-                }
-
-                // Find tasks that are due within the reminder threshold
-                var tasksDueForReminder = await dbContext.ActiveTasks
-                    .Where(t => userHouses.Contains(t.HouseId) 
-                        && t.NextDueDate <= reminderThreshold 
-                        && t.NextDueDate >= now)
-                    .ToListAsync(cancellationToken);
-
+                var tasksDueForReminder = await calculator.GetTasksDueForReminderAsync(dbContext, now, preference, ct);
+          
                 foreach (var task in tasksDueForReminder)
                 {
                     // Check if we've already sent a reminder for this task recently (within last 24 hours)
                     var recentLog = await dbContext.NotificationLogs
-                        .Where(l => l.UserId == preference.UserId 
-                            && l.TaskId == task.Id 
+                        .Where(l => l.UserId == preference.UserId
+                            && l.TaskId == task.Id
                             && l.SentAt >= now.AddHours(-24))
-                        .AnyAsync(cancellationToken);
+                        .AnyAsync(ct);
 
                     if (recentLog)
                     {
@@ -111,7 +80,7 @@ public class TaskReminderWorker(
 
                     // Send reminder
                     logger.LogInformation("Sending reminder for task {TaskId} to user {UserId}", task.Id, preference.UserId);
-                    await notificationService.SendTaskReminderAsync(preference.UserId, task.Id, cancellationToken);
+                    await notificationService.SendTaskReminderAsync(preference.UserId, task.Id, ct);
                 }
             }
             catch (Exception ex)

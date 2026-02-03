@@ -93,12 +93,25 @@ public class EfHouseConfigurationService
         if (userId == null)
             throw new InvalidOperationException("No authenticated user");
 
+        // Ensure a corresponding User row exists before creating a House.
+        // If a House is created with an OwnerId that doesn't exist in Users, the FK constraint will fail.
+        
         var house = await _db.Houses
             .Include(h => h.SelectedItemTypes)
             .FirstOrDefaultAsync(h => h.OwnerId == userId.Value);
 
         if (house == null)
         {
+            var user = await _db.Users.FindAsync(userId.Value);
+            if (user == null)
+            {
+                // Try to obtain an email from the user context if available.
+                var email = await _userContext.GetCurrentUserEmailAsync() ?? string.Empty;
+                user = new User { Id = userId.Value, Email = email, CreatedAt = DateTime.UtcNow };
+                _db.Users.Add(user);
+                await _db.SaveChangesAsync();
+            }
+
             house = new House { OwnerId = userId.Value };
             _db.Houses.Add(house);
             await _db.SaveChangesAsync();

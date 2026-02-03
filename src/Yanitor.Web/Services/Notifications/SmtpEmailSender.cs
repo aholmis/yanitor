@@ -11,7 +11,7 @@ public class SmtpEmailSender(IOptions<EmailSettings> settings, ILogger<SmtpEmail
 {
     private readonly EmailSettings _settings = settings.Value;
 
-    public async Task SendEmailAsync(string to, string subject, string body, CancellationToken cancellationToken = default)
+    public async Task SendEmailAsync(string to, string subject, string body, CancellationToken ct = default)
     {
         try
         {
@@ -31,7 +31,7 @@ public class SmtpEmailSender(IOptions<EmailSettings> settings, ILogger<SmtpEmail
             };
             message.To.Add(to);
 
-            await client.SendMailAsync(message, cancellationToken);
+            await client.SendMailAsync(message, ct);
             
             logger.LogInformation("Email sent successfully to {To}", to);
         }

@@ -2,7 +2,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
 using Yanitor.Web.Data;
 using Yanitor.Web.Domain.Models;
-using Yanitor.Web.Domain.Services;
 using Yanitor.Web.Resources;
 
 namespace Yanitor.Web.Services.Notifications;
@@ -16,16 +15,16 @@ public class EmailNotificationService(
     IStringLocalizer<SharedResources> localizer,
     ILogger<EmailNotificationService> logger) : INotificationService
 {
-    public async Task SendTaskReminderAsync(Guid userId, Guid taskId, CancellationToken cancellationToken = default)
+    public async Task SendTaskReminderAsync(Guid userId, Guid taskId, CancellationToken ct = default)
     {
-        var user = await dbContext.Users.FindAsync([userId], cancellationToken);
+        var user = await dbContext.Users.FindAsync([userId], ct);
         if (user == null)
         {
             logger.LogWarning("User {UserId} not found for task reminder", userId);
             return;
         }
 
-        var task = await dbContext.ActiveTasks.FindAsync([taskId], cancellationToken);
+        var task = await dbContext.ActiveTasks.FindAsync([taskId], ct);
         if (task == null)
         {
             logger.LogWarning("Task {TaskId} not found for reminder", taskId);
@@ -33,7 +32,7 @@ public class EmailNotificationService(
         }
 
         var preference = await dbContext.NotificationPreferences
-            .FirstOrDefaultAsync(p => p.UserId == userId && p.Method == (int)NotificationMethod.Email && p.IsEnabled, cancellationToken);
+            .FirstOrDefaultAsync(p => p.UserId == userId && p.Method == (int)NotificationMethod.Email && p.IsEnabled, ct);
 
         if (preference == null)
         {
@@ -63,7 +62,7 @@ public class EmailNotificationService(
                 </body>
                 </html>";
 
-            await emailSender.SendEmailAsync(user.Email, subject, body, cancellationToken);
+            await emailSender.SendEmailAsync(user.Email, subject, body, ct);
 
             // Log successful notification
             var log = new NotificationLogRow
@@ -76,7 +75,7 @@ public class EmailNotificationService(
                 Recipient = user.Email
             };
             dbContext.NotificationLogs.Add(log);
-            await dbContext.SaveChangesAsync(cancellationToken);
+            await dbContext.SaveChangesAsync(ct);
 
             logger.LogInformation("Task reminder sent to {Email} for task {TaskId}", user.Email, taskId);
         }
@@ -96,17 +95,17 @@ public class EmailNotificationService(
                 ErrorMessage = ex.Message
             };
             dbContext.NotificationLogs.Add(log);
-            await dbContext.SaveChangesAsync(cancellationToken);
+            await dbContext.SaveChangesAsync(ct);
 
             throw;
         }
     }
 
-    public async Task<IEnumerable<NotificationPreference>> GetUserPreferencesAsync(Guid userId, CancellationToken cancellationToken = default)
+    public async Task<IEnumerable<NotificationPreference>> GetUserPreferencesAsync(Guid userId, CancellationToken ct = default)
     {
         var preferences = await dbContext.NotificationPreferences
             .Where(p => p.UserId == userId)
-            .ToListAsync(cancellationToken);
+            .ToListAsync(ct);
 
         return preferences.Select(p => new NotificationPreference
         {
@@ -125,10 +124,10 @@ public class EmailNotificationService(
         bool isEnabled,
         TimeOnly? preferredTime = null,
         int? reminderDaysBeforeDue = null,
-        CancellationToken cancellationToken = default)
+        CancellationToken ct = default)
     {
         var existing = await dbContext.NotificationPreferences
-            .FirstOrDefaultAsync(p => p.UserId == userId && p.Method == (int)method, cancellationToken);
+            .FirstOrDefaultAsync(p => p.UserId == userId && p.Method == (int)method, ct);
 
         if (existing != null)
         {
@@ -149,7 +148,7 @@ public class EmailNotificationService(
             dbContext.NotificationPreferences.Add(newPreference);
         }
 
-        await dbContext.SaveChangesAsync(cancellationToken);
+        await dbContext.SaveChangesAsync(ct);
         logger.LogInformation("Updated notification preference for user {UserId}, method {Method}", userId, method);
     }
 }

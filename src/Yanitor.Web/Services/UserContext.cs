@@ -58,16 +58,6 @@ public class UserContext(YanitorDbContext db, UserCircuitHandler circuitHandler,
         return Task.FromResult<string?>(null);
     }
 
-    public async Task<User?> GetCurrentUserAsync()
-    {
-        var userId = await GetCurrentUserIdAsync();
-        if (userId == null) return null;
-        
-        return await _db.Users
-            .Include(u => u.Houses)
-            .FirstOrDefaultAsync(u => u.Id == userId.Value);
-    }
-
     public Task SetCurrentUserAsync(Guid userId, string email)
     {
         // Only set circuit state; cookies are managed by API endpoints

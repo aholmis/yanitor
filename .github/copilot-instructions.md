@@ -101,10 +101,11 @@ Follow C# and Blazor best practices:
 - Use latest syntax features (e.g., nullable reference types, expression-bodied members).
 - Use latest language features (e.g., pattern matching, records) when appropriate.
 - Use primary constructors.
+- Use file-scoped namespaces.
 - Use target-typed `new()` where appropriate.
 - Write secure code.
- - Use structured logging via `ILogger<T>` and avoid swallowing exceptions.
- - Avoid unnecessary re-renders; use `@key`, keep `OnParametersSet` light, and consider `ShouldRender` for expensive components.
+- Use structured logging via `ILogger<T>` and avoid swallowing exceptions.
+- Avoid unnecessary re-renders; use `@key`, keep `OnParametersSet` light, and consider `ShouldRender` for expensive components.
 
 ---
 

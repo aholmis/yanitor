@@ -11,6 +11,7 @@ using Yanitor.Web.Services.Notifications;
 using Yanitor.Web.BackgroundServices;
 using Microsoft.AspNetCore.Localization;
 using System.Globalization;
+using Yanitor.Web.Services.Reminders;
 
 namespace Yanitor.Web.Extensions
 {
@@ -91,6 +92,10 @@ namespace Yanitor.Web.Extensions
             builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
             builder.Services.AddScoped<IEmailSender, SmtpEmailSender>();
             builder.Services.AddScoped<INotificationService, EmailNotificationService>();
+
+            // Register reminder calculator
+            builder.Services.AddTransient<TaskReminderCalculator>();
+
             builder.Services.AddHostedService<TaskReminderWorker>();
         }
     }

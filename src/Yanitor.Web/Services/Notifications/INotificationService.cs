@@ -12,15 +12,15 @@ public interface INotificationService
     /// </summary>
     /// <param name="userId">The ID of the user to notify.</param>
     /// <param name="taskId">The ID of the task to remind about.</param>
-    /// <param name="cancellationToken">Cancellation token.</param>
-    Task SendTaskReminderAsync(Guid userId, Guid taskId, CancellationToken cancellationToken = default);
+    /// <param name="ct">Cancellation token.</param>
+    Task SendTaskReminderAsync(Guid userId, Guid taskId, CancellationToken ct = default);
 
     /// <summary>
     /// Gets notification preferences for a user.
     /// </summary>
     /// <param name="userId">The ID of the user.</param>
-    /// <param name="cancellationToken">Cancellation token.</param>
-    Task<IEnumerable<NotificationPreference>> GetUserPreferencesAsync(Guid userId, CancellationToken cancellationToken = default);
+    /// <param name="ct">Cancellation token.</param>
+    Task<IEnumerable<NotificationPreference>> GetUserPreferencesAsync(Guid userId, CancellationToken ct = default);
 
     /// <summary>
     /// Updates or creates a notification preference for a user.
@@ -30,12 +30,12 @@ public interface INotificationService
     /// <param name="isEnabled">Whether the method is enabled.</param>
     /// <param name="preferredTime">Optional preferred time for notifications.</param>
     /// <param name="reminderDaysBeforeDue">Days before due date to send reminder.</param>
-    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <param name="ct">Cancellation token.</param>
     Task UpdatePreferenceAsync(
         Guid userId, 
         NotificationMethod method, 
         bool isEnabled, 
         TimeOnly? preferredTime = null, 
         int? reminderDaysBeforeDue = null,
-        CancellationToken cancellationToken = default);
+        CancellationToken ct = default);
 }
