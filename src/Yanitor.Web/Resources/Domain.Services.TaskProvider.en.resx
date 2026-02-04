@@ -371,4 +371,36 @@ Carbon monoxide detectors should be placed near sleeping areas and tested monthl
   <data name="Product_SmokeDetector_DualSensor_Description" xml:space="preserve">
     <value>Combines photoelectric and ionization sensors for comprehensive fire detection</value>
   </data>
+  <data name="Dishwasher_CleanFilter_DetailedDescription" xml:space="preserve">
+    <value>Regular dishwasher filter cleaning is essential for optimal performance and clean dishes. A clogged filter reduces water circulation and can leave food particles on your dishes.
+
+Steps to clean your dishwasher filter:
+1. Remove the lower dish rack to access the filter
+2. Locate the filter assembly at the bottom of the dishwasher tub
+3. Turn the cylindrical filter counterclockwise (usually a quarter turn) to unlock it
+4. Lift out the entire filter assembly carefully
+5. Separate the cylindrical filter from the flat mesh screen (if applicable)
+6. Rinse both parts under warm running water
+7. Use a soft brush (old toothbrush works well) to gently scrub away food particles and grease
+8. For stubborn buildup, soak the filter in warm soapy water for 10-15 minutes
+9. Check the filter cavity in the dishwasher for any debris and wipe clean
+10. Reassemble the filter parts
+11. Place the filter assembly back into the dishwasher
+12. Turn clockwise to lock it securely in place
+13. Reinstall the lower dish rack
+
+Clean your dishwasher filter every 2-4 weeks for best results. If you notice dishes coming out dirty or a bad odor, clean the filter immediately.</value>
+  </data>
+  <data name="Product_DishwasherCleaner_Name" xml:space="preserve">
+    <value>Dishwasher Cleaner Tablets</value>
+  </data>
+  <data name="Product_DishwasherCleaner_Description" xml:space="preserve">
+    <value>Removes grease, limescale, and odor-causing residue from your dishwasher</value>
+  </data>
+  <data name="Product_DishwasherFilter_Name" xml:space="preserve">
+    <value>Replacement Dishwasher Filter</value>
+  </data>
+  <data name="Product_DishwasherFilter_Description" xml:space="preserve">
+    <value>OEM or compatible replacement filter for when yours is damaged or worn</value>
+  </data>
 </root>

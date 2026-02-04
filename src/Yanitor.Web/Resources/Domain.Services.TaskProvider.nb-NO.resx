@@ -371,4 +371,36 @@ Karbonmonoksiddetektorer bør plasseres nær soveområder og testes månedlig ve
   <data name="Product_SmokeDetector_DualSensor_Description" xml:space="preserve">
     <value>Kombinerer fotoelektriske og ionisasjonssensorer for omfattende branndeteksjon</value>
   </data>
+  <data name="Dishwasher_CleanFilter_DetailedDescription" xml:space="preserve">
+    <value>Regelmessig rengjøring av oppvaskmaskinfilteret er essensielt for optimal ytelse og rene tallerkener. Et tilstoppet filter reduserer vannsirkulasjonen og kan etterlate matrester på oppvasken.
+
+Trinn for å rengjøre oppvaskmaskinfilteret:
+1. Fjern den nedre oppvaskstativet for å få tilgang til filteret
+2. Finn filterenheten nederst i oppvaskmaskinens beholder
+3. Drei det sylindriske filteret mot klokken (vanligvis en kvart omdreining) for å låse det opp
+4. Løft forsiktig ut hele filterenheten
+5. Skill det sylindriske filteret fra den flate maskenetten (hvis aktuelt)
+6. Skyll begge delene under varmt rennende vann
+7. Bruk en myk børste (gammel tannbørste fungerer bra) for å forsiktig skrubbe bort matrester og fett
+8. For hardhudede avleiringer, bløtlegg filteret i varmt såpevann i 10-15 minutter
+9. Sjekk filterhulrommet i oppvaskmaskinen for rusk og tørk rent
+10. Sett sammen filterdelene igjen
+11. Plasser filterenheten tilbake i oppvaskmaskinen
+12. Drei med klokken for å låse det sikkert på plass
+13. Sett tilbake det nedre oppvaskstativet
+
+Rengjør oppvaskmaskinfilteret hver 2-4 uke for beste resultater. Hvis du legger merke til at oppvasken kommer ut skitten eller en dårlig lukt, rengjør filteret umiddelbart.</value>
+  </data>
+  <data name="Product_DishwasherCleaner_Name" xml:space="preserve">
+    <value>Oppvaskmaskinrens tabletter</value>
+  </data>
+  <data name="Product_DishwasherCleaner_Description" xml:space="preserve">
+    <value>Fjerner fett, kalkavleiringer og luktrester fra oppvaskmaskinen</value>
+  </data>
+  <data name="Product_DishwasherFilter_Name" xml:space="preserve">
+    <value>Erstatningsfilter til oppvaskmaskin</value>
+  </data>
+  <data name="Product_DishwasherFilter_Description" xml:space="preserve">
+    <value>OEM eller kompatibelt erstatningsfilter for når ditt er skadet eller slitt</value>
+  </data>
 </root>

@@ -306,7 +306,24 @@ public class TaskProvider(IStringLocalizer<TaskProvider> localizer) : ITaskProvi
         {
             NameKey = "Dishwasher_CleanFilter_Name",
             DescriptionKey = "Dishwasher_CleanFilter_Description",
-            IntervalDays = 14
+            DetailedDescriptionKey = "Dishwasher_CleanFilter_DetailedDescription",
+            IntervalDays = 14,
+            VideoUrl = "https://www.youtube.com/watch?v=NW3asK4epk4",
+            ProductLinks =
+            [
+                new ProductLink
+                {
+                    NameKey = "Product_DishwasherCleaner_Name",
+                    DescriptionKey = "Product_DishwasherCleaner_Description",
+                    Url = "https://www.amazon.com/s?k=dishwasher+cleaner"
+                },
+                new ProductLink
+                {
+                    NameKey = "Product_DishwasherFilter_Name",
+                    DescriptionKey = "Product_DishwasherFilter_Description",
+                    Url = "https://www.amazon.com/s?k=dishwasher+filter+replacement"
+                }
+            ]
         },
         new MaintenanceTask
         {

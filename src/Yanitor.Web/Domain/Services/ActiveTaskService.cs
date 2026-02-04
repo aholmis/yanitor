@@ -32,17 +32,20 @@ public class ActiveTaskService : IActiveTaskService
     private readonly YanitorDbContext _db;
     private readonly IHouseConfigurationService _houseConfigService;
     private readonly IItemProvider _itemProvider;
+    private readonly ITaskProvider _taskProvider;
     private readonly IUserContext _userContext;
 
     public ActiveTaskService(
         YanitorDbContext db,
         IHouseConfigurationService houseConfigService,
         IItemProvider itemProvider,
+        ITaskProvider taskProvider,
         IUserContext userContext)
     {
         _db = db;
         _houseConfigService = houseConfigService;
         _itemProvider = itemProvider;
+        _taskProvider = taskProvider;
         _userContext = userContext;
     }
 
@@ -63,7 +66,7 @@ public class ActiveTaskService : IActiveTaskService
             .AsNoTracking()
             .ToListAsync();
 
-        return rows.Select(MapToDomain);
+        return rows.Select(r => MapToDomain(r));
     }
 
     public async Task<IEnumerable<ActiveTask>> GetTasksByRoomTypeAsync(RoomType roomType)
@@ -187,25 +190,41 @@ public class ActiveTaskService : IActiveTaskService
         return house.Id;
     }
 
-    private static ActiveTask MapToDomain(ActiveTaskRow r)
+    private ActiveTask MapToDomain(ActiveTaskRow r)
     {
-        // TaskName stores the localized name key (e.g., "HVAC_ChangeAirFilter_Name").
-        // Derive the description key using the naming convention when possible.
-        var descriptionKey = r.TaskName.EndsWith("_Name", StringComparison.Ordinal)
-            ? r.TaskName.Replace("_Name", "_Description", StringComparison.Ordinal)
-            : r.TaskName;
-
-        var mt = new MaintenanceTask
-        {
-            NameKey = r.TaskName,
-            DescriptionKey = descriptionKey,
-            IntervalDays = r.IntervalDays
-        };
-
-        // Build a lightweight HouseItem instance based on persisted data
+        // Parse the item type to determine which task provider method to call
         var itemType = Enum.TryParse<HouseItemType>(r.TaskType, true, out var parsed)
             ? parsed
             : HouseItemType.Ventilation;
+
+        // Get all tasks for this item type from the provider
+        var allTasksForType = _taskProvider.GetTasksForItemType(itemType);
+        
+        // Find the specific task by matching the NameKey stored in r.TaskName
+        var fullTask = allTasksForType.FirstOrDefault(t => t.NameKey == r.TaskName);
+
+        // If we can't find the task definition, fall back to creating a basic one
+        MaintenanceTask mt;
+        if (fullTask != null)
+        {
+            mt = fullTask;
+        }
+        else
+        {
+            // Fallback for missing task definitions
+            var descriptionKey = r.TaskName.EndsWith("_Name", StringComparison.Ordinal)
+                ? r.TaskName.Replace("_Name", "_Description", StringComparison.Ordinal)
+                : r.TaskName;
+
+            mt = new MaintenanceTask
+            {
+                NameKey = r.TaskName,
+                DescriptionKey = descriptionKey,
+                IntervalDays = r.IntervalDays
+            };
+        }
+
+        // Build a lightweight HouseItem instance based on persisted data
         var item = new HouseItem
         {
             Name = r.ItemName,
