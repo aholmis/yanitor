@@ -4,22 +4,11 @@ using Yanitor.Web.Data;
 
 namespace Yanitor.Web.Services;
 
-public class AuthenticationService : IAuthenticationService
+public class AuthenticationService(
+    YanitorDbContext db,
+    IUserContext userContext,
+    ILogger<AuthenticationService> logger) : IAuthenticationService
 {
-    private readonly YanitorDbContext _db;
-    private readonly IUserContext _userContext;
-    private readonly ILogger<AuthenticationService> _logger;
-
-    public AuthenticationService(
-        YanitorDbContext db,
-        IUserContext userContext,
-        ILogger<AuthenticationService> logger)
-    {
-        _db = db;
-        _userContext = userContext;
-        _logger = logger;
-    }
-
     public async Task<SignInResult> SignInWithEmailAsync(string email)
     {
         try
@@ -39,7 +28,7 @@ public class AuthenticationService : IAuthenticationService
             }
 
             // Check if user exists
-            var user = await _db.Users.FirstOrDefaultAsync(u => u.Email == email);
+            var user = await db.Users.FirstOrDefaultAsync(u => u.Email == email);
             var now = DateTime.UtcNow;
 
             if (user == null)
@@ -53,51 +42,46 @@ public class AuthenticationService : IAuthenticationService
                     EmailVerified = false
                 };
 
-                _db.Users.Add(user);
-                await _db.SaveChangesAsync();
+                db.Users.Add(user);
+                await db.SaveChangesAsync();
 
-                _logger.LogInformation("New user created with ID {UserId}", user.Id);
+                logger.LogInformation("New user created with ID {UserId}", user.Id);
             }
             else
             {
                 // Update last login time
                 user.LastLoginAt = now;
-                await _db.SaveChangesAsync();
+                await db.SaveChangesAsync();
 
-                _logger.LogInformation("User {UserId} signed in", user.Id);
+                logger.LogInformation("User {UserId} signed in", user.Id);
             }
 
             // Set user context
-            await _userContext.SetCurrentUserAsync(user.Id, user.Email);
+            await userContext.SetCurrentUserAsync(user.Id, user.Email);
 
             return new SignInResult(true, null, user);
         }
         catch (DbUpdateException ex)
         {
-            _logger.LogError(ex, "Database error during sign-in");
+            logger.LogError(ex, "Database error during sign-in");
             return new SignInResult(false, "An error occurred. Please try again.", null);
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Unexpected error during sign-in");
+            logger.LogError(ex, "Unexpected error during sign-in");
             return new SignInResult(false, "An error occurred. Please try again.", null);
         }
     }
 
     public async Task SignOutAsync()
     {
-        var userId = await _userContext.GetCurrentUserIdAsync();
+        var userId = await userContext.GetCurrentUserIdAsync();
         if (userId.HasValue)
         {
-            _logger.LogInformation("User {UserId} signed out", userId.Value);
+            logger.LogInformation("User {UserId} signed out", userId.Value);
         }
 
-        await _userContext.ClearCurrentUserAsync();
-    }
-
-    public async Task<User?> GetCurrentUserAsync()
-    {
-        return await _userContext.GetCurrentUserAsync();
+        await userContext.ClearCurrentUserAsync();
     }
 
     private static bool IsValidEmail(string email)

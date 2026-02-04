@@ -8,5 +8,4 @@ public interface IAuthenticationService
 {
     Task<SignInResult> SignInWithEmailAsync(string email);
     Task SignOutAsync();
-    Task<User?> GetCurrentUserAsync();
 }

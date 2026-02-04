@@ -6,6 +6,9 @@
     </summary>
 
     <div class="user-menu__dropdown" role="menu">
+        <a href="@NotificationSettingsUrl" class="user-menu__dropdown-link" role="menuitem">
+            @NotificationSettingsText
+        </a>
         <form method="post" action="/api/auth/sign-out" class="user-menu__dropdown-item" role="none">
             <input type="hidden" name="__RequestVerificationToken" value="@AntiForgeryToken" />
             <button type="submit" class="user-menu__dropdown-button" role="menuitem">
@@ -33,6 +36,18 @@
     /// </summary>
     [Parameter]
     public string SignOutText { get; set; } = "Sign Out";
+
+    /// <summary>
+    /// Text for the notification settings menu item.
+    /// </summary>
+    [Parameter]
+    public string NotificationSettingsText { get; set; } = "Notification Settings";
+
+    /// <summary>
+    /// URL for the notification settings page.
+    /// </summary>
+    [Parameter]
+    public string NotificationSettingsUrl { get; set; } = "/notification-settings";
 
     private string DisplayEmail
         => string.IsNullOrWhiteSpace(UserEmail)

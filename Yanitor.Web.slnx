@@ -8,4 +8,5 @@
     <File Path="README.md" />
   </Folder>
   <Project Path="src\Yanitor.Web\Yanitor.Web.csproj" />
+  <Project Path="tests/Yanitor.Web.Tests/Yanitor.Web.Tests.csproj" />
 </Solution>

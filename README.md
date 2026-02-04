@@ -2,6 +2,17 @@
 
 Yanitor is a lightweight and efficient task management application designed to help you organize your daily activities with ease. Whether you're managing personal tasks or collaborating with a team, Yanitor provides a simple and intuitive interface to keep you on track.
 
+## TODO
+
+- create a key vault
+- create communication service for email
+- add secrets to key vault
+- add OTP sign in with email
+- add task details
+  - detailed description
+  - video
+  - links to products
+
 ## Data storage plan: House configurations and tasks
 
 This section outlines how to persist users' house configurations and active tasks. It focuses on a pragmatic progression from local storage to multi-user cloud persistence.

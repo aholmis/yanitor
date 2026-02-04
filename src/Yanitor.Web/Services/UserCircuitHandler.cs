@@ -15,17 +15,17 @@ public class UserCircuitHandler : CircuitHandler
     public Guid? UserId { get; set; }
     public string? Email { get; set; }
 
-    public override Task OnConnectionUpAsync(Circuit circuit, CancellationToken cancellationToken)
+    public override Task OnConnectionUpAsync(Circuit circuit, CancellationToken ct)
     {
         return Task.CompletedTask;
     }
 
-    public override Task OnConnectionDownAsync(Circuit circuit, CancellationToken cancellationToken)
+    public override Task OnConnectionDownAsync(Circuit circuit, CancellationToken ct)
     {
         return Task.CompletedTask;
     }
 
-    public override Task OnCircuitOpenedAsync(Circuit circuit, CancellationToken cancellationToken)
+    public override Task OnCircuitOpenedAsync(Circuit circuit, CancellationToken ct)
     {
         // Load user from authenticated claims
         var httpContext = _httpContextAccessor.HttpContext;
@@ -47,7 +47,7 @@ public class UserCircuitHandler : CircuitHandler
         return Task.CompletedTask;
     }
 
-    public override Task OnCircuitClosedAsync(Circuit circuit, CancellationToken cancellationToken)
+    public override Task OnCircuitClosedAsync(Circuit circuit, CancellationToken ct)
     {
         UserId = null;
         Email = null;

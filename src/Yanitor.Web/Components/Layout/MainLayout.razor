@@ -1,19 +1,26 @@
 ﻿@inherits LayoutComponentBase
 @using Yanitor.Web.Services
+@using Yanitor.Web.Resources
 @using System.Net.Http.Json
 @using Microsoft.AspNetCore.Antiforgery
+@using Microsoft.Extensions.Localization
 @inject IUserContext UserContext
 @inject NavigationManager Navigation
 @inject HttpClient Http
 @inject IAntiforgery Antiforgery
 @inject IHttpContextAccessor HttpContextAccessor
+@inject IStringLocalizer<SharedResources> L
 
 <header class="main-header">
     <div class="main-header__content">
         @if (_userEmail != null && !IsSignInPage && !IsLandingPage)
         {
             <div class="main-header__user">
-                <UserMenu UserEmail="@_userEmail" AntiForgeryToken="@_antiForgeryToken" />
+                <UserMenu UserEmail="@_userEmail" 
+                          AntiForgeryToken="@_antiForgeryToken"
+                          SignOutText="@L["SignOut"].Value"
+                          NotificationSettingsText="@L["NotificationSettings"].Value"
+                          NotificationSettingsUrl="@GetNotificationSettingsUrl()" />
             </div>
         }
         <CultureSelector />
@@ -80,6 +87,29 @@
             return segments.Length == 2 &&
                    string.Equals(segments[1], "home", StringComparison.OrdinalIgnoreCase);
         }
+    }
+
+    private string? GetCurrentCulture()
+    {
+        var path = Navigation.ToBaseRelativePath(Navigation.Uri)
+            .Split('?', '#')[0]
+            .Split('/', StringSplitOptions.RemoveEmptyEntries)
+            .FirstOrDefault();
+
+        // Check if first segment looks like a culture (e.g., "nb-NO", "en")
+        if (!string.IsNullOrEmpty(path) && (path.Length == 2 || path.Contains('-')))
+        {
+            return path;
+        }
+        return null;
+    }
+
+    private string GetNotificationSettingsUrl()
+    {
+        var culture = GetCurrentCulture();
+        return string.IsNullOrWhiteSpace(culture) 
+            ? "/notification-settings" 
+            : $"/{culture}/notification-settings";
     }
 
     protected override async Task OnInitializedAsync()
