@@ -1,0 +1,263 @@
+@page "/task-details/{taskId:guid}"
+@page "/{culture}/task-details/{taskId:guid}"
+@using System.Globalization
+@using Microsoft.Extensions.Localization
+@using Yanitor.Web.Domain
+@using Yanitor.Web.Domain.Models
+@using Yanitor.Web.Domain.Services
+@using Yanitor.Web.Components
+@using Yanitor.Web.Services
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize]
+@inject IStringLocalizer<TaskDetails> L
+@inject IStringLocalizer<HouseItemResources> ItemL
+@inject IStringLocalizer<TaskProvider> TaskL
+@inject NavigationManager Navigation
+@inject IActiveTaskService TaskService
+@inject IUserContext UserContext
+@rendermode InteractiveServer
+
+<PageTitle>@(string.IsNullOrEmpty(_taskName) ? L["PageTitle"] : _taskName)</PageTitle>
+
+<section class="task-details">
+    @if (_isLoading)
+    {
+        <div class="task-details__loading">
+            <p>@L["Loading"]</p>
+        </div>
+    }
+    else if (_activeTask == null)
+    {
+        <div class="task-details__not-found">
+            <p>@L["TaskNotFound"]</p>
+            <a href="@GetActiveTasksUrl()" class="task-details__back-link">@L["BackToTasks"]</a>
+        </div>
+    }
+    else
+    {
+        <header class="task-details__header">
+            <a href="@GetActiveTasksUrl()" class="task-details__back-button" aria-label="@L["BackToTasks"]">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M19 12H5M12 19l-7-7 7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </a>
+            <div class="task-details__header-content">
+                <div class="task-details__icon-container">
+                    <Yanitor.Web.Components.IconFactory Item="_activeTask.Item" />
+                </div>
+                <div class="task-details__header-text">
+                    <p class="task-details__item-name">@_itemName</p>
+                    <h1 class="task-details__title">@_taskName</h1>
+                </div>
+            </div>
+        </header>
+
+        <div class="task-details__content">
+            <section class="task-details__summary">
+                <div class="task-details__summary-card">
+                    <h2 class="task-details__section-title">@L["Summary"]</h2>
+                    <p class="task-details__description">@_taskDescription</p>
+                    
+                    <dl class="task-details__info-list">
+                        <div class="task-details__info-item">
+                            <dt class="task-details__info-label">@L["DueDate"]</dt>
+                            <dd class="task-details__info-value">@_activeTask.NextDueDate.ToLocalTime().ToString("D")</dd>
+                        </div>
+                        <div class="task-details__info-item">
+                            <dt class="task-details__info-label">@L["Frequency"]</dt>
+                            <dd class="task-details__info-value">@L["EveryNDays", _activeTask.Task.IntervalDays]</dd>
+                        </div>
+                        @if (_activeTask.LastCompletedAt.HasValue)
+                        {
+                            <div class="task-details__info-item">
+                                <dt class="task-details__info-label">@L["LastCompleted"]</dt>
+                                <dd class="task-details__info-value">@_activeTask.LastCompletedAt.Value.ToLocalTime().ToString("D")</dd>
+                            </div>
+                        }
+                    </dl>
+
+                    <button type="button" class="task-details__complete-button" @onclick="CompleteTask">
+                        @L["MarkComplete"]
+                    </button>
+                </div>
+            </section>
+
+            @if (!string.IsNullOrWhiteSpace(_detailedDescription))
+            {
+                <section class="task-details__detailed-description">
+                    <h2 class="task-details__section-title">@L["DetailedInstructions"]</h2>
+                    <div class="task-details__detailed-description-content">
+                        @((MarkupString)_detailedDescription.Replace("\n", "<br />"))
+                    </div>
+                </section>
+            }
+
+            @if (!string.IsNullOrWhiteSpace(_activeTask.Task.VideoUrl))
+            {
+                <section class="task-details__video">
+                    <h2 class="task-details__section-title">@L["InstructionalVideo"]</h2>
+                    <div class="task-details__video-container">
+                        @if (IsYouTubeUrl(_activeTask.Task.VideoUrl))
+                        {
+                            <iframe 
+                                class="task-details__video-iframe"
+                                src="@GetYouTubeEmbedUrl(_activeTask.Task.VideoUrl)" 
+                                title="@L["VideoTitle"]"
+                                frameborder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                                allowfullscreen>
+                            </iframe>
+                        }
+                        else
+                        {
+                            <video class="task-details__video-player" controls>
+                                <source src="@_activeTask.Task.VideoUrl" type="video/mp4">
+                                @L["VideoNotSupported"]
+                            </video>
+                        }
+                    </div>
+                </section>
+            }
+
+            @if (_activeTask.Task.ProductLinks?.Any() == true)
+            {
+                <section class="task-details__products">
+                    <h2 class="task-details__section-title">@L["RecommendedProducts"]</h2>
+                    <div class="task-details__product-list">
+                        @foreach (var product in _activeTask.Task.ProductLinks)
+                        {
+                            var productName = TaskL[product.NameKey];
+                            var productDescription = !string.IsNullOrWhiteSpace(product.DescriptionKey) 
+                                ? TaskL[product.DescriptionKey]
+                                : null;
+
+                            <article class="task-details__product-card">
+                                <h3 class="task-details__product-name">@productName</h3>
+                                @if (productDescription != null && !productDescription.ResourceNotFound)
+                                {
+                                    <p class="task-details__product-description">@productDescription</p>
+                                }
+                                <a href="@product.Url" 
+                                   class="task-details__product-link" 
+                                   target="_blank" 
+                                   rel="noopener noreferrer">
+                                    @L["ViewProduct"]
+                                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                        <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                </a>
+                            </article>
+                        }
+                    </div>
+                </section>
+            }
+        </div>
+    }
+</section>
+
+@code {
+    [Parameter]
+    public string? Culture { get; set; }
+
+    [Parameter]
+    public Guid TaskId { get; set; }
+
+    private bool _isLoading = true;
+    private ActiveTask? _activeTask;
+    private string _taskName = "";
+    private string _taskDescription = "";
+    private string _detailedDescription = "";
+    private string _itemName = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadTaskAsync();
+    }
+
+    private async Task LoadTaskAsync()
+    {
+        _isLoading = true;
+
+        var tasks = await TaskService.GetActiveTasksAsync();
+        _activeTask = tasks.FirstOrDefault(t => t.Id == TaskId);
+
+        if (_activeTask != null)
+        {
+            // Resolve item display name
+            var itemSpecificKey = $"Item_{_activeTask.Item.Name}_Name";
+            var itemTypeKey = $"ItemType_{_activeTask.Item.ItemType}_Name";
+            var localizedItemName = ItemL[itemSpecificKey];
+            if (localizedItemName.ResourceNotFound || string.IsNullOrWhiteSpace(localizedItemName.Value))
+            {
+                localizedItemName = ItemL[itemTypeKey];
+            }
+            _itemName = (!localizedItemName.ResourceNotFound && !string.IsNullOrWhiteSpace(localizedItemName.Value)) 
+                ? localizedItemName.Value 
+                : _activeTask.Item.Name;
+
+            // Resolve task name and description
+            var displayTaskName = TaskL[_activeTask.Task.NameKey];
+            var displayTaskDescription = TaskL[_activeTask.Task.DescriptionKey];
+            _taskName = (!displayTaskName.ResourceNotFound && !string.IsNullOrWhiteSpace(displayTaskName.Value)) 
+                ? displayTaskName.Value 
+                : _activeTask.Task.NameKey;
+            _taskDescription = (!displayTaskDescription.ResourceNotFound && !string.IsNullOrWhiteSpace(displayTaskDescription.Value)) 
+                ? displayTaskDescription.Value 
+                : _activeTask.Task.DescriptionKey;
+
+            // Resolve detailed description if available
+            if (!string.IsNullOrWhiteSpace(_activeTask.Task.DetailedDescriptionKey))
+            {
+                var detailedDesc = TaskL[_activeTask.Task.DetailedDescriptionKey];
+                _detailedDescription = (!detailedDesc.ResourceNotFound && !string.IsNullOrWhiteSpace(detailedDesc.Value)) 
+                    ? detailedDesc.Value 
+                    : "";
+            }
+        }
+
+        _isLoading = false;
+    }
+
+    private async Task CompleteTask()
+    {
+        if (_activeTask != null)
+        {
+            await TaskService.CompleteTaskAsync(_activeTask.Id);
+            Navigation.NavigateTo(GetActiveTasksUrl());
+        }
+    }
+
+    private string GetActiveTasksUrl()
+    {
+        return string.IsNullOrWhiteSpace(Culture)
+            ? "/active-tasks"
+            : $"/{Culture}/active-tasks";
+    }
+
+    private bool IsYouTubeUrl(string url)
+    {
+        return url.Contains("youtube.com") || url.Contains("youtu.be");
+    }
+
+    private string GetYouTubeEmbedUrl(string url)
+    {
+        // Convert youtube.com/watch?v=VIDEO_ID or youtu.be/VIDEO_ID to youtube.com/embed/VIDEO_ID
+        var videoId = "";
+        
+        if (url.Contains("youtube.com/watch?v="))
+        {
+            var uri = new Uri(url);
+            var query = System.Web.HttpUtility.ParseQueryString(uri.Query);
+            videoId = query["v"];
+        }
+        else if (url.Contains("youtu.be/"))
+        {
+            var uri = new Uri(url);
+            videoId = uri.AbsolutePath.TrimStart('/');
+        }
+        
+        return string.IsNullOrWhiteSpace(videoId) 
+            ? url 
+            : $"https://www.youtube.com/embed/{videoId}";
+    }
+}

@@ -306,4 +306,69 @@
   <data name="Generic_CleanAndMaintain_Description" xml:space="preserve">
     <value>Rengjør og utfør grunnleggende vedlikehold for å holde gjenstand i god stand.</value>
   </data>
+
+  <!-- Detaljerte beskrivelser -->
+  <data name="HVAC_ChangeAirFilter_DetailedDescription" xml:space="preserve">
+    <value>Regelmessig skift av luftfilter er essensielt for å opprettholde innendørs luftkvalitet og HVAC-systemets effektivitet. Et skittent filter begrenser luftstrømmen, tvinger systemet til å jobbe hardere og øker energikostnadene.
+
+Trinn for å skifte luftfilteret:
+1. Slå av HVAC-systemet ved termostaten
+2. Finn filterpanelet (vanligvis nær luftbehandleren eller returluftventilen)
+3. Fjern paneldøren
+4. Merk deg størrelsen på det gamle filterrammen (f.eks. 16x25x1)
+5. Skyv forsiktig ut det gamle filteret
+6. Støvsug filterrommet for å fjerne opphopet støv
+7. Sjekk luftstrømpilen på det nye filteret
+8. Sett inn det nye filteret med pilen pekende mot kanalene
+9. Lukk tilgangspanelet sikkert
+10. Slå systemet på igjen
+
+Husk å markere kalenderen for neste skifte. De fleste filtre bør skiftes hver 3-6 måned, men hjem med kjæledyr eller allergier kan trenge månedlige skift.</value>
+  </data>
+  <data name="Safety_TestAlarm_DetailedDescription" xml:space="preserve">
+    <value>Regelmessig testing av røyk- og karbonmonoksiddetektorer er avgjørende for hjemmesikkerhet. Disse enhetene redder liv, men bare hvis de fungerer riktig.
+
+Slik tester du røykvarsleren:
+1. Informer familiemedlemmer om at du tester alarmen
+2. Trykk og hold testknappen i 3-5 sekunder
+3. Lytt etter en høy, gjennomtrengende alarmlyd
+4. Hvis alarmen er svak eller ikke lyder, skift batteriene umiddelbart
+5. Hvis den fortsatt ikke virker etter batteribytte, skift hele enheten
+
+Ekstra sikkerhetstips:
+- Installer detektorer på hvert nivå i hjemmet
+- Plasser dem inne og utenfor soveområder
+- Hold detektorer minst 3 meter unna kokeutstyr
+- Skift røykvarslere hvert 10. år
+- Deaktiver aldri en detektor på grunn av falske alarmer; flytt den i stedet
+- Vurder sammenkoblede detektorer slik at alle alarmer lyder når én oppdager røyk
+
+Karbonmonoksiddetektorer bør plasseres nær soveområder og testes månedlig ved å bruke samme prosedyre.</value>
+  </data>
+
+  <!-- Produktlenker -->
+  <data name="Product_AirFilter_HEPA_Name" xml:space="preserve">
+    <value>HEPA-luftfilter</value>
+  </data>
+  <data name="Product_AirFilter_HEPA_Description" xml:space="preserve">
+    <value>Høyeffektivt partikkelfilter som fanger 99,97% av luftbårne partikler</value>
+  </data>
+  <data name="Product_AirFilter_Electrostatic_Name" xml:space="preserve">
+    <value>Elektrostatisk luftfilter</value>
+  </data>
+  <data name="Product_AirFilter_Electrostatic_Description" xml:space="preserve">
+    <value>Vaskbart, gjenbrukbart filter som bruker statisk elektrisitet til å fange partikler</value>
+  </data>
+  <data name="Product_SmokeDetector_Photoelectric_Name" xml:space="preserve">
+    <value>Fotoelektrisk røykvarsler</value>
+  </data>
+  <data name="Product_SmokeDetector_Photoelectric_Description" xml:space="preserve">
+    <value>Best for å oppdage ulmebranner, anbefalt for soverom og oppholdsrom</value>
+  </data>
+  <data name="Product_SmokeDetector_DualSensor_Name" xml:space="preserve">
+    <value>Dobbel-sensor røykvarsler</value>
+  </data>
+  <data name="Product_SmokeDetector_DualSensor_Description" xml:space="preserve">
+    <value>Kombinerer fotoelektriske og ionisasjonssensorer for omfattende branndeteksjon</value>
+  </data>
 </root>

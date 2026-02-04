@@ -156,6 +156,13 @@
             : $"/{Culture}/my-house";
     }
 
+    private string GetTaskDetailsUrl(Guid taskId)
+    {
+        return string.IsNullOrWhiteSpace(Culture)
+            ? $"/task-details/{taskId}"
+            : $"/{Culture}/task-details/{taskId}";
+    }
+
     private string GetDaysUntilDueText(int days)
     {
         if (days == 0)
@@ -246,7 +253,7 @@
                 }
             </div>
             
-            <div class="active-tasks__card-header">
+            <a href="@GetTaskDetailsUrl(task.Id)" class="active-tasks__card-header active-tasks__card-header--clickable">
                 <div class="active-tasks__card-icon">
                     <Yanitor.Web.Components.IconFactory Item="task.Item" />
                 </div>
@@ -254,8 +261,11 @@
                     <p class="active-tasks__card-item">@displayItemName</p>
                     <h3 class="active-tasks__card-title">@taskNameValue</h3>
                 </div>
-            </div>
-            <p class="active-tasks__card-description">@taskDescValue</p>
+            </a>
+            <p class="active-tasks__card-description">
+                @taskDescValue
+                <a href="@GetTaskDetailsUrl(task.Id)" class="active-tasks__card-read-more">@L["ReadMore"]</a>
+            </p>
             <p class="active-tasks__card-due-date">@dueDateText</p>
             
             @if (_editingTaskId == task.Id)

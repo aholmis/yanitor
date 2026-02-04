@@ -306,4 +306,69 @@
   <data name="Generic_CleanAndMaintain_Description" xml:space="preserve">
     <value>Clean and perform basic maintenance to keep item in good condition.</value>
   </data>
+
+  <!-- Detailed Descriptions -->
+  <data name="HVAC_ChangeAirFilter_DetailedDescription" xml:space="preserve">
+    <value>Regular air filter changes are essential for maintaining indoor air quality and HVAC system efficiency. A dirty filter restricts airflow, forcing your system to work harder and increasing energy costs.
+
+Steps to change your air filter:
+1. Turn off your HVAC system at the thermostat
+2. Locate the filter access panel (usually near the air handler or return air vent)
+3. Remove the access panel door
+4. Note the size printed on the old filter frame (e.g., 16x25x1)
+5. Slide out the old filter carefully
+6. Vacuum the filter compartment to remove accumulated dust
+7. Check the airflow arrow on the new filter
+8. Insert the new filter with the arrow pointing toward the ductwork
+9. Close the access panel securely
+10. Turn the system back on
+
+Remember to mark your calendar for the next change. Most filters should be replaced every 3-6 months, but homes with pets or allergies may need monthly changes.</value>
+  </data>
+  <data name="Safety_TestAlarm_DetailedDescription" xml:space="preserve">
+    <value>Regular testing of smoke and carbon monoxide detectors is crucial for home safety. These devices save lives, but only if they're working properly.
+
+How to test your smoke detector:
+1. Notify family members that you're testing the alarm
+2. Press and hold the test button for 3-5 seconds
+3. Listen for a loud, piercing alarm sound
+4. If the alarm is weak or doesn't sound, replace the batteries immediately
+5. If it still doesn't work after battery replacement, replace the entire unit
+
+Additional safety tips:
+- Install detectors on every level of your home
+- Place them inside and outside sleeping areas
+- Keep detectors at least 10 feet away from cooking appliances
+- Replace smoke detectors every 10 years
+- Never disable a detector due to false alarms; relocate it instead
+- Consider interconnected detectors so all alarms sound when one detects smoke
+
+Carbon monoxide detectors should be placed near sleeping areas and tested monthly using the same procedure.</value>
+  </data>
+
+  <!-- Product Links -->
+  <data name="Product_AirFilter_HEPA_Name" xml:space="preserve">
+    <value>HEPA Air Filter</value>
+  </data>
+  <data name="Product_AirFilter_HEPA_Description" xml:space="preserve">
+    <value>High-efficiency particulate air filter that captures 99.97% of airborne particles</value>
+  </data>
+  <data name="Product_AirFilter_Electrostatic_Name" xml:space="preserve">
+    <value>Electrostatic Air Filter</value>
+  </data>
+  <data name="Product_AirFilter_Electrostatic_Description" xml:space="preserve">
+    <value>Washable, reusable filter that uses static electricity to trap particles</value>
+  </data>
+  <data name="Product_SmokeDetector_Photoelectric_Name" xml:space="preserve">
+    <value>Photoelectric Smoke Detector</value>
+  </data>
+  <data name="Product_SmokeDetector_Photoelectric_Description" xml:space="preserve">
+    <value>Best for detecting smoldering fires, recommended for bedrooms and living areas</value>
+  </data>
+  <data name="Product_SmokeDetector_DualSensor_Name" xml:space="preserve">
+    <value>Dual-Sensor Smoke Detector</value>
+  </data>
+  <data name="Product_SmokeDetector_DualSensor_Description" xml:space="preserve">
+    <value>Combines photoelectric and ionization sensors for comprehensive fire detection</value>
+  </data>
 </root>

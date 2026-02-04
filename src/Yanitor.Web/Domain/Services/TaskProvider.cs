@@ -46,7 +46,24 @@ public class TaskProvider(IStringLocalizer<TaskProvider> localizer) : ITaskProvi
         {
             NameKey = "HVAC_ChangeAirFilter_Name",
             DescriptionKey = "HVAC_ChangeAirFilter_Description",
-            IntervalDays = 180
+            DetailedDescriptionKey = "HVAC_ChangeAirFilter_DetailedDescription",
+            IntervalDays = 180,
+            VideoUrl = "https://www.youtube.com/watch?v=fxxyMF7gOIo",
+            ProductLinks =
+            [
+                new ProductLink
+                {
+                    NameKey = "Product_AirFilter_HEPA_Name",
+                    DescriptionKey = "Product_AirFilter_HEPA_Description",
+                    Url = "https://www.amazon.com/s?k=hvac+air+filter"
+                },
+                new ProductLink
+                {
+                    NameKey = "Product_AirFilter_Electrostatic_Name",
+                    DescriptionKey = "Product_AirFilter_Electrostatic_Description",
+                    Url = "https://www.amazon.com/s?k=electrostatic+air+filter"
+                }
+            ]
         },
         new MaintenanceTask
         {
@@ -156,7 +173,24 @@ public class TaskProvider(IStringLocalizer<TaskProvider> localizer) : ITaskProvi
         {
             NameKey = "Safety_TestAlarm_Name",
             DescriptionKey = "Safety_TestAlarm_Description",
-            IntervalDays = 30
+            DetailedDescriptionKey = "Safety_TestAlarm_DetailedDescription",
+            IntervalDays = 30,
+            VideoUrl = "https://www.youtube.com/watch?v=HJDwjHdZe-0",
+            ProductLinks =
+            [
+                new ProductLink
+                {
+                    NameKey = "Product_SmokeDetector_Photoelectric_Name",
+                    DescriptionKey = "Product_SmokeDetector_Photoelectric_Description",
+                    Url = "https://www.amazon.com/s?k=photoelectric+smoke+detector"
+                },
+                new ProductLink
+                {
+                    NameKey = "Product_SmokeDetector_DualSensor_Name",
+                    DescriptionKey = "Product_SmokeDetector_DualSensor_Description",
+                    Url = "https://www.amazon.com/s?k=dual+sensor+smoke+detector"
+                }
+            ]
         },
         new MaintenanceTask
         {
