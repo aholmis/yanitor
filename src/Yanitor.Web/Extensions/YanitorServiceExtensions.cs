@@ -92,6 +92,7 @@ namespace Yanitor.Web.Extensions
             builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
             builder.Services.AddScoped<IEmailSender, SmtpEmailSender>();
             builder.Services.AddScoped<INotificationService, EmailNotificationService>();
+            builder.Services.AddScoped<INotificationPreferenceService, NotificationPreferenceService>();
 
             // Register reminder calculator
             builder.Services.AddTransient<TaskReminderCalculator>();

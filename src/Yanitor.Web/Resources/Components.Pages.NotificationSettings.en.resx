@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="PageTitle" xml:space="preserve">
+    <value>Notification Settings</value>
+  </data>
+  <data name="BackToMyHouse" xml:space="preserve">
+    <value>Back to My House</value>
+  </data>
+  <data name="Subtitle" xml:space="preserve">
+    <value>Configure how you want to receive maintenance reminders</value>
+  </data>
+  <data name="Loading" xml:space="preserve">
+    <value>Loading your notification settings...</value>
+  </data>
+  <data name="EnableToggleAria" xml:space="preserve">
+    <value>Enable {0} notifications</value>
+  </data>
+  <data name="ReminderDaysLabel" xml:space="preserve">
+    <value>Reminder timing</value>
+  </data>
+  <data name="OneDayBefore" xml:space="preserve">
+    <value>1 day before</value>
+  </data>
+  <data name="TwoDaysBefore" xml:space="preserve">
+    <value>2 days before</value>
+  </data>
+  <data name="ThreeDaysBefore" xml:space="preserve">
+    <value>3 days before</value>
+  </data>
+  <data name="OneWeekBefore" xml:space="preserve">
+    <value>1 week before</value>
+  </data>
+  <data name="PreferredTimeLabel" xml:space="preserve">
+    <value>Preferred time</value>
+  </data>
+  <data name="SaveSuccess" xml:space="preserve">
+    <value>Settings saved successfully</value>
+  </data>
+  <data name="SaveError" xml:space="preserve">
+    <value>Failed to save settings. Please try again.</value>
+  </data>
+  <data name="MethodEmail" xml:space="preserve">
+    <value>Email</value>
+  </data>
+  <data name="MethodEmailDescription" xml:space="preserve">
+    <value>Receive reminders via email</value>
+  </data>
+  <data name="MethodSms" xml:space="preserve">
+    <value>SMS</value>
+  </data>
+  <data name="MethodSmsDescription" xml:space="preserve">
+    <value>Get text message reminders on your phone</value>
+  </data>
+  <data name="MethodPush" xml:space="preserve">
+    <value>Push Notifications</value>
+  </data>
+  <data name="MethodPushDescription" xml:space="preserve">
+    <value>Receive push notifications in the app</value>
+  </data>
+</root>

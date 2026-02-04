@@ -49,6 +49,31 @@
     margin: 0;
 }
 
+.user-menu__dropdown-link {
+    width: 100%;
+    display: block;
+    text-align: left;
+    padding: 0.625rem 0.75rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #1f2937;
+    background: transparent;
+    border: 0;
+    border-radius: 0.375rem;
+    cursor: pointer;
+    transition: background 0.2s ease;
+    text-decoration: none;
+}
+
+.user-menu__dropdown-link:hover {
+    background: #f3f4f6;
+}
+
+.user-menu__dropdown-link:focus-visible {
+    outline: 2px solid #667eea;
+    outline-offset: 2px;
+}
+
 .user-menu__dropdown-button {
     width: 100%;
     display: block;

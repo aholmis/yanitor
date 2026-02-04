@@ -1,0 +1,239 @@
+@page "/notification-settings"
+@page "/{culture}/notification-settings"
+@using Microsoft.Extensions.Localization
+@using Yanitor.Web.Domain.Models
+@using Yanitor.Web.Services
+@using Yanitor.Web.Services.Notifications
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize]
+@inject IStringLocalizer<NotificationSettings> L
+@inject NavigationManager Navigation
+@inject INotificationPreferenceService PreferenceService
+@inject IUserContext UserContext
+@rendermode InteractiveServer
+
+<PageTitle>@L["PageTitle"]</PageTitle>
+
+<section class="notification-settings">
+    <header class="notification-settings__header">
+        <a href="@GetMyHouseUrl()" class="notification-settings__back-button" aria-label="@L["BackToMyHouse"]">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path d="M19 12H5M12 19l-7-7 7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </a>
+        <div class="notification-settings__header-content">
+            <h1 class="notification-settings__title">@L["PageTitle"]</h1>
+            <p class="notification-settings__subtitle">@L["Subtitle"]</p>
+        </div>
+    </header>
+
+    @if (_isLoading)
+    {
+        <div class="notification-settings__loading">
+            <p>@L["Loading"]</p>
+        </div>
+    }
+    else
+    {
+        <div class="notification-settings__content">
+            @foreach (var preference in _preferences)
+            {
+                <article class="notification-settings__card">
+                    <header class="notification-settings__card-header">
+                        <div class="notification-settings__card-icon">
+                            @GetMethodIcon(preference.Method)
+                        </div>
+                        <div class="notification-settings__card-info">
+                            <h2 class="notification-settings__card-title">@GetMethodName(preference.Method)</h2>
+                            <p class="notification-settings__card-description">@GetMethodDescription(preference.Method)</p>
+                        </div>
+                        <label class="notification-settings__toggle">
+                            <input type="checkbox" 
+                                   checked="@preference.IsEnabled" 
+                                   @onchange="() => ToggleEnabled(preference)" 
+                                   aria-label="@L["EnableToggleAria", GetMethodName(preference.Method)]" />
+                            <span class="notification-settings__toggle-slider"></span>
+                        </label>
+                    </header>
+
+                    @if (preference.IsEnabled)
+                    {
+                        <div class="notification-settings__card-options">
+                            <div class="notification-settings__option">
+                                <label for="reminder-days-@preference.Method" class="notification-settings__option-label">
+                                    @L["ReminderDaysLabel"]
+                                </label>
+                                <select id="reminder-days-@preference.Method" 
+                                        class="notification-settings__select"
+                                        value="@preference.ReminderDaysBeforeDue"
+                                        @onchange="e => UpdateReminderDays(preference, e)">
+                                    <option value="1">@L["OneDayBefore"]</option>
+                                    <option value="2">@L["TwoDaysBefore"]</option>
+                                    <option value="3">@L["ThreeDaysBefore"]</option>
+                                    <option value="7">@L["OneWeekBefore"]</option>
+                                </select>
+                            </div>
+
+                            <div class="notification-settings__option">
+                                <label for="preferred-time-@preference.Method" class="notification-settings__option-label">
+                                    @L["PreferredTimeLabel"]
+                                </label>
+                                <input type="time" 
+                                       id="preferred-time-@preference.Method"
+                                       class="notification-settings__input"
+                                       value="@GetTimeValue(preference.PreferredTime)"
+                                       @onchange="e => UpdatePreferredTime(preference, e)" />
+                            </div>
+                        </div>
+                    }
+                </article>
+            }
+
+            @if (_saveMessage != null)
+            {
+                <div class="notification-settings__message @(_saveSuccess ? "notification-settings__message--success" : "notification-settings__message--error")">
+                    <p>@_saveMessage</p>
+                </div>
+            }
+        </div>
+    }
+</section>
+
+@code {
+    [Parameter]
+    public string? Culture { get; set; }
+
+    private List<NotificationPreferenceViewModel> _preferences = [];
+    private bool _isLoading = true;
+    private string? _saveMessage;
+    private bool _saveSuccess;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadPreferencesAsync();
+    }
+
+    private async Task LoadPreferencesAsync()
+    {
+        _isLoading = true;
+        try
+        {
+            var preferences = await PreferenceService.GetPreferencesAsync();
+            _preferences = preferences.Select(p => new NotificationPreferenceViewModel
+            {
+                Method = p.Method,
+                IsEnabled = p.IsEnabled,
+                PreferredTime = p.PreferredTime,
+                ReminderDaysBeforeDue = p.ReminderDaysBeforeDue ?? 1
+            }).ToList();
+        }
+        finally
+        {
+            _isLoading = false;
+        }
+    }
+
+    private async Task ToggleEnabled(NotificationPreferenceViewModel preference)
+    {
+        preference.IsEnabled = !preference.IsEnabled;
+        await SavePreferenceAsync(preference);
+    }
+
+    private async Task UpdateReminderDays(NotificationPreferenceViewModel preference, ChangeEventArgs e)
+    {
+        if (int.TryParse(e.Value?.ToString(), out var days))
+        {
+            preference.ReminderDaysBeforeDue = days;
+            await SavePreferenceAsync(preference);
+        }
+    }
+
+    private async Task UpdatePreferredTime(NotificationPreferenceViewModel preference, ChangeEventArgs e)
+    {
+        if (TimeOnly.TryParse(e.Value?.ToString(), out var time))
+        {
+            preference.PreferredTime = time;
+            await SavePreferenceAsync(preference);
+        }
+    }
+
+    private async Task SavePreferenceAsync(NotificationPreferenceViewModel viewModel)
+    {
+        try
+        {
+            var preference = new NotificationPreference
+            {
+                Method = viewModel.Method,
+                IsEnabled = viewModel.IsEnabled,
+                PreferredTime = viewModel.PreferredTime,
+                ReminderDaysBeforeDue = viewModel.ReminderDaysBeforeDue
+            };
+
+            await PreferenceService.SavePreferenceAsync(preference);
+            _saveMessage = L["SaveSuccess"].Value;
+            _saveSuccess = true;
+        }
+        catch (Exception)
+        {
+            _saveMessage = L["SaveError"].Value;
+            _saveSuccess = false;
+        }
+
+        StateHasChanged();
+
+        // Clear message after delay
+        await Task.Delay(3000);
+        _saveMessage = null;
+        StateHasChanged();
+    }
+
+    private string GetMethodName(NotificationMethod method) => method switch
+    {
+        NotificationMethod.Email => L["MethodEmail"].Value,
+        NotificationMethod.Sms => L["MethodSms"].Value,
+        NotificationMethod.PushNotification => L["MethodPush"].Value,
+        _ => method.ToString()
+    };
+
+    private string GetMethodDescription(NotificationMethod method) => method switch
+    {
+        NotificationMethod.Email => L["MethodEmailDescription"].Value,
+        NotificationMethod.Sms => L["MethodSmsDescription"].Value,
+        NotificationMethod.PushNotification => L["MethodPushDescription"].Value,
+        _ => string.Empty
+    };
+
+    private static string GetTimeValue(TimeOnly? time) => time?.ToString("HH:mm") ?? "09:00";
+
+    private RenderFragment GetMethodIcon(NotificationMethod method) => method switch
+    {
+        NotificationMethod.Email => @<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <rect x="2" y="4" width="20" height="16" rx="2" stroke="currentColor" stroke-width="2"/>
+            <path d="M2 7l10 6 10-6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>,
+        NotificationMethod.Sms => @<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <rect x="5" y="2" width="14" height="20" rx="2" stroke="currentColor" stroke-width="2"/>
+            <line x1="9" y1="18" x2="15" y2="18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>,
+        NotificationMethod.PushNotification => @<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M18 8A6 6 0 106 8c0 7-3 9-3 9h18s-3-2-3-9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M13.73 21a2 2 0 01-3.46 0" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>,
+        _ => @<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+        </svg>
+    };
+
+    private string GetMyHouseUrl()
+    {
+        return string.IsNullOrEmpty(Culture) ? "/my-house" : $"/{Culture}/my-house";
+    }
+
+    private class NotificationPreferenceViewModel
+    {
+        public NotificationMethod Method { get; set; }
+        public bool IsEnabled { get; set; }
+        public TimeOnly? PreferredTime { get; set; }
+        public int ReminderDaysBeforeDue { get; set; } = 1;
+    }
+}
