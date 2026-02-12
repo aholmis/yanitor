@@ -142,4 +142,7 @@
   <data name="Filter_All" xml:space="preserve">
     <value>Alle</value>
   </data>
+  <data name="ReadMore" xml:space="preserve">
+    <value>Les mer</value>
+  </data>
 </root>

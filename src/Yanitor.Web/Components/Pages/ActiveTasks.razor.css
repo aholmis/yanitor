@@ -224,6 +224,24 @@
     display: flex;
     align-items: flex-start;
     gap: 1rem;
+    text-decoration: none;
+    color: inherit;
+    transition: opacity 0.2s ease;
+}
+
+.active-tasks__card-header--clickable {
+    cursor: pointer;
+}
+
+.active-tasks__card-header--clickable:hover {
+    opacity: 0.8;
+}
+
+.active-tasks__card-header--clickable .active-tasks__card-title {
+    text-decoration: underline;
+    text-decoration-color: var(--primary, #1976d2);
+    text-decoration-thickness: 2px;
+    text-underline-offset: 3px;
 }
 
 .active-tasks__card-icon {
@@ -271,6 +289,20 @@
     color: var(--text-secondary, #666);
     margin: 0;
     line-height: 1.5;
+}
+
+.active-tasks__card-read-more {
+    color: var(--primary, #1976d2);
+    text-decoration: none;
+    font-weight: 600;
+    margin-left: 0.25rem;
+    white-space: nowrap;
+    transition: color 0.2s ease;
+}
+
+.active-tasks__card-read-more:hover {
+    color: var(--primary-dark, #1565c0);
+    text-decoration: underline;
 }
 
 .active-tasks__card-due-date {
