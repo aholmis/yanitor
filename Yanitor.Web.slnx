@@ -1,6 +1,7 @@
 <Solution>
   <Folder Name="/Solution Items/">
     <File Path=".github/copilot-instructions.md" />
+    <File Path=".github/workflows/main_yanitor-test.yml" />
     <File Path=".gitignore" />
     <File Path="docs/tasks/TASK-001-Multi-User-Support.md" />
     <File Path="HouseManager.md" />
