@@ -7,17 +7,23 @@
 
 .culture-selector__label {
     font-size: 0.875rem;
+    color: white;
 }
 
 .culture-selector__select {
     appearance: none;
-    background-color: var(--mud-palette-surface);
-    border: 1px solid var(--mud-palette-lines-default);
+    background-color: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.3);
     border-radius: 4px;
     padding: 0.5rem 2rem 0.5rem 1rem;
     font-size: 1rem;
     cursor: pointer;
-    color: var(--mud-palette-text-primary);
+    color: white;
+}
+
+.culture-selector__select option {
+    background-color: white;
+    color: #1f2937;
 }
 
 .culture-selector::after {
@@ -28,5 +34,5 @@
     top: 50%;
     transform: translateY(-50%);
     pointer-events: none;
-    color: var(--mud-palette-text-secondary);
+    color: white;
 }
