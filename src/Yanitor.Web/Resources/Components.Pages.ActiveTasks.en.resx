@@ -98,7 +98,7 @@
     <value>Due on {0}</value>
   </data>
   <data name="MarkComplete" xml:space="preserve">
-    <value>Mark as Complete</value>
+    <value>Mark as Completed today</value>
   </data>
   <data name="LastCompleted" xml:space="preserve">
     <value>Last completed: {0}</value>

@@ -98,7 +98,7 @@
     <value>Forfaller {0}</value>
   </data>
   <data name="MarkComplete" xml:space="preserve">
-    <value>Merk som fullfort</value>
+    <value>Merk som Fullført idag</value>
   </data>
   <data name="LastCompleted" xml:space="preserve">
     <value>Sist fullført: {0}</value>

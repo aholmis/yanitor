@@ -276,7 +276,7 @@
 }
 
 .active-tasks__card-item {
-    font-size: 1.1rem;
+    font-size: 1.4rem;
     font-weight: 600;
     color: var(--primary, #1976d2);
     margin: 0 0 0.125rem 0;
