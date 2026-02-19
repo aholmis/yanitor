@@ -1,0 +1,30 @@
+.main-footer {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 1.5rem 1rem;
+    margin-top: auto;
+    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.main-footer__content {
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.main-footer__copyright {
+    margin: 0;
+    color: white;
+    font-size: 0.875rem;
+    font-weight: 500;
+    letter-spacing: 0.025em;
+}
+
+@media (max-width: 768px) {
+    .main-footer {
+        padding: 1rem;
+    }
+
+    .main-footer__copyright {
+        font-size: 0.8125rem;
+    }
+}
