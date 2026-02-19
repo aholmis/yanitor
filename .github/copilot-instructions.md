@@ -18,7 +18,7 @@ They apply to all Copilot suggestions, completions, and Copilot Chat responses.
 5. Favor **readability and maintainability** over brevity.
 6. Avoid unnecessary `<div>` nesting. Keep markup shallow.
 7. Use **meaningful component names**: `UserCard`, `OrderList`, `ConfirmationDialog`.
-8. User-visible text must be localized in resource files. Use english as default, and nb-NO for Norwegian Bokmål as secondary option.
+8. User-visible text must be localized in resource files. Use english as default, and no for Norwegian as secondary option.
 
 ---
 
@@ -227,7 +227,7 @@ Copilot must prioritize these guidelines over inferred patterns from existing co
 
 - **Culture from route + cookie**: `Program.cs` configures `RequestLocalizationOptions` with custom `RouteDataRequestCultureProvider` and also query-string, cookie, and `Accept-Language` providers. All top-level pages use **two route templates**, e.g. `@page "/my-house"` and `@page "/{culture}/my-house"`. New pages must follow this pattern so culture can be injected via route values.
 - **Resource structure**: UI components use `IStringLocalizer<TComponent>` with resources under `Resources/Components.Pages.*.resx`. Domain- and service-level strings live in `Domain.*.resx`, and shared/global strings in `SharedResources.*.resx`. When adding user-visible text:
-    - Add keys to the relevant `.resx` file for `en` and `nb-NO` (and optionally the neutral `.resx` fallback).
+    - Add keys to the relevant `.resx` file for `en` and `no` (and optionally the neutral `.resx` fallback).
     - Use the existing key naming patterns, e.g. `ItemType_Ventilation_Name`, `Item_Ventilation System_Name`, or `Task_SomeKey_Title`.
 - **Culture-aware navigation**: Components such as `MyHouse` and `ActiveTasks` construct URLs that preserve the optional culture segment (see `GetActiveTasksUrl`, `GetMyHouseUrl`). New navigation helpers should follow the same pattern: derive URLs from the current `Culture` parameter when present and fall back to culture-less routes.
 - **Interactive render mode**: All interactive pages (`MyHouse`, `HouseBuilder`, `ActiveTasks`, etc.) use `@rendermode InteractiveServer`. New interactive components should do the same unless there is a specific reason to use a different render mode.

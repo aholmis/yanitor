@@ -298,7 +298,7 @@ ErrorMessage: "An error occurred. Please try again."
 - `src/Yanitor.Web/Components/Pages/SignIn.razor`
 - `src/Yanitor.Web/Components/Pages/SignIn.razor.css`
 - `src/Yanitor.Web/Resources/Components.Pages.SignIn.resx`
-- `src/Yanitor.Web/Resources/Components.Pages.SignIn.nb-NO.resx`
+- `src/Yanitor.Web/Resources/Components.Pages.SignIn.no.resx`
 
 **Files to modify:**
 - `src/Yanitor.Web/Components/Pages/Home.razor` (update routes)
@@ -780,7 +780,7 @@ private async Task<Guid> GetCurrentUserHouseIdAsync()
 - [ ] Database migration tested on dev/staging environments
 - [ ] No regressions in existing functionality
 - [ ] Accessibility validated (keyboard navigation, screen reader, ARIA)
-- [ ] Localization complete (en, nb-NO) for all new UI strings
+- [ ] Localization complete (en, no) for all new UI strings
 - [ ] Performance validated (no significant degradation, queries optimized)
 - [ ] Security reviewed (no data leakage, input validation, proper error handling)
 - [ ] Deployed to staging environment and smoke tested

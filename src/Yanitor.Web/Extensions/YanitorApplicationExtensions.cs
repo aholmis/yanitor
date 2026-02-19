@@ -16,7 +16,7 @@ namespace Yanitor.Web.Extensions
 
         public static void UseYanitorRequestLocalization(this WebApplication app)
         {
-            var supportedCultures = new[] { new CultureInfo("en"), new CultureInfo("nb-NO") };
+            var supportedCultures = new[] { new CultureInfo("en"), new CultureInfo("no") };
             var localizationOptions = new RequestLocalizationOptions
             {
                 DefaultRequestCulture = new RequestCulture("en"),
