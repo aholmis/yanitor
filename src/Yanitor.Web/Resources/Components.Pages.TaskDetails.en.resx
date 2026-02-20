@@ -86,7 +86,7 @@
     <value>Last Completed</value>
   </data>
   <data name="MarkComplete" xml:space="preserve">
-    <value>Mark as Complete</value>
+    <value>Mark as Completed today</value>
   </data>
   <data name="DetailedInstructions" xml:space="preserve">
     <value>Detailed Instructions</value>

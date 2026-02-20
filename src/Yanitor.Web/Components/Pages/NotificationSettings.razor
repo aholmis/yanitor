@@ -226,7 +226,7 @@
 
     private string GetMyHouseUrl()
     {
-        return string.IsNullOrEmpty(Culture) ? "/my-house" : $"/{Culture}/my-house";
+        return string.IsNullOrWhiteSpace(Culture) ? "/my-house" : $"/{Culture}/my-house";
     }
 
     private class NotificationPreferenceViewModel

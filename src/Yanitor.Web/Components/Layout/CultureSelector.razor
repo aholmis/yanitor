@@ -10,13 +10,13 @@
     <select id="culture-select" @onchange="OnCultureChanged" class="culture-selector__select" aria-label="@LCS["SelectLanguage"]">
         @foreach (var culture in _supportedCultures)
         {
-            <option value="@culture.Name" selected="@(culture.Name == CultureInfo.CurrentUICulture.Name)">@culture.NativeName</option>
+            <option value="@culture.Name" selected="@(culture.Name == CultureInfo.CurrentUICulture.Name)">@GetDisplayName(culture)</option>
         }
     </select>
 </section>
 
 @code {
-    private readonly CultureInfo[] _supportedCultures = [ new("en"), new("nb-NO") ];
+    private readonly CultureInfo[] _supportedCultures = [ new("en"), new("no") ];
 
     private void OnCultureChanged(ChangeEventArgs e)
     {
@@ -46,5 +46,13 @@
         // Set culture via cookie and navigate to new path
         var setCultureUrl = $"/set-culture?culture={Uri.EscapeDataString(newCulture)}&returnUrl={Uri.EscapeDataString(newPath)}";
         NavigationManager.NavigateTo(setCultureUrl, forceLoad: true);
+    }
+
+    private string GetDisplayName(CultureInfo culture)
+    {
+        if (culture == null) return string.Empty;
+        var cultureName = culture.NativeName;
+        if (string.IsNullOrEmpty(cultureName)) return cultureName;
+        return char.ToUpper(cultureName[0]) + cultureName.Substring(1);
     }
 }

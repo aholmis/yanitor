@@ -59,90 +59,51 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="PageTitle" xml:space="preserve">
-    <value>Active Tasks</value>
-  </data>
-  <data name="Subtitle" xml:space="preserve">
-    <value>Your upcoming maintenance tasks</value>
-  </data>
-  <data name="BackToMyHouse" xml:space="preserve">
-    <value>Back to My House</value>
+    <value>Oppgavedetaljer</value>
   </data>
   <data name="Loading" xml:space="preserve">
-    <value>Loading tasks...</value>
+    <value>Laster oppgavedetaljer...</value>
   </data>
-  <data name="NoTasks" xml:space="preserve">
-    <value>No active tasks at the moment</value>
+  <data name="TaskNotFound" xml:space="preserve">
+    <value>Oppgave ikke funnet.</value>
   </data>
-  <data name="OverdueTasks" xml:space="preserve">
-    <value>Overdue Tasks</value>
+  <data name="BackToTasks" xml:space="preserve">
+    <value>Tilbake til aktive oppgaver</value>
   </data>
-  <data name="DueSoon" xml:space="preserve">
-    <value>Due Soon</value>
+  <data name="Summary" xml:space="preserve">
+    <value>Sammendrag</value>
   </data>
-  <data name="UpcomingTasks" xml:space="preserve">
-    <value>Upcoming Tasks</value>
+  <data name="DueDate" xml:space="preserve">
+    <value>Forfallsdato</value>
   </data>
-  <data name="DueToday" xml:space="preserve">
-    <value>Due today</value>
+  <data name="Frequency" xml:space="preserve">
+    <value>Frekvens</value>
   </data>
-  <data name="DueTomorrow" xml:space="preserve">
-    <value>Due tomorrow</value>
-  </data>
-  <data name="DueInDays" xml:space="preserve">
-    <value>Due in {0} days</value>
-  </data>
-  <data name="OverdueByDays" xml:space="preserve">
-    <value>Overdue by {0} days</value>
-  </data>
-  <data name="DueOn" xml:space="preserve">
-    <value>Due on {0}</value>
-  </data>
-  <data name="MarkComplete" xml:space="preserve">
-    <value>Mark as Completed today</value>
+  <data name="EveryNDays" xml:space="preserve">
+    <value>Hver {0}. dag</value>
   </data>
   <data name="LastCompleted" xml:space="preserve">
-    <value>Last completed: {0}</value>
+    <value>Sist fullført</value>
   </data>
-  <data name="NeverCompleted" xml:space="preserve">
-    <value>Never completed</value>
+  <data name="MarkComplete" xml:space="preserve">
+    <value>Merk som Fullført idag</value>
   </data>
-  <data name="SetCompletionDate" xml:space="preserve">
-    <value>Set completion date</value>
+  <data name="DetailedInstructions" xml:space="preserve">
+    <value>Detaljerte instruksjoner</value>
   </data>
-  <data name="Save" xml:space="preserve">
-    <value>Save</value>
+  <data name="InstructionalVideo" xml:space="preserve">
+    <value>Instruksjonsvideo</value>
   </data>
-  <data name="Cancel" xml:space="preserve">
-    <value>Cancel</value>
+  <data name="VideoTitle" xml:space="preserve">
+    <value>Slik fullfører du denne oppgaven</value>
   </data>
-  <data name="ClickToEditDate" xml:space="preserve">
-    <value>Click to edit completion date</value>
+  <data name="VideoNotSupported" xml:space="preserve">
+    <value>Nettleseren din støtter ikke videoelementet.</value>
   </data>
-  <data name="ClickToSetDate" xml:space="preserve">
-    <value>Click to set completion date</value>
+  <data name="RecommendedProducts" xml:space="preserve">
+    <value>Anbefalte produkter</value>
   </data>
-  <data name="Day" xml:space="preserve">
-    <value>day</value>
-  </data>
-  <data name="Days" xml:space="preserve">
-    <value>days</value>
-  </data>
-  <data name="Today" xml:space="preserve">
-    <value>today</value>
-  </data>
-  <data name="Tomorrow" xml:space="preserve">
-    <value>tomorrow</value>
-  </data>
-  <data name="Overdue" xml:space="preserve">
-    <value>overdue</value>
-  </data>
-  <data name="FilterByItemType" xml:space="preserve">
-    <value>Filter by item type</value>
-  </data>
-  <data name="Filter_All" xml:space="preserve">
-    <value>All</value>
-  </data>
-  <data name="ReadMore" xml:space="preserve">
-    <value>Read more</value>
+  <data name="ViewProduct" xml:space="preserve">
+    <value>Se produkt</value>
   </data>
 </root>

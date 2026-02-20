@@ -49,7 +49,7 @@ This section outlines how to persist users' house configurations and active task
     - Server-side authorization checks (policy-based).
   - Backups & migration:
     - Automated backups, migrations via `EF Core` migrations.
-    - Seed default templates per locale (`en`, `nb-NO`).
+    - Seed default templates per locale (`en`, `no`).
 
 - Serialization & localization
   - Persist stable identifiers; avoid storing localized strings in the database.

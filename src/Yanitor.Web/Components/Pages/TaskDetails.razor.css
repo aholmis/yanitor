@@ -1,7 +1,9 @@
 .task-details {
     max-width: 56rem;
     margin: 0 auto;
-    padding: 1rem;
+    padding: 2rem 1rem;
+    min-height: 100%;
+    background: linear-gradient(135deg, #f0f9ff 0%, #fef3c7 50%, #fce7f3 100%);
 }
 
 .task-details__loading,

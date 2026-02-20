@@ -18,8 +18,6 @@
             <div class="main-header__user">
                 <UserMenu UserEmail="@_userEmail" 
                           AntiForgeryToken="@_antiForgeryToken"
-                          SignOutText="@L["SignOut"].Value"
-                          NotificationSettingsText="@L["NotificationSettings"].Value"
                           NotificationSettingsUrl="@GetNotificationSettingsUrl()" />
             </div>
         }
@@ -30,6 +28,8 @@
 <main class="main-content">
     @Body
 </main>
+
+<Footer />
 
 <div id="blazor-error-ui" data-nosnippet>
     An unhandled error has occurred.
@@ -96,8 +96,8 @@
             .Split('/', StringSplitOptions.RemoveEmptyEntries)
             .FirstOrDefault();
 
-        // Check if first segment looks like a culture (e.g., "nb-NO", "en")
-        if (!string.IsNullOrEmpty(path) && (path.Length == 2 || path.Contains('-')))
+        // Check if first segment looks like a culture (e.g., "no", "en")
+        if (!string.IsNullOrEmpty(path) && (path.Length == 2))
         {
             return path;
         }

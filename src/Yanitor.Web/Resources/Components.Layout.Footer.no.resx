@@ -58,91 +58,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="PageTitle" xml:space="preserve">
-    <value>Aktive oppgaver</value>
+  <data name="Copyright" xml:space="preserve">
+    <value>Opphavsrett</value>
   </data>
-  <data name="Subtitle" xml:space="preserve">
-    <value>Dine kommende vedlikeholdsoppgaver</value>
-  </data>
-  <data name="BackToMyHouse" xml:space="preserve">
-    <value>Tilbake til Mitt hus</value>
-  </data>
-  <data name="Loading" xml:space="preserve">
-    <value>Laster oppgaver...</value>
-  </data>
-  <data name="NoTasks" xml:space="preserve">
-    <value>Ingen aktive oppgaver for oyeblikket</value>
-  </data>
-  <data name="OverdueTasks" xml:space="preserve">
-    <value>Forsinkede oppgaver</value>
-  </data>
-  <data name="DueSoon" xml:space="preserve">
-    <value>Forfaller snart</value>
-  </data>
-  <data name="UpcomingTasks" xml:space="preserve">
-    <value>Kommende oppgaver</value>
-  </data>
-  <data name="DueToday" xml:space="preserve">
-    <value>Forfaller i dag</value>
-  </data>
-  <data name="DueTomorrow" xml:space="preserve">
-    <value>Forfaller i morgen</value>
-  </data>
-  <data name="DueInDays" xml:space="preserve">
-    <value>Forfaller om {0} dager</value>
-  </data>
-  <data name="OverdueByDays" xml:space="preserve">
-    <value>Forsinket med {0} dager</value>
-  </data>
-  <data name="DueOn" xml:space="preserve">
-    <value>Forfaller {0}</value>
-  </data>
-  <data name="MarkComplete" xml:space="preserve">
-    <value>Merk som fullfort</value>
-  </data>
-  <data name="LastCompleted" xml:space="preserve">
-    <value>Sist fullført: {0}</value>
-  </data>
-  <data name="NeverCompleted" xml:space="preserve">
-    <value>Aldri fullført</value>
-  </data>
-  <data name="SetCompletionDate" xml:space="preserve">
-    <value>Angi fullføringsdato</value>
-  </data>
-  <data name="Save" xml:space="preserve">
-    <value>Lagre</value>
-  </data>
-  <data name="Cancel" xml:space="preserve">
-    <value>Avbryt</value>
-  </data>
-  <data name="ClickToEditDate" xml:space="preserve">
-    <value>Klikk for å endre fullføringsdato</value>
-  </data>
-  <data name="ClickToSetDate" xml:space="preserve">
-    <value>Klikk for å angi fullføringsdato</value>
-  </data>
-  <data name="Day" xml:space="preserve">
-    <value>dag</value>
-  </data>
-  <data name="Days" xml:space="preserve">
-    <value>dager</value>
-  </data>
-  <data name="Today" xml:space="preserve">
-    <value>i dag</value>
-  </data>
-  <data name="Tomorrow" xml:space="preserve">
-    <value>i morgen</value>
-  </data>
-  <data name="Overdue" xml:space="preserve">
-    <value>forsinket</value>
-  </data>
-  <data name="FilterByItemType" xml:space="preserve">
-    <value>Filtrer på enhetstype</value>
-  </data>
-  <data name="Filter_All" xml:space="preserve">
-    <value>Alle</value>
-  </data>
-  <data name="ReadMore" xml:space="preserve">
-    <value>Les mer</value>
+  <data name="CompanyName" xml:space="preserve">
+    <value>Holmefjord Holding</value>
   </data>
 </root>

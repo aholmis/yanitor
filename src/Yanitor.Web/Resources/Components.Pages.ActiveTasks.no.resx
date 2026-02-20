@@ -59,90 +59,90 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="PageTitle" xml:space="preserve">
-    <value>Active Tasks</value>
+    <value>Aktive oppgaver</value>
   </data>
   <data name="Subtitle" xml:space="preserve">
-    <value>Your upcoming maintenance tasks</value>
+    <value>Dine kommende vedlikeholdsoppgaver</value>
   </data>
   <data name="BackToMyHouse" xml:space="preserve">
-    <value>Back to My House</value>
+    <value>Tilbake til Mitt hus</value>
   </data>
   <data name="Loading" xml:space="preserve">
-    <value>Loading tasks...</value>
+    <value>Laster oppgaver...</value>
   </data>
   <data name="NoTasks" xml:space="preserve">
-    <value>No active tasks at the moment</value>
+    <value>Ingen aktive oppgaver for oyeblikket</value>
   </data>
   <data name="OverdueTasks" xml:space="preserve">
-    <value>Overdue Tasks</value>
+    <value>Forsinkede oppgaver</value>
   </data>
   <data name="DueSoon" xml:space="preserve">
-    <value>Due Soon</value>
+    <value>Forfaller snart</value>
   </data>
   <data name="UpcomingTasks" xml:space="preserve">
-    <value>Upcoming Tasks</value>
+    <value>Kommende oppgaver</value>
   </data>
   <data name="DueToday" xml:space="preserve">
-    <value>Due today</value>
+    <value>Forfaller i dag</value>
   </data>
   <data name="DueTomorrow" xml:space="preserve">
-    <value>Due tomorrow</value>
+    <value>Forfaller i morgen</value>
   </data>
   <data name="DueInDays" xml:space="preserve">
-    <value>Due in {0} days</value>
+    <value>Forfaller om {0} dager</value>
   </data>
   <data name="OverdueByDays" xml:space="preserve">
-    <value>Overdue by {0} days</value>
+    <value>Forsinket med {0} dager</value>
   </data>
   <data name="DueOn" xml:space="preserve">
-    <value>Due on {0}</value>
+    <value>Forfaller {0}</value>
   </data>
   <data name="MarkComplete" xml:space="preserve">
-    <value>Mark as Completed today</value>
+    <value>Merk som Fullført idag</value>
   </data>
   <data name="LastCompleted" xml:space="preserve">
-    <value>Last completed: {0}</value>
+    <value>Sist fullført: {0}</value>
   </data>
   <data name="NeverCompleted" xml:space="preserve">
-    <value>Never completed</value>
+    <value>Aldri fullført</value>
   </data>
   <data name="SetCompletionDate" xml:space="preserve">
-    <value>Set completion date</value>
+    <value>Angi fullføringsdato</value>
   </data>
   <data name="Save" xml:space="preserve">
-    <value>Save</value>
+    <value>Lagre</value>
   </data>
   <data name="Cancel" xml:space="preserve">
-    <value>Cancel</value>
+    <value>Avbryt</value>
   </data>
   <data name="ClickToEditDate" xml:space="preserve">
-    <value>Click to edit completion date</value>
+    <value>Klikk for å endre fullføringsdato</value>
   </data>
   <data name="ClickToSetDate" xml:space="preserve">
-    <value>Click to set completion date</value>
+    <value>Klikk for å angi fullføringsdato</value>
   </data>
   <data name="Day" xml:space="preserve">
-    <value>day</value>
+    <value>dag</value>
   </data>
   <data name="Days" xml:space="preserve">
-    <value>days</value>
+    <value>dager</value>
   </data>
   <data name="Today" xml:space="preserve">
-    <value>today</value>
+    <value>i dag</value>
   </data>
   <data name="Tomorrow" xml:space="preserve">
-    <value>tomorrow</value>
+    <value>i morgen</value>
   </data>
   <data name="Overdue" xml:space="preserve">
-    <value>overdue</value>
+    <value>forsinket</value>
   </data>
   <data name="FilterByItemType" xml:space="preserve">
-    <value>Filter by item type</value>
+    <value>Filtrer på enhetstype</value>
   </data>
   <data name="Filter_All" xml:space="preserve">
-    <value>All</value>
+    <value>Alle</value>
   </data>
   <data name="ReadMore" xml:space="preserve">
-    <value>Read more</value>
+    <value>Les mer</value>
   </data>
 </root>

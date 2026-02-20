@@ -1,22 +1,28 @@
 @namespace Yanitor.Web.Components.Layout
+@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<UserMenu> L
 
-<details class="user-menu" aria-label="User menu">
-    <summary class="user-menu__summary" aria-label="@UserEmail">
+<nav class="user-menu" aria-label="User menu">
+    <div class="user-menu__trigger" aria-label="@UserEmail">
         @DisplayEmail
-    </summary>
-
-    <div class="user-menu__dropdown" role="menu">
-        <a href="@NotificationSettingsUrl" class="user-menu__dropdown-link" role="menuitem">
-            @NotificationSettingsText
-        </a>
-        <form method="post" action="/api/auth/sign-out" class="user-menu__dropdown-item" role="none">
-            <input type="hidden" name="__RequestVerificationToken" value="@AntiForgeryToken" />
-            <button type="submit" class="user-menu__dropdown-button" role="menuitem">
-                @SignOutText
-            </button>
-        </form>
     </div>
-</details>
+
+    <ul class="user-menu__dropdown" role="menu">
+        <li class="user-menu__dropdown-item">
+            <a href="@NotificationSettingsUrl" class="user-menu__dropdown-link" role="menuitem">
+                @L["NotificationSettings"]
+            </a>
+        </li>
+        <li class="user-menu__dropdown-item">
+            <form method="post" action="/api/auth/sign-out" class="user-menu__dropdown-form" role="none">
+                <input type="hidden" name="__RequestVerificationToken" value="@AntiForgeryToken" />
+                <button type="submit" class="user-menu__dropdown-button" role="menuitem">
+                    @L["SignOut"]
+                </button>
+            </form>
+        </li>
+    </ul>
+</nav>
 
 @code {
     /// <summary>
@@ -30,18 +36,6 @@
     /// </summary>
     [Parameter]
     public string? AntiForgeryToken { get; set; }
-
-    /// <summary>
-    /// Text for the sign-out menu item.
-    /// </summary>
-    [Parameter]
-    public string SignOutText { get; set; } = "Sign Out";
-
-    /// <summary>
-    /// Text for the notification settings menu item.
-    /// </summary>
-    [Parameter]
-    public string NotificationSettingsText { get; set; } = "Notification Settings";
 
     /// <summary>
     /// URL for the notification settings page.

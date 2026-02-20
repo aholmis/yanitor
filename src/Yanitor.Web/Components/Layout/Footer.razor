@@ -1,0 +1,10 @@
+@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<Footer> L
+
+<footer class="main-footer">
+    <div class="main-footer__content">
+        <p class="main-footer__copyright">
+            @L["Copyright"] &copy; @DateTime.Now.Year @L["CompanyName"]
+        </p>
+    </div>
+</footer>
