@@ -9,7 +9,7 @@ public class AuthenticationService(
     IUserContext userContext,
     ILogger<AuthenticationService> logger) : IAuthenticationService
 {
-    public async Task<SignInResult> SignInWithEmailAsync(string email)
+    public async Task<SignInResult> SignInWithEmailAsync(string email, bool setEmailVerified = false)
     {
         try
         {
@@ -39,7 +39,7 @@ public class AuthenticationService(
                     Email = email,
                     CreatedAt = now,
                     LastLoginAt = now,
-                    EmailVerified = false
+                    EmailVerified = setEmailVerified
                 };
 
                 db.Users.Add(user);
@@ -49,8 +49,13 @@ public class AuthenticationService(
             }
             else
             {
-                // Update last login time
+                // Update last login time and optionally set email verified
                 user.LastLoginAt = now;
+                if (setEmailVerified && !user.EmailVerified)
+                {
+                    user.EmailVerified = true;
+                    logger.LogInformation("Email verified for user {UserId}", user.Id);
+                }
                 await db.SaveChangesAsync();
 
                 logger.LogInformation("User {UserId} signed in", user.Id);

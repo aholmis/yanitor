@@ -36,4 +36,12 @@
   <!-- Specific item overrides (optional examples) -->
   <data name="Item_Main HVAC System_Name" xml:space="preserve"><value>Main HVAC System</value></data>
   <data name="Item_Water Heater_Name" xml:space="preserve"><value>Water Heater</value></data>
+
+  <!-- OTP Email Template -->
+  <data name="Otp_Email_Subject" xml:space="preserve"><value>Your Yanitor Verification Code</value></data>
+  <data name="Otp_Email_Header" xml:space="preserve"><value>Your Verification Code</value></data>
+  <data name="Otp_Email_Body" xml:space="preserve"><value>Use the code below to sign in to your Yanitor account:</value></data>
+  <data name="Otp_Email_Code" xml:space="preserve"><value>Verification Code</value></data>
+  <data name="Otp_Email_ExpiresIn" xml:space="preserve"><value>This code will expire in {0} minutes.</value></data>
+  <data name="Otp_Email_Footer" xml:space="preserve"><value>If you didn't request this code, you can safely ignore this email.</value></data>
 </root>

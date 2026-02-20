@@ -36,4 +36,12 @@
   <!-- Spesifikke elementoverstyringer (valgfritt) -->
   <data name="Item_Main HVAC System_Name" xml:space="preserve"><value>Hoved HVAC-system</value></data>
   <data name="Item_Water Heater_Name" xml:space="preserve"><value>Varmtvannsbereder</value></data>
+
+  <!-- OTP E-postmal -->
+  <data name="Otp_Email_Subject" xml:space="preserve"><value>Din Yanitor verifiseringskode</value></data>
+  <data name="Otp_Email_Header" xml:space="preserve"><value>Din verifiseringskode</value></data>
+  <data name="Otp_Email_Body" xml:space="preserve"><value>Bruk koden nedenfor for å logge inn på Yanitor-kontoen din:</value></data>
+  <data name="Otp_Email_Code" xml:space="preserve"><value>Verifiseringskode</value></data>
+  <data name="Otp_Email_ExpiresIn" xml:space="preserve"><value>Denne koden utløper om {0} minutter.</value></data>
+  <data name="Otp_Email_Footer" xml:space="preserve"><value>Hvis du ikke ba om denne koden, kan du trygt ignorere denne e-posten.</value></data>
 </root>

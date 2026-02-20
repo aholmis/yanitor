@@ -6,6 +6,6 @@ public record SignInResult(bool Success, string? ErrorMessage, User? User);
 
 public interface IAuthenticationService
 {
-    Task<SignInResult> SignInWithEmailAsync(string email);
+    Task<SignInResult> SignInWithEmailAsync(string email, bool setEmailVerified = false);
     Task SignOutAsync();
 }

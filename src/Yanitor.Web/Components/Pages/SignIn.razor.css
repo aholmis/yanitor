@@ -250,3 +250,45 @@
     text-transform: uppercase;
     letter-spacing: 0.05em;
 }
+
+.sign-in__info {
+    padding: 1rem;
+    background-color: #eff6ff;
+    border: 1px solid #bfdbfe;
+    border-radius: 0.5rem;
+    color: #1e40af;
+    font-size: 0.875rem;
+    text-align: center;
+}
+
+.sign-in__input--code {
+    text-align: center;
+    font-size: 1.5rem;
+    letter-spacing: 0.5rem;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+}
+
+.sign-in__resend-button {
+    width: 100%;
+    padding: 0.75rem 1.5rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #0A375A;
+    background: transparent;
+    border: 2px solid #e5e7eb;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.sign-in__resend-button:hover:not(:disabled) {
+    border-color: #0A375A;
+    background: #f9fafb;
+}
+
+.sign-in__resend-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+

@@ -150,4 +150,37 @@
   <data name="ContinueAsLabel" xml:space="preserve">
     <value>Fortsett som</value>
   </data>
+  <data name="Otp_EnterCode_Instructions" xml:space="preserve">
+    <value>Sjekk e-posten din for en verifiseringskode</value>
+  </data>
+  <data name="Otp_EnterCode_Header" xml:space="preserve">
+    <value>En verifiseringskode er sendt til {0}</value>
+  </data>
+  <data name="Otp_Code_Label" xml:space="preserve">
+    <value>Verifiseringskode</value>
+  </data>
+  <data name="Otp_Code_Placeholder" xml:space="preserve">
+    <value>000000</value>
+  </data>
+  <data name="Otp_Verify_Button" xml:space="preserve">
+    <value>Verifiser og logg inn</value>
+  </data>
+  <data name="Otp_Resend_Button" xml:space="preserve">
+    <value>Send kode på nytt</value>
+  </data>
+  <data name="Error_EmailRequired" xml:space="preserve">
+    <value>E-postadresse er påkrevd</value>
+  </data>
+  <data name="Otp_Error_RateLimit" xml:space="preserve">
+    <value>For mange forespørsler. Vennligst prøv igjen senere.</value>
+  </data>
+  <data name="Error_EmailFailed" xml:space="preserve">
+    <value>Kunne ikke sende verifiserings-e-post. Vennligst prøv igjen.</value>
+  </data>
+  <data name="Otp_Error_Invalid" xml:space="preserve">
+    <value>Ugyldig eller utløpt verifiseringskode</value>
+  </data>
+  <data name="Error_SignInFailed" xml:space="preserve">
+    <value>Innlogging mislyktes. Vennligst prøv igjen.</value>
+  </data>
 </root>

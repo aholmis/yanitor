@@ -4,6 +4,7 @@
 @using System.Security.Claims
 @inject IStringLocalizer<SignIn> L
 @inject IHttpContextAccessor HttpContextAccessor
+@inject NavigationManager NavigationManager
 
 <PageTitle>@L["PageTitle"]</PageTitle>
 
@@ -24,10 +25,10 @@
                 <rect x="120" y="105" width="25" height="25" rx="2" fill="currentColor" class="sign-in__logo-window"/>
             </svg>
             <h1 class="sign-in__title">@L["PageTitle"]</h1>
-            <p class="sign-in__subtitle">@L["Subtitle"]</p>
+            <p class="sign-in__subtitle">@(IsVerifyStep ? L["Otp_EnterCode_Instructions"] : L["Subtitle"])</p>
         </div>
 
-        @if (IsAuthenticated)
+        @if (IsAuthenticated && !IsVerifyStep)
         {
             <div class="sign-in__continue-section">
                 <p class="sign-in__continue-label">@L["ContinueAsLabel"]</p>
@@ -41,27 +42,75 @@
             </div>
         }
 
-        <form class="sign-in__form" method="post" action="/auth/sign-in">
-            <input type="hidden" name="culture" value="@Culture" />
-            <input type="hidden" name="returnUrl" value="@GetReturnUrl()" />
-            
-            <div class="sign-in__field">
-                <label for="email" class="sign-in__label">@L["EmailLabel"]</label>
-                <input 
-                    id="email" 
-                    name="email"
-                    type="email" 
-                    class="sign-in__input"
-                    placeholder="@L["EmailPlaceholder"]" 
-                    required 
-                    maxlength="320"
-                    autofocus="@(!IsAuthenticated)" />
+        @if (!string.IsNullOrWhiteSpace(ErrorMessage))
+        {
+            <div class="sign-in__error" role="alert">
+                @ErrorMessage
+            </div>
+        }
+
+        @if (IsVerifyStep)
+        {
+            <!-- Step 2: Verify OTP -->
+            <div class="sign-in__info">
+                @L["Otp_EnterCode_Header", EmailForVerification]
             </div>
 
-            <button type="submit" class="sign-in__button">
-                <span>@L["SignInButton"]</span>
-            </button>
-        </form>
+            <form class="sign-in__form" method="post" action="/auth/verify-otp">
+                <input type="hidden" name="email" value="@EmailForVerification" />
+                <input type="hidden" name="culture" value="@Culture" />
+                <input type="hidden" name="returnUrl" value="@GetReturnUrl()" />
+                
+                <div class="sign-in__field">
+                    <label for="code" class="sign-in__label">@L["Otp_Code_Label"]</label>
+                    <input 
+                        id="code" 
+                        name="code"
+                        type="text" 
+                        class="sign-in__input sign-in__input--code"
+                        placeholder="@L["Otp_Code_Placeholder"]" 
+                        required 
+                        maxlength="6"
+                        pattern="[0-9]{6}"
+                        inputmode="numeric"
+                        autocomplete="one-time-code"
+                        autofocus />
+                </div>
+
+                <button type="submit" class="sign-in__button">
+                    <span>@L["Otp_Verify_Button"]</span>
+                </button>
+
+                <button type="button" class="sign-in__resend-button" @onclick="ResendOtp">
+                    <span>@L["Otp_Resend_Button"]</span>
+                </button>
+            </form>
+        }
+        else
+        {
+            <!-- Step 1: Enter Email -->
+            <form class="sign-in__form" method="post" action="/auth/sign-in">
+                <input type="hidden" name="culture" value="@Culture" />
+                <input type="hidden" name="returnUrl" value="@GetReturnUrl()" />
+                
+                <div class="sign-in__field">
+                    <label for="email" class="sign-in__label">@L["EmailLabel"]</label>
+                    <input 
+                        id="email" 
+                        name="email"
+                        type="email" 
+                        class="sign-in__input"
+                        placeholder="@L["EmailPlaceholder"]" 
+                        required 
+                        maxlength="320"
+                        autofocus="@(!IsAuthenticated)" />
+                </div>
+
+                <button type="submit" class="sign-in__button">
+                    <span>@L["SignInButton"]</span>
+                </button>
+            </form>
+        }
     </div>
 </section>
 
@@ -69,14 +118,49 @@
     [Parameter]
     public string? Culture { get; set; }
 
+    [SupplyParameterFromQuery(Name = "step")]
+    public string? Step { get; set; }
+
+    [SupplyParameterFromQuery(Name = "email")]
+    public string? EmailForVerification { get; set; }
+
+    [SupplyParameterFromQuery(Name = "error")]
+    public string? ErrorCode { get; set; }
+
+    [SupplyParameterFromQuery(Name = "returnUrl")]
+    public string? ReturnUrl { get; set; }
+
     private bool IsAuthenticated => HttpContextAccessor.HttpContext?.User?.Identity?.IsAuthenticated == true;
     
     private string? AuthenticatedEmail => HttpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.Email)?.Value;
 
+    private bool IsVerifyStep => Step == "verify" && !string.IsNullOrWhiteSpace(EmailForVerification);
+
+    private string? ErrorMessage => ErrorCode switch
+    {
+        "email-required" => L["Error_EmailRequired"],
+        "rate-limit" => L["Otp_Error_RateLimit"],
+        "email-failed" => L["Error_EmailFailed"],
+        "invalid-code" => L["Otp_Error_Invalid"],
+        "signin-failed" => L["Error_SignInFailed"],
+        _ => null
+    };
+
     private string GetReturnUrl()
     {
+        if (!string.IsNullOrWhiteSpace(ReturnUrl))
+            return ReturnUrl;
+            
         return string.IsNullOrWhiteSpace(Culture) 
             ? "/my-house" 
             : $"/{Culture}/my-house";
     }
+
+    private void ResendOtp()
+    {
+        // Navigate back to step 1 with the same email pre-filled
+        var url = string.IsNullOrWhiteSpace(Culture) ? "/sign-in" : $"/{Culture}/sign-in";
+        NavigationManager.NavigateTo(url, forceLoad: true);
+    }
 }
+

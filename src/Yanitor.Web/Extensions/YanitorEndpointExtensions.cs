@@ -1,8 +1,12 @@
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Localization;
+using Microsoft.Extensions.Localization;
 using System.Security.Claims;
 using Yanitor.Web.Models;
+using Yanitor.Web.Resources;
+using Yanitor.Web.Services;
+using Yanitor.Web.Services.Notifications;
 using YanitorAuth = Yanitor.Web.Services.IAuthenticationService;
 
 namespace Yanitor.Web.Extensions
@@ -11,8 +15,12 @@ namespace Yanitor.Web.Extensions
     {
         public static void MapAuthenticationEndpoints(this WebApplication app)
         {
-            // Sign-in endpoint using ASP.NET Core Authentication (form POST)
-            app.MapPost("/auth/sign-in", async (HttpContext httpContext, YanitorAuth authService) =>
+            // Sign-in endpoint: Request OTP (form POST)
+            app.MapPost("/auth/sign-in", async (
+                HttpContext httpContext,
+                IOtpService otpService,
+                IEmailSender emailSender,
+                IStringLocalizer<SharedResources> localizer) =>
             {
                 var form = await httpContext.Request.ReadFormAsync();
                 var email = form["email"].ToString();
@@ -24,11 +32,77 @@ namespace Yanitor.Web.Extensions
                     return Results.Redirect($"{(string.IsNullOrWhiteSpace(culture) ? "" : $"/{culture}")}/sign-in?error=email-required");
                 }
 
-                var result = await authService.SignInWithEmailAsync(email);
+                // Check rate limit
+                if (!await otpService.CanRequestOtpAsync(email))
+                {
+                    return Results.Redirect($"{(string.IsNullOrWhiteSpace(culture) ? "" : $"/{culture}")}/sign-in?error=rate-limit");
+                }
+
+                // Generate OTP
+                var ipAddress = httpContext.Connection.RemoteIpAddress?.ToString();
+                var code = await otpService.GenerateOtpAsync(email, ipAddress);
+
+                // Send email with OTP
+                var subject = EmailTemplates.GetOtpEmailSubject(localizer);
+                var body = EmailTemplates.GetOtpEmailHtml(localizer, code, 15);
+
+                try
+                {
+                    await emailSender.SendEmailAsync(email, subject, body);
+                }
+                catch (Exception ex)
+                {
+                    // Log error but don't expose to user
+                    app.Logger.LogError(ex, "Failed to send OTP email to {Email}", email);
+                    return Results.Redirect($"{(string.IsNullOrWhiteSpace(culture) ? "" : $"/{culture}")}/sign-in?error=email-failed");
+                }
+
+                // Redirect back to sign-in page with success message
+                var redirectPath = string.IsNullOrWhiteSpace(culture) ? "/sign-in" : $"/{culture}/sign-in";
+                var queryParams = $"?step=verify&email={Uri.EscapeDataString(email)}";
+                if (!string.IsNullOrWhiteSpace(returnUrl))
+                {
+                    queryParams += $"&returnUrl={Uri.EscapeDataString(returnUrl)}";
+                }
+                return Results.Redirect(redirectPath + queryParams);
+            })
+            .DisableAntiforgery();
+
+            // Verify OTP endpoint (form POST)
+            app.MapPost("/auth/verify-otp", async (
+                HttpContext httpContext,
+                IOtpService otpService,
+                YanitorAuth authService) =>
+            {
+                var form = await httpContext.Request.ReadFormAsync();
+                var email = form["email"].ToString();
+                var code = form["code"].ToString();
+                var culture = form["culture"].ToString();
+                var returnUrl = form["returnUrl"].ToString();
+
+                if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(code))
+                {
+                    var redirectPath = string.IsNullOrWhiteSpace(culture) ? "/sign-in" : $"/{culture}/sign-in";
+                    return Results.Redirect($"{redirectPath}?step=verify&email={Uri.EscapeDataString(email)}&error=invalid-code");
+                }
+
+                // Validate OTP
+                var ipAddress = httpContext.Connection.RemoteIpAddress?.ToString();
+                var isValid = await otpService.ValidateOtpAsync(email, code, ipAddress);
+
+                if (!isValid)
+                {
+                    var redirectPath = string.IsNullOrWhiteSpace(culture) ? "/sign-in" : $"/{culture}/sign-in";
+                    return Results.Redirect($"{redirectPath}?step=verify&email={Uri.EscapeDataString(email)}&error=invalid-code");
+                }
+
+                // OTP is valid - sign in the user
+                var result = await authService.SignInWithEmailAsync(email, setEmailVerified: true);
 
                 if (!result.Success)
                 {
-                    return Results.Redirect($"{(string.IsNullOrWhiteSpace(culture) ? "" : $"/{culture}")}/sign-in?error=signin-failed");
+                    var redirectPath = string.IsNullOrWhiteSpace(culture) ? "/sign-in" : $"/{culture}/sign-in";
+                    return Results.Redirect($"{redirectPath}?error=signin-failed");
                 }
 
                 // Create claims for the authenticated user
@@ -58,51 +132,6 @@ namespace Yanitor.Web.Extensions
                     : returnUrl;
 
                 return Results.Redirect(redirectUrl);
-            })
-            .DisableAntiforgery();
-
-            // Keep the JSON API endpoint for programmatic access
-            app.MapPost("/api/auth/sign-in", async (SignInRequest request, YanitorAuth authService, HttpContext httpContext) =>
-            {
-                if (string.IsNullOrWhiteSpace(request.Email))
-                {
-                    return Results.BadRequest(new { error = "Email is required" });
-                }
-
-                var result = await authService.SignInWithEmailAsync(request.Email);
-
-                if (!result.Success)
-                {
-                    return Results.BadRequest(new { error = result.ErrorMessage ?? "Sign-in failed" });
-                }
-
-                // Create claims for the authenticated user
-                var claims = new List<Claim>
-                {
-                    new(ClaimTypes.NameIdentifier, result.User!.Id.ToString()),
-                    new(ClaimTypes.Email, result.User.Email),
-                    new(ClaimTypes.Name, result.User.DisplayName ?? result.User.Email)
-                };
-
-                var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-                var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
-
-                // Sign in using ASP.NET Core Authentication
-                await httpContext.SignInAsync(
-                    CookieAuthenticationDefaults.AuthenticationScheme,
-                    claimsPrincipal,
-                    new AuthenticationProperties
-                    {
-                        IsPersistent = true,
-                        ExpiresUtc = DateTimeOffset.UtcNow.AddDays(30),
-                        AllowRefresh = true
-                    });
-
-                var redirectUrl = string.IsNullOrWhiteSpace(request.Culture)
-                    ? "/my-house"
-                    : $"/{request.Culture}/my-house";
-
-                return Results.Ok(new { redirectUrl });
             })
             .DisableAntiforgery();
 

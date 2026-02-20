@@ -80,6 +80,7 @@ namespace Yanitor.Web.Extensions
             // Register authentication and user context services
             builder.Services.AddScoped<IUserContext, UserContext>();
             builder.Services.AddScoped<Yanitor.Web.Services.IAuthenticationService, Yanitor.Web.Services.AuthenticationService>();
+            builder.Services.AddScoped<IOtpService, OtpService>();
 
             // Register domain services
             builder.Services.AddSingleton<ITaskProvider, TaskProvider>();
@@ -98,6 +99,7 @@ namespace Yanitor.Web.Extensions
             builder.Services.AddTransient<TaskReminderCalculator>();
 
             builder.Services.AddHostedService<TaskReminderWorker>();
+            builder.Services.AddHostedService<OtpCleanupWorker>();
         }
     }
 }

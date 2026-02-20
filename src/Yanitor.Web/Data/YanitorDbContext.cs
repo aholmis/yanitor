@@ -11,6 +11,7 @@ public class YanitorDbContext(DbContextOptions<YanitorDbContext> options) : DbCo
     public DbSet<ActiveTaskRow> ActiveTasks => Set<ActiveTaskRow>();
     public DbSet<NotificationPreferenceRow> NotificationPreferences => Set<NotificationPreferenceRow>();
     public DbSet<NotificationLogRow> NotificationLogs => Set<NotificationLogRow>();
+    public DbSet<OneTimePassword> OneTimePasswords => Set<OneTimePassword>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -89,6 +90,20 @@ public class YanitorDbContext(DbContextOptions<YanitorDbContext> options) : DbCo
                 .HasForeignKey(x => x.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
         });
+
+        modelBuilder.Entity<OneTimePassword>(b =>
+        {
+            b.HasKey(x => x.Id);
+            b.HasIndex(x => x.Code).IsUnique();
+            b.Property(x => x.Email).HasMaxLength(320).IsRequired();
+            b.Property(x => x.Code).HasMaxLength(6).IsRequired();
+            b.Property(x => x.CreatedAt).IsRequired();
+            b.Property(x => x.ExpiresAt).IsRequired();
+            b.Property(x => x.IsUsed).IsRequired();
+            b.Property(x => x.IpAddress).HasMaxLength(45); // IPv6 max length
+            b.HasIndex(x => new { x.Email, x.CreatedAt });
+            b.HasIndex(x => x.ExpiresAt);
+        });
     }
 }
 
@@ -153,4 +168,14 @@ public class NotificationLogRow
     public bool Success { get; set; }
     public string? ErrorMessage { get; set; }
     public string? Recipient { get; set; }
+}
+public class OneTimePassword
+{
+    public Guid Id { get; set; } = Guid.NewGuid();
+    public string Email { get; set; } = string.Empty;
+    public string Code { get; set; } = string.Empty;
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    public DateTime ExpiresAt { get; set; }
+    public bool IsUsed { get; set; } = false;
+    public string? IpAddress { get; set; }
 }
