@@ -97,7 +97,7 @@
             .FirstOrDefault();
 
         // Check if first segment looks like a culture (e.g., "no", "en")
-        if (!string.IsNullOrEmpty(path) && (path.Length == 2 || path.Contains('-')))
+        if (!string.IsNullOrEmpty(path) && (path.Length == 2))
         {
             return path;
         }

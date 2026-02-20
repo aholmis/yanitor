@@ -4,7 +4,7 @@
     align-items: center;
     justify-content: center;
     padding: 1rem;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #0A375A 0%, #FAF7F2 100%);
 }
 
 .sign-in__card {
@@ -38,7 +38,7 @@
 }
 
 .sign-in__logo-body {
-    color: #667eea;
+    color: #0A375A;
 }
 
 .sign-in__logo-door {
@@ -96,8 +96,8 @@
 
 .sign-in__input:focus {
     outline: none;
-    border-color: #667eea;
-    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    border-color: #0A375A;
+    box-shadow: 0 0 0 3px rgba(10, 55, 90, 0.1);
 }
 
 .sign-in__input:disabled {
@@ -129,7 +129,7 @@
     font-size: 1rem;
     font-weight: 600;
     color: white;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #0A375A 0%, #0d4a75 100%);
     border: none;
     border-radius: 0.5rem;
     cursor: pointer;
@@ -142,7 +142,7 @@
 
 .sign-in__button:hover:not(:disabled) {
     transform: translateY(-1px);
-    box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+    box-shadow: 0 10px 20px rgba(10, 55, 90, 0.3);
 }
 
 .sign-in__button:active:not(:disabled) {
@@ -213,7 +213,7 @@
 
 .sign-in__continue-button:hover {
     background: #e5e7eb;
-    border-color: #667eea;
+    border-color: #0A375A;
 }
 
 .sign-in__continue-email {
@@ -225,7 +225,7 @@
 
 .sign-in__continue-button > span:last-child {
     font-size: 0.875rem;
-    color: #667eea;
+    color: #0A375A;
     font-weight: 500;
 }
 
