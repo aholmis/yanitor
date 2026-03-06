@@ -1,3 +1,5 @@
+using Azure.Identity;
+using Azure.Security.KeyVault.Secrets;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Server.Circuits;
@@ -90,8 +92,11 @@ namespace Yanitor.Web.Extensions
             builder.Services.AddScoped<IActiveTaskService, ActiveTaskService>();
 
             // Register notification services
-            builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
-            builder.Services.AddScoped<IEmailSender, SmtpEmailSender>();
+            var keyVaultUri = builder.Configuration["KeyVaultUri"]
+                ?? throw new InvalidOperationException("KeyVaultUri is not configured.");
+            builder.Services.AddSingleton(new SecretClient(new Uri(keyVaultUri), new DefaultAzureCredential()));
+            builder.Services.Configure<MailjetSettings>(builder.Configuration.GetSection("Mailjet"));
+            builder.Services.AddSingleton<IEmailSender, MailjetEmailSender>();
             builder.Services.AddScoped<INotificationService, EmailNotificationService>();
             builder.Services.AddScoped<INotificationPreferenceService, NotificationPreferenceService>();
 

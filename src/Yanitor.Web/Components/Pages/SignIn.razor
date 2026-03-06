@@ -136,14 +136,14 @@
 
     private bool IsVerifyStep => Step == "verify" && !string.IsNullOrWhiteSpace(EmailForVerification);
 
-    private string? ErrorMessage => ErrorCode switch
+    private string ErrorMessage => ErrorCode switch
     {
         "email-required" => L["Error_EmailRequired"],
         "rate-limit" => L["Otp_Error_RateLimit"],
         "email-failed" => L["Error_EmailFailed"],
         "invalid-code" => L["Otp_Error_Invalid"],
         "signin-failed" => L["Error_SignInFailed"],
-        _ => null
+        _ => "Unknown error: " + ErrorCode
     };
 
     private string GetReturnUrl()
